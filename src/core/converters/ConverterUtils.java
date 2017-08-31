@@ -992,14 +992,14 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		 */
 		public static void main(String[] args) throws Exception {
 			if (args.length != 1) {
-				System.out.println("\nUsage: " + DataSource.class.getName() + " <file>\n");
+				System.out.println(String.format("\nUsage: %s <file>\n", DataSource.class.getName()));
 				System.exit(1);
 			}
 
 			DataSource loader = new DataSource(args[0]);
 
-			System.out.println("Incremental? " + loader.isIncremental());
-			System.out.println("Loader: " + loader.getLoader().getClass().getName());
+			System.out.println(String.format("Incremental? %b \n",loader.isIncremental()));
+			System.out.println(String.format("Loader: %s \r\n", loader.getLoader().getClass().getName()));
 			System.out.println("Data:\n");
 			Instances structure = loader.getStructure();
 			System.out.println(structure);

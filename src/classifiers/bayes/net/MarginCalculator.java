@@ -59,7 +59,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 			for (int i = 0; i < nNodes; i++) {
 				int iNode = order[i];
 				if (cliques[iNode] != null) {
-					System.out.print("Clique " + iNode + " (");
+					System.out.print(String.format("Clique %d (\n", iNode));
 					Iterator<Integer> nodes = cliques[iNode].iterator();
 					while (nodes.hasNext()) {
 						int iNode2 = nodes.next();
@@ -77,7 +77,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 							System.out.print(",");
 						}
 					}
-					System.out.println(") parent clique " + parentCliques[iNode]);
+					System.out.println(String.format(") parent clique %d \n", parentCliques[iNode]));
 				}
 			}
 		}
