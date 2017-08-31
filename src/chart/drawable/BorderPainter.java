@@ -145,7 +145,6 @@ public class BorderPainter implements Drawable, Serializable {
      * @param g2  the graphics target (<code>null</code> not permitted).
      * @param area  the area for the border (<code>null</code> not permitted).
      */
-    @Override
     public void draw(Graphics2D g2, Rectangle2D area) {
         RectangularShape border;
         if (this.arc_Height > 0.0 && this.arc_Width > 0.0) {
@@ -168,7 +167,6 @@ public class BorderPainter implements Drawable, Serializable {
      * 
      * @return A boolean. 
      */
-    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
@@ -192,7 +190,6 @@ public class BorderPainter implements Drawable, Serializable {
         return true;
     }
 
-    @Override
     public int hashCode() {
         int hash = 7;
         hash = 83 * hash + Objects.hashCode(this.color);

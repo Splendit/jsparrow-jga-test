@@ -189,7 +189,6 @@ public class LegendItemBlockContainer extends BlockContainer {
      *
      * @return An instance of {@link EntityBlockResult}, or <code>null</code>.
      */
-    @Override
     public Object draw(Graphics2D g2, Rectangle2D area, Object params) {
         // draw the block without collecting entities
         super.draw(g2, area, null);

@@ -70,7 +70,6 @@ public enum ChartChangeEventType {
      *
      * @return The string.
      */
-    @Override
     public String toString() {
         return this.name;
     }

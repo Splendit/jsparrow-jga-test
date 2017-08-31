@@ -188,7 +188,6 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
      *
      * @return A boolean.
      */
-    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
@@ -197,15 +196,12 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
             return false;
         }
         ChartRenderingInfo that = (ChartRenderingInfo) obj;
-        if (!ObjectUtils.equal(this.chart_Area, that.chart_Area)) {
+        if (!ObjectUtils.equal(this.chart_Area, that.chart_Area)) 
             return false;
-        }
-        if (!ObjectUtils.equal(this.plot_Info, that.plot_Info)) {
+        if (!ObjectUtils.equal(this.plot_Info, that.plot_Info)) 
             return false;
-        }
-        if (!ObjectUtils.equal(this.entities, that.entities)) {
+        if (!ObjectUtils.equal(this.entities, that.entities)) 
             return false;
-        }
         return true;
     }
 
@@ -216,7 +212,6 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
      *
      * @throws CloneNotSupportedException if the object cannot be cloned.
      */
-    @Override
     public Object clone() throws CloneNotSupportedException {
         ChartRenderingInfo clone = (ChartRenderingInfo) super.clone();
         if (this.chart_Area != null) {

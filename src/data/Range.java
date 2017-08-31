@@ -74,11 +74,7 @@ public strictfp class Range implements Serializable {
     /** For serialization. */
     private static final long serialVersionUID = -906333695431863380L;
 
-    /** The lower bound of the range. */
-    private double lower;
-
-    /** The upper bound of the range. */
-    private double upper;
+    private double lower, upper;
 
     /**
      * Creates a new range.
@@ -92,6 +88,7 @@ public strictfp class Range implements Serializable {
                 + ") <= upper (" + upper + ").";
             throw new IllegalArgumentException(msg);
         }
+        org.apache.commons.lang3.StringUtils.class.getName();
         this.lower = lower;
         this.upper = upper;
     }

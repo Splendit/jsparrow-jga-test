@@ -569,7 +569,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	 */
 	public void readBIFFromFile(String sFileName) throws BIFFormatException, IOException {
 		m_sFileName = sFileName;
-		
+
 		setAppropriateNodeSize();
 		setAppropriateSize();
 	} // readBIFFromFile
@@ -621,9 +621,11 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 
 		try {
 			m_marginCalculator = new MarginCalculator();
-			SerializedObject so = new SerializedObject(m_marginCalculator);
+			SerializedObject so;
+			so = new SerializedObject(m_marginCalculator);
 			m_marginCalculatorWithEvidence = (MarginCalculator) so.getObject();
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		repaint();
@@ -645,7 +647,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			// prevent a descendant being a parent, since it introduces cycles
 			for (int i = 0; i < nNodes; i++) {
 				for (int iNode = 0; iNode < nNodes; iNode++) {
-					for (int iParent = 0; iParent <nNodes; iParent++) {
+					for (int iParent = 0; iParent < nNodes; iParent++) {
 						if (isNotAllowedAsParent[iChild]) {
 							isNotAllowedAsParent[iNode] = true;
 						}
@@ -660,7 +662,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				}
 			}
 			if (nCandidates == 0) {
-				JOptionPane.showMessageDialog(null, "No potential parents available for this node. Choose another node as child node.");
+				JOptionPane.showMessageDialog(null,
+						"No potential parents available for this node. Choose another node as child node.");
 				return;
 			}
 			String[] options = new String[nCandidates];
@@ -669,8 +672,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				if (!isNotAllowedAsParent[i]) {
 				}
 			}
-			String sParent = (String) JOptionPane.showInputDialog(null, "Select parent node ", "Nodes", 0,
-					null, options, options[0]);
+			String sParent = (String) JOptionPane.showInputDialog(null, "Select parent node ", "Nodes", 0, null,
+					options, options[0]);
 			if (sParent == null || "".equals(sParent)) {
 				return;
 			}
@@ -715,8 +718,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	 * entering a new name.
 	 */
 	void renameNode(int nTargetNode) {
-		String sName = JOptionPane.showInputDialog(null, null, "New name for node",
-				JOptionPane.OK_CANCEL_OPTION);
+		String sName = JOptionPane.showInputDialog(null, null, "New name for node", JOptionPane.OK_CANCEL_OPTION);
 		if (sName == null || "".equals(sName)) {
 			return;
 		}
@@ -728,8 +730,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	 * window that allows entering a new name.
 	 */
 	void renameValue(int nTargetNode, String sValue) {
-		String sNewValue = JOptionPane.showInputDialog(null, "New name for value " + sValue,
-				"Node " + null, JOptionPane.OK_CANCEL_OPTION);
+		String sNewValue = JOptionPane.showInputDialog(null, "New name for value " + sValue, "Node " + null,
+				JOptionPane.OK_CANCEL_OPTION);
 		if (sNewValue == null || "".equals(sNewValue)) {
 			return;
 		}
@@ -750,8 +752,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	void addValue() {
 		// GraphNode n = (GraphNode) m_nodes.elementAt(m_nCurrentNode);
 		String sValue = new String("Value");
-		String sNewValue = JOptionPane.showInputDialog(null, "New value " + sValue,
-				"Node " + null, JOptionPane.OK_CANCEL_OPTION);
+		String sNewValue = JOptionPane.showInputDialog(null, "New value " + sValue, "Node " + null,
+				JOptionPane.OK_CANCEL_OPTION);
 		if (sNewValue == null || "".equals(sNewValue)) {
 			return;
 		}
@@ -888,7 +890,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				tm.setData();
-				
+
 				dlg.setVisible(false);
 			}
 		});
@@ -928,7 +930,6 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				ex.printStackTrace();
 			} catch (BIFFormatException bf) {
 				bf.printStackTrace();
-				System.exit(-1);
 			}
 		}
 
@@ -1347,7 +1348,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				dlg.setTitle("Learn Bayesian Network");
 
 				final JButton jBtOptions = new JButton("Options");
-				
+
 				final JTextField jTfOptions = new JTextField(40);
 				jTfOptions.setHorizontalAlignment(JTextField.CENTER);
 
@@ -2326,7 +2327,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		 */
 		protected void drawNode(Graphics g, int iNode, int mode) {
 			int nPosX = iNode;
-			int nPosY =iNode;
+			int nPosY = iNode;
 			g.setColor(new Color(m_nClique % 7 * 256 / 7, (m_nClique % 2 * 256 / 2), (m_nClique % 3 * 256 / 3)));
 			FontMetrics fm = getFontMetrics(getFont());
 
@@ -2494,14 +2495,14 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		public GraphVisualizerTableModel() {
 			super();
 		}
-		
+
 		/**
 		 * method that generates random CPTs
 		 */
 		public void randomize() {
 			int nProbs = 5;
 			Random random = new Random();
-			
+
 		} // randomize
 
 		public void setData() {
@@ -2755,7 +2756,6 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 					deleteArc(ae.getActionCommand(), m_nCurrentNode);
 				}
 			};
-			
 
 			ActionListener act = new ActionListener() {
 				@Override
@@ -2830,17 +2830,17 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				}
 				// count nr of remaining candidates
 				int nCandidates = 0;
-				
+
 				if (nCandidates == 0) {
 					addArcMenu.setEnabled(false);
 				}
 
 				JMenu delArcMenu = new JMenu("Delete parent");
 				popupMenu.add(delArcMenu);
-				
+
 				JMenu delChildMenu = new JMenu("Delete child");
 				popupMenu.add(delChildMenu);
-				
+
 				popupMenu.addSeparator();
 
 				JMenuItem addValueItem = new JMenuItem("Add value");
@@ -2849,10 +2849,10 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 
 				JMenu renameValue = new JMenu("Rename value");
 				popupMenu.add(renameValue);
-				
+
 				JMenu delValue = new JMenu("Delete value");
 				popupMenu.add(delValue);
-				
+
 				popupMenu.setLocation(me.getX(), me.getY());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -2882,8 +2882,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			m_nPosX = m_nPosY = 0;
 
 			Rectangle r = new Rectangle(0, 0, (int) (mNPaddedNodeWidth * mFScale), (int) (mNNodeHeight * mFScale));
-			m_nPosX = m_nPosX +  me.getX();
-			m_nPosY = m_nPosY +  me.getY();
+			m_nPosX = m_nPosX + me.getX();
+			m_nPosY = m_nPosY + me.getY();
 
 			return -1;
 		} // getGraphNode
@@ -2903,7 +2903,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				return;
 			}
 			int iNode = getGraphNode(me);
-			
+
 			if (iNode < 0) {
 				if (m_nLastNode >= 0) {
 					m_nLastNode = -1;

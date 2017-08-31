@@ -73,7 +73,6 @@ public class TooltipHandlerFX extends AbstractMouseHandlerFX
      * @param canvas  the chart canvas (<code>null</code> not permitted).
      * @param e  the mouse event.
      */
-    @Override
     public void handleMouseMoved(ChartCanvas canvas, MouseEvent e) {
         if (!canvas.isTooltipEnabled()) {
             return;

@@ -92,7 +92,6 @@ public enum PlotOrientation {
      *
      * @return The string (never {@code null}).
      */
-    @Override
     public String toString() {
         return this.name;
     }

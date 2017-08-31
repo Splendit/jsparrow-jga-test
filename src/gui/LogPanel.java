@@ -47,6 +47,8 @@ import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * This panel allows log and status messages to be posted. Log messages appear
  * in a scrollable text area, and status messages appear as one-line transient
