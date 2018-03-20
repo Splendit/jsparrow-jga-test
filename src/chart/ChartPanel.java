@@ -2568,11 +2568,11 @@ public class ChartPanel extends JPanel implements ChartChangeListener,
         } catch (SecurityException e) {
             // null will be returned
         } catch (IllegalAccessException e) {
-            // null will be returned
+        	e.printStackTrace();
         } catch (IllegalArgumentException e) {
             // null will be returned
         } catch (InvocationTargetException e) {
-            // null will be returned
+            e.printStackTrace();
         }
         return svg;
     }
