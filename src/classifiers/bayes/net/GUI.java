@@ -1015,6 +1015,14 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			updateGUI();
 		} // selectAll
 
+		public int getSumOfSelection() {
+			int sum = 0;
+			for(int n : m_selected) {
+				sum += n;
+			}
+			return sum;
+		} // getSum
+		
 		boolean contains(Rectangle rect, int iNode) {
 			return false;
 		} // contains
@@ -2661,12 +2669,16 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			popupMenu.add(addNodeItem);
 
 			ArrayList<Integer> selected = m_Selection.getSelected();
+			int sum = 0;
+			for(int n : selected) {
+				sum += n;
+			}
 			JMenu addArcMenu = new JMenu("Add parent");
 			popupMenu.add(addArcMenu);
 			if (selected.size() == 0) {
 				addArcMenu.setEnabled(false);
 			} else {
-				int nNodes = 5;
+				int nNodes = sum;
 				boolean[] isNotAllowedAsParent = new boolean[nNodes];
 				for (Integer iterator : selected) {
 					isNotAllowedAsParent[iterator] = true;

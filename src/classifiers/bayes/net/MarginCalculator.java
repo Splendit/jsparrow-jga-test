@@ -212,6 +212,12 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				processedNodes.addAll(cliques[iNode]);
 			}
 		}
+		int sum = 0;
+		for(int n : processedNodes) {
+			sum += n;
+		}
+		System.out.println(sum);
+
 		return separators;
 	} // getSeparators
 
@@ -245,6 +251,12 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 					clique.add(iNode2);
 				}
 			}
+
+			int sum = 0;
+			for(int n : clique) {
+				sum += n;
+			}
+			clique.add(sum);
 
 			// for (int iNode2 = 0; iNode2 < nNodes; iNode2++) {
 			// if (bAdjacencyMatrix[iNode][iNode2] && inverseOrder[iNode2] <

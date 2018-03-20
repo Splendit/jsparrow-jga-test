@@ -803,6 +803,19 @@ public class ArffLoader extends AbstractFileLoader implements BatchConverter, In
 		}
 
 		/**
+		 * Calculates sum of elements and returns result
+		 * 
+		 * @return sum
+		 */
+		protected int getSum() {
+			int sum = 0;
+			for(int n : m_stringAttIndices) {
+				sum += n;
+			}
+			return sum;
+		}
+		
+		/**
 		 * Initializes the StreamTokenizer used for reading the ARFF file.
 		 */
 		protected void initTokenizer() {
