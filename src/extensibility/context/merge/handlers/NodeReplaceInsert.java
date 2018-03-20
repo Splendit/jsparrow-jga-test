@@ -139,6 +139,40 @@ public class NodeReplaceInsert extends BaseHandler {
         }
         return usedNodes;
     }
+    
+    private List<Node> matchNodess(List<Node> exhaustedNodes, Node[] primaryNodes, ArrayList<Node> list) {
+        List<Node> usedNodes = new ArrayList<Node>(20);
+        Iterator<Node> itr = list.iterator();
+        Node parentNode = primaryNodes[0].getParentNode();
+        Document ownerDocument = parentNode.getOwnerDocument();
+        while (itr.hasNext()) {
+            Node node = itr.next();
+            if (Element.class.isAssignableFrom(node.getClass()) && !exhaustedNodesContains(exhaustedNodes, node)) {
+
+                if (LOG.isDebugEnabled()) {
+                    StringBuffer sb = new StringBuffer();
+                    sb.append("matching node for replacement: ");
+                    sb.append(node.getNodeName());
+                    int attrLength = node.getAttributes().getLength();
+                    for (int j = 0; j < attrLength; j++) {
+                        sb.append(" : (");
+                        sb.append(node.getAttributes().item(j).getNodeName());
+                        sb.append("/");
+                        sb.append(node.getAttributes().item(j).getNodeValue());
+                        sb.append(")");
+                    }
+                    LOG.debug(sb.toString());
+                }
+                if (!checkNode(usedNodes, primaryNodes, node)) {
+                    //simply append the node if all the above fails
+                    Node newNode = ownerDocument.importNode(node.cloneNode(true), true);
+                    parentNode.appendChild(newNode);
+                    usedNodes.add(node);
+                }
+            }
+        }
+        return usedNodes;
+    }
 
     protected boolean checkNode(List<Node> usedNodes, Node[] primaryNodes, Node node) {
         //find matching nodes based on id

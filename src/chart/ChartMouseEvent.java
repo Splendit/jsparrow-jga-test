@@ -48,7 +48,9 @@ package chart;
 
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.EventObject;
+import java.util.List;
 
 import chart.entity.ChartEntity;
 
@@ -115,4 +117,21 @@ public class ChartMouseEvent extends EventObject implements Serializable {
         return this.entity;
     }
 
+    private List<String> generateList(String input) {
+		return Arrays.asList(input.split(";")); //$NON-NLS-1$
+	}
+    
+    public String loopingOverLists(String input) {
+		StringBuilder sb = new StringBuilder();
+		List<String>list = generateList(input);
+		int i = 0;
+		while (i < list.size()) {
+			String t = list.get(i);
+			System.out.println(t);
+			sb.append(t);
+			i++;
+		}
+		return sb.toString();
+	}
+    
 }
