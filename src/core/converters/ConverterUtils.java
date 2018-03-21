@@ -324,7 +324,7 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 			extension = filename.substring(index).toLowerCase();
 			result = getConverterForExtension(extension, ht);
 			// is it a compressed format?
-			if (".gz".equals(extension) && result == null) {
+			if (extension.equals(".gz") && result == null) {
 				index = filename.lastIndexOf('.', index - 1);
 				extension = filename.substring(index).toLowerCase();
 				result = getConverterForExtension(extension, ht);

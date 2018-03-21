@@ -1743,9 +1743,9 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 
 		tmpStr = Utils.getOption("c", args);
 		if (tmpStr.length() != 0) {
-			if ("first".equals(tmpStr)) {
+			if (tmpStr.equals("first")) {
 				classIndex = 0;
-			} else if ("last".equals(tmpStr)) {
+			} else if (tmpStr.equals("last")) {
 				classIndex = -2; // last
 			} else {
 				classIndex = Integer.parseInt(tmpStr) - 1;
