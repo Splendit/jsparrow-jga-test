@@ -174,7 +174,7 @@ import java.util.List;
 import javax.swing.event.EventListenerList;
 
 import chart.block.BlockParams;
-import chart.block.EntityBlockResult;
+import chart.block.BlockResult;
 import chart.block.LengthConstraintType;
 import chart.block.RectangleConstraint;
 import chart.drawable.BorderPainter;
@@ -392,17 +392,6 @@ public class JFreeChart implements Drawable, TitleChangeListener,
         plot.addChangeListener(this);
 
         this.subtitles = new ArrayList<Title>();
-
-        // create a legend, if requested...
-        if (createLegend) {
-            LegendTitle legend = new LegendTitle(this.plot);
-            legend.setMargin(new RectangleInsets(1.0, 1.0, 1.0, 1.0));
-            legend.setHorizontalAlignment(HorizontalAlignment.RIGHT);
-            legend.setBackgroundPaint(Color.WHITE);
-            legend.setPosition(RectangleEdge.BOTTOM);
-            this.subtitles.add(legend);
-            legend.addChangeListener(this);
-        }
 
         // add the chart title, if one has been specified...
         if (title != null) {
@@ -1227,8 +1216,8 @@ public class JFreeChart implements Drawable, TitleChangeListener,
             throw new RuntimeException("Unrecognised title position.");
         }
         EntityCollection result = null;
-        if (retValue instanceof EntityBlockResult) {
-            EntityBlockResult ebr = (EntityBlockResult) retValue;
+        if (retValue instanceof BlockResult) {
+        	BlockResult ebr = (BlockResult) retValue;
             result = ebr.getEntityCollection();
         }
         return result;

@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package extensibility.context.merge.handlers;
+package extensibility.handlers;
 
 import org.w3c.dom.Node;
 

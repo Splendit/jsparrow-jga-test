@@ -49,8 +49,8 @@ import java.awt.geom.Rectangle2D;
 import chart.block.Arrangement;
 import chart.block.BlockContainer;
 import chart.block.BlockResult;
-import chart.block.EntityBlockParams;
-import chart.block.EntityBlockResult;
+import chart.block.BlockParams;
+import chart.block.BlockResult;
 import chart.entity.EntityCollection;
 import chart.entity.StandardEntityCollection;
 import data.general.Dataset;
@@ -192,10 +192,10 @@ public class LegendItemBlockContainer extends BlockContainer {
     public Object draw(Graphics2D g2, Rectangle2D area, Object params) {
         // draw the block without collecting entities
         super.draw(g2, area, null);
-        EntityBlockParams ebp = null;
+        BlockParams ebp = null;
         BlockResult r = new BlockResult();
-        if (params instanceof EntityBlockParams) {
-            ebp = (EntityBlockParams) params;
+        if (params instanceof BlockParams) {
+            ebp = (BlockParams) params;
             if (ebp.getGenerateEntities()) {
                 EntityCollection ec = new StandardEntityCollection();
                 r.setEntityCollection(ec);

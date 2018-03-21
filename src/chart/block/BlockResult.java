@@ -46,7 +46,7 @@ import chart.entity.EntityCollection;
  * Used to return results from the draw() method in the {@link Block}
  * class.
  */
-public class BlockResult implements EntityBlockResult {
+public class BlockResult {
 
     /** The entities from the block. */
     private EntityCollection entities;
@@ -63,7 +63,6 @@ public class BlockResult implements EntityBlockResult {
      *
      * @return The entities.
      */
-    @Override
     public EntityCollection getEntityCollection() {
         return this.entities;
     }

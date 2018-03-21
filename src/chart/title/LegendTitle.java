@@ -79,13 +79,12 @@ import java.util.List;
 import javax.swing.SortOrder;
 
 import chart.LegendItem;
-import chart.LegendItemSource;
 import chart.block.Arrangement;
 import chart.block.Block;
 import chart.block.BlockContainer;
 import chart.block.BlockFrame;
 import chart.block.BlockResult;
-import chart.block.EntityBlockParams;
+import chart.block.BlockParams;
 import chart.block.RectangleConstraint;
 import chart.entity.EntityCollection;
 import chart.entity.StandardEntityCollection;
@@ -123,9 +122,6 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 			"hLayout",
 			"vLayout"
 			));
-
-	/** The sources for legend items. */
-	private LegendItemSource[] sources;
 
 	/** The background paint (possibly <code>null</code>). */
 	private transient Paint backgroundPaint;
@@ -176,16 +172,6 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 	private SortOrder sortOrder;
 
 	/**
-	 * Constructs a new (empty) legend for the specified source.
-	 *
-	 * @param source
-	 *            the source.
-	 */
-	public LegendTitle(LegendItemSource source) {
-		this(source, null, null);
-	}
-
-	/**
 	 * Creates a new legend title with the specified arrangement.
 	 *
 	 * @param source
@@ -197,8 +183,7 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 	 *            the vertical item arrangement (<code>null</code> not
 	 *            permitted).
 	 */
-	public LegendTitle(LegendItemSource source, Arrangement hLayout, Arrangement vLayout) {
-		this.sources = new LegendItemSource[] { source };
+	public LegendTitle(Arrangement hLayout, Arrangement vLayout) {
 		this.items = new BlockContainer(hLayout);
 		this.hLayout = hLayout;
 		this.vLayout = vLayout;
@@ -209,30 +194,6 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 		this.itemPaint = DEFAULT_ITEM_PAINT;
 		this.itemLabelPadding = new RectangleInsets(2.0, 2.0, 2.0, 2.0);
 		this.sortOrder = SortOrder.ASCENDING;
-	}
-
-	/**
-	 * Returns the legend item sources.
-	 *
-	 * @return The sources.
-	 */
-	public LegendItemSource[] getSources() {
-		return this.sources;
-	}
-
-	/**
-	 * Sets the legend item sources and sends a {@link TitleChangeEvent} to all
-	 * registered listeners.
-	 *
-	 * @param sources
-	 *            the sources (<code>null</code> not permitted).
-	 */
-	public void setSources(LegendItemSource[] sources) {
-		if (sources == null) {
-			throw new IllegalArgumentException("Null 'sources' argument.");
-		}
-		this.sources = sources;
-		notifyListeners(new TitleChangeEvent(this));
 	}
 
 	/**
@@ -410,22 +371,6 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 		} else {
 			this.items.setArrangement(this.vLayout);
 		}
-
-		if (this.sortOrder.equals(SortOrder.ASCENDING)) {
-			for (LegendItemSource source : this.sources) {
-				List<LegendItem> legendItems = source.getLegendItems();
-				for (LegendItem item : legendItems) {
-					addItemBlock(item);
-				}
-			}
-		} else {
-			for (int s = this.sources.length - 1; s >= 0; s--) {
-				List<LegendItem> legendItems = this.sources[s].getLegendItems();
-				for (int i = legendItems.size() - 1; i >= 0; i--) {
-					addItemBlock(legendItems.get(i));
-				}
-			}
-		}
 	}
 
 	private void addItemBlock(LegendItem item) {
@@ -536,7 +481,7 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 		Rectangle2D target = (Rectangle2D) area.clone();
 		Rectangle2D hotspot = (Rectangle2D) area.clone();
 		StandardEntityCollection sec = null;
-		if (params instanceof EntityBlockParams && ((EntityBlockParams) params).getGenerateEntities()) {
+		if (params instanceof BlockParams && ((BlockParams) params).getGenerateEntities()) {
 			sec = new StandardEntityCollection();
 			sec.add(new TitleEntity(hotspot, this));
 		}

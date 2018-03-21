@@ -158,7 +158,6 @@ import javax.swing.event.EventListenerList;
 
 import chart.JFreeChart;
 import chart.LegendItem;
-import chart.LegendItemSource;
 import chart.drawable.BorderPainter;
 import chart.drawable.ColorPainter;
 import chart.drawable.Drawable;
@@ -181,7 +180,7 @@ import data.general.DatasetChangeListener;
  * delegates the drawing of axes and data to the plot.  This base class
  * provides facilities common to most plot types.
  */
-public abstract class Plot implements DatasetChangeListener, LegendItemSource, 
+public abstract class Plot implements DatasetChangeListener,  
         PublicCloneable, Cloneable, Serializable {
 
     /** For serialization. */
@@ -671,7 +670,6 @@ public abstract class Plot implements DatasetChangeListener, LegendItemSource,
      * @return The legend items for the plot (possibly empty, but never 
      *     <code>null</code>).
      */
-    @Override
     public List<LegendItem> getLegendItems() {
         return new ArrayList<LegendItem>();
     }

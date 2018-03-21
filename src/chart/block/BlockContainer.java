@@ -201,10 +201,10 @@ public class BlockContainer extends AbstractBlock
      */
     public Object draw(Graphics2D g2, Rectangle2D area, Object params) {
         // check if we need to collect chart entities from the container
-        EntityBlockParams ebp;
+    	BlockParams ebp;
         StandardEntityCollection sec = null;
-        if (params instanceof EntityBlockParams) {
-            ebp = (EntityBlockParams) params;
+        if (params instanceof BlockParams) {
+            ebp = (BlockParams) params;
             if (ebp.getGenerateEntities()) {
                 sec = new StandardEntityCollection();
             }
@@ -221,8 +221,8 @@ public class BlockContainer extends AbstractBlock
                     bounds.getWidth(), bounds.getHeight());
             Object r = block.draw(g2, drawArea, params);
             if (sec != null) {
-                if (r instanceof EntityBlockResult) {
-                    EntityBlockResult ebr = (EntityBlockResult) r;
+                if (r instanceof BlockResult) {
+                	BlockResult ebr = (BlockResult) r;
                     EntityCollection ec = ebr.getEntityCollection();
                     sec.addAll(ec);
                 }

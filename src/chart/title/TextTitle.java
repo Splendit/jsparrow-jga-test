@@ -96,7 +96,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import chart.block.BlockResult;
-import chart.block.EntityBlockParams;
+import chart.block.BlockParams;
 import chart.block.LengthConstraintType;
 import chart.block.RectangleConstraint;
 import chart.entity.ChartEntity;
@@ -603,8 +603,8 @@ public class TextTitle extends Title implements Serializable, Cloneable,
             return null;
         }
         ChartEntity entity = null;
-        if (params instanceof EntityBlockParams) {
-            EntityBlockParams p = (EntityBlockParams) params;
+        if (params instanceof BlockParams) {
+        	BlockParams p = (BlockParams) params;
             if (p.getGenerateEntities()) {
                 entity = new TitleEntity(area, this, this.toolTipText,
                         this.urlText);

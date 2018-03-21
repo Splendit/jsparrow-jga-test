@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package extensibility.context.merge.handlers;
+package extensibility.handlers;
 
 /**
  * Convenience base class which all handler implementations extend. This class
