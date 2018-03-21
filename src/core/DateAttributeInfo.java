@@ -21,6 +21,7 @@
 package core;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Stores information for date attributes.
@@ -45,5 +46,15 @@ public class DateAttributeInfo implements AttributeInfo {
 			m_DateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		}
 		m_DateFormat.setLenient(false);
+	}
+	
+	/**
+	 * Get begin date.
+	 * 
+	 * @return Date 1.1.1999
+	 */
+	public Date getStartDate() {
+		// start date is 101.01.1999
+		return new Date(99, 1, 1);
 	}
 }

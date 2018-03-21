@@ -379,12 +379,12 @@ public class ChartCanvas extends Canvas implements ChartChangeListener,
      */
     public MouseHandlerFX getMouseHandler(String id) {
         for (MouseHandlerFX h: this.available_Mouse_Handlers) {
-            if (h.getID().equals(id)) {
+            if (h.getID() == id) {
                 return h;
             }
         }
         for (MouseHandlerFX h: this.auxiliary_Mouse_Handlers) {
-            if (h.getID().equals(id)) {
+            if (h.getID() == id) {
                 return h;
             }
         }
@@ -427,12 +427,12 @@ public class ChartCanvas extends Canvas implements ChartChangeListener,
      */
     private boolean hasUniqueID(MouseHandlerFX handler) {
         for (MouseHandlerFX h: this.available_Mouse_Handlers) {
-            if (handler.getID().equals(h.getID())) {
+            if (handler.getID() == h.getID()) {
                 return false;
             }
         }
         for (MouseHandlerFX h: this.auxiliary_Mouse_Handlers) {
-            if (handler.getID().equals(h.getID())) {
+            if (handler.getID() == h.getID()) {
                 return false;
             }
         }

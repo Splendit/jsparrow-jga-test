@@ -1625,13 +1625,13 @@ public class ChartPanel extends JPanel implements ChartChangeListener,
             screenY = this.zoom_Point.getY();
         }
 
-        if (command.equals(PROPERTIES_COMMAND)) {
+        if (command == PROPERTIES_COMMAND) {
             doEditChartProperties();
         }
-        else if (command.equals(COPY_COMMAND)) {
+        else if (command == COPY_COMMAND) {
             doCopy();
         }
-        else if (command.equals(SAVE_AS_PNG_COMMAND)) {
+        else if (command == SAVE_AS_PNG_COMMAND) {
             try {
                 doSaveAs();
             }
@@ -1641,7 +1641,7 @@ public class ChartPanel extends JPanel implements ChartChangeListener,
                         JOptionPane.WARNING_MESSAGE);
             }
         }
-        else if (command.equals(SAVE_AS_SVG_COMMAND)) {
+        else if (command == SAVE_AS_SVG_COMMAND) {
             try {
                 saveAsSVG(null);
             } catch (IOException e) {
@@ -1650,37 +1650,37 @@ public class ChartPanel extends JPanel implements ChartChangeListener,
                         JOptionPane.WARNING_MESSAGE);
             }
         }
-        else if (command.equals(SAVE_AS_PDF_COMMAND)) {
+        else if (command == SAVE_AS_PDF_COMMAND) {
             saveAsPDF(null);
         }
-        else if (command.equals(PRINT_COMMAND)) {
+        else if (command == PRINT_COMMAND) {
             createChartPrintJob();
         }
-        else if (command.equals(ZOOM_IN_BOTH_COMMAND)) {
+        else if (command == ZOOM_IN_BOTH_COMMAND) {
             zoomInBoth(screenX, screenY);
         }
-        else if (command.equals(ZOOM_IN_DOMAIN_COMMAND)) {
+        else if (command == ZOOM_IN_DOMAIN_COMMAND) {
             zoomInDomain(screenX, screenY);
         }
-        else if (command.equals(ZOOM_IN_RANGE_COMMAND)) {
+        else if (command == ZOOM_IN_RANGE_COMMAND) {
             zoomInRange(screenX, screenY);
         }
-        else if (command.equals(ZOOM_OUT_BOTH_COMMAND)) {
+        else if (command == ZOOM_OUT_BOTH_COMMAND) {
             zoomOutBoth(screenX, screenY);
         }
-        else if (command.equals(ZOOM_OUT_DOMAIN_COMMAND)) {
+        else if (command == ZOOM_OUT_DOMAIN_COMMAND) {
             zoomOutDomain(screenX, screenY);
         }
-        else if (command.equals(ZOOM_OUT_RANGE_COMMAND)) {
+        else if (command == ZOOM_OUT_RANGE_COMMAND) {
             zoomOutRange(screenX, screenY);
         }
-        else if (command.equals(ZOOM_RESET_BOTH_COMMAND)) {
+        else if (command == ZOOM_RESET_BOTH_COMMAND) {
             restoreAutoBounds();
         }
-        else if (command.equals(ZOOM_RESET_DOMAIN_COMMAND)) {
+        else if (command == ZOOM_RESET_DOMAIN_COMMAND) {
             restoreAutoDomainBounds();
         }
-        else if (command.equals(ZOOM_RESET_RANGE_COMMAND)) {
+        else if (command == ZOOM_RESET_RANGE_COMMAND) {
             restoreAutoRangeBounds();
         }
 

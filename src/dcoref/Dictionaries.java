@@ -166,15 +166,15 @@ public class Dictionaries {
 
   public final Set<String> quantifiers2 = new HashSet<>(Arrays.asList("all", "both", "neither", "either"));
   public final Set<String> determiners = new HashSet<>(Arrays.asList("the", "this", "that", "these", "those", "his", "her", "my", "your", "their", "our"));
-  public final Set<String> negations = new HashSet<>(Arrays.asList("n't","not", "nor", "neither", "never", "no", "non", "any", "none", "nobody", "nothing", "nowhere", "nearly","almost",
+  private static final Set<String> negations = new HashSet<>(Arrays.asList("n't","not", "nor", "neither", "never", "no", "non", "any", "none", "nobody", "nothing", "nowhere", "nearly","almost",
       "if", "false", "fallacy", "unsuccessfully", "unlikely", "impossible", "improbable", "uncertain", "unsure", "impossibility", "improbability", "cancellation", "breakup", "lack",
       "long-stalled", "end", "rejection", "failure", "avoid", "bar", "block", "break", "cancel", "cease", "cut", "decline", "deny", "deprive", "destroy", "excuse",
       "fail", "forbid", "forestall", "forget", "halt", "lose", "nullify", "prevent", "refrain", "reject", "rebut", "remain", "refuse", "stop", "suspend", "ward"));
-  public final Set<String> neg_relations = new HashSet<>(Arrays.asList("nmod:without", "acl:without", "advcl:without",
+  private static final Set<String> neg_relations = new HashSet<>(Arrays.asList("nmod:without", "acl:without", "advcl:without",
       "nmod:except", "acl:except", "advcl:except", "nmod:excluding", "acl:excluding", "advcl:excluding", "nmod:if", "acl:if",
       "advcl:if", "nmod:whether", "acl:whether", "advcl:whether",  "nmod:away_from", "acl:away_from", "advcl:away_fom",
       "nmod:instead_of", "acl:instead_of", "advcl:instead_of"));
-  public final Set<String> modals = new HashSet<>(Arrays.asList("can", "could", "may", "might", "must", "should", "would", "seem",
+  private static final Set<String> modals = new HashSet<>(Arrays.asList("can", "could", "may", "might", "must", "should", "would", "seem",
       "able", "apparently", "necessarily", "presumably", "probably", "possibly", "reportedly", "supposedly",
       "inconceivable", "chance", "impossibility", "improbability", "encouragement", "improbable", "impossible",
       "likely", "necessary", "probable", "possible", "uncertain", "unlikely", "unsure", "likelihood", "probability",

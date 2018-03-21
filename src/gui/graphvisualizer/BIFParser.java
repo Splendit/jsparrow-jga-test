@@ -292,8 +292,7 @@ public class BIFParser implements GraphConstants {
 	 */
 	public static void writeXMLBIF03(String filename, String graphName, ArrayList<GraphNode> nodes,
 			ArrayList<GraphEdge> edges) {
-		try {
-			FileWriter outfile = new FileWriter(filename);
+		try (FileWriter outfile = new FileWriter(filename);) {
 
 			StringBuffer text = new StringBuffer();
 
@@ -375,7 +374,6 @@ public class BIFParser implements GraphConstants {
 			text.append("</BIF>\n");
 
 			outfile.write(text.toString());
-			outfile.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

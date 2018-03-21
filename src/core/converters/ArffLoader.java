@@ -42,6 +42,7 @@ import core.RevisionHandler;
 import core.RevisionUtils;
 import core.SparseInstance;
 import core.Utils;
+import java.util.stream.Collectors;
 
 /**
  * <!-- globalinfo-start --> Reads a source that is in arff (attribute relation
@@ -167,7 +168,7 @@ public class ArffLoader extends AbstractFileLoader implements BatchConverter, In
 
 		if (m_File != null && !(new File(m_File).isDirectory())) {
 			setFile(new File(m_File));
-		} else if (m_URL != null && !"http://".equals(m_URL)) {
+		} else if (m_URL != null && !("http://" == m_URL)) {
 			setURL(m_URL);
 		}
 	}
@@ -715,7 +716,7 @@ public class ArffLoader extends AbstractFileLoader implements BatchConverter, In
 
 			if ((m_Tokenizer.ttype == '\'') || (m_Tokenizer.ttype == '"')) {
 				m_Tokenizer.ttype = StreamTokenizer.TT_WORD;
-			} else if ((m_Tokenizer.ttype == StreamTokenizer.TT_WORD) && ("?".equals(m_Tokenizer.sval))) {
+			} else if ((m_Tokenizer.ttype == StreamTokenizer.TT_WORD) && ("?" == m_Tokenizer.sval)) {
 				m_Tokenizer.ttype = '?';
 			}
 		}
@@ -797,7 +798,7 @@ public class ArffLoader extends AbstractFileLoader implements BatchConverter, In
 				errorMessage("premature end of file");
 			} else if ((m_Tokenizer.ttype == '\'') || (m_Tokenizer.ttype == '"')) {
 				m_Tokenizer.ttype = StreamTokenizer.TT_WORD;
-			} else if ((m_Tokenizer.ttype == StreamTokenizer.TT_WORD) && ("?".equals(m_Tokenizer.sval))) {
+			} else if ((m_Tokenizer.ttype == StreamTokenizer.TT_WORD) && ("?" == m_Tokenizer.sval)) {
 				m_Tokenizer.ttype = '?';
 			}
 		}
@@ -1284,6 +1285,11 @@ public class ArffLoader extends AbstractFileLoader implements BatchConverter, In
 						attributeValues.add(m_Tokenizer.sval);
 					}
 				}
+				String attributesAsString = "";
+				for(String val : attributeValues) {
+					attributesAsString = attributesAsString + val;
+				}
+				
 				attributes.add(new Attribute(attributeName, attributeValues, attributes.size()));
 			}
 			getLastToken(false);

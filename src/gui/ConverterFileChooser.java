@@ -26,7 +26,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -40,6 +43,7 @@ import javax.swing.filechooser.FileFilter;
 
 import core.Capabilities;
 import core.Instances;
+import core.SerializationHelper;
 import core.converters.AbstractFileLoader;
 import core.converters.AbstractFileSaver;
 import core.converters.AbstractLoader;
@@ -214,7 +218,31 @@ public class ConverterFileChooser extends JFileChooser {
 			}
 		});
 	}
+	
+	/**
+	 * Opens an object from a file selected by the user.
+	 * 
+	 * @return the loaded object, or null if the operation was cancelled
+	 */
+	protected Object openObject(File selected) {
 
+		try {
+			ObjectInputStream oi = SerializationHelper
+					.getObjectInputStream(new BufferedInputStream(new FileInputStream(selected)));
+			/*
+			 * ObjectInputStream oi = new ObjectInputStream(new BufferedInputStream( new
+			 * FileInputStream(selected)));
+			 */
+			Object obj = oi.readObject();
+			oi.close();
+			return obj;
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Couldn't read object: " + selected.getName() + "\n" + ex.getMessage(),
+					"Open object file", JOptionPane.ERROR_MESSAGE);
+		}
+		return null;
+	}
+	
 	/**
 	 * filters out all non-core loaders if only those should be displayed.
 	 * 

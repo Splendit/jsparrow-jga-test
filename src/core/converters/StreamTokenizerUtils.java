@@ -59,7 +59,7 @@ public class StreamTokenizerUtils implements Serializable, RevisionHandler {
 		;
 		if ((tokenizer.ttype == '\'') || (tokenizer.ttype == '"')) {
 			tokenizer.ttype = StreamTokenizer.TT_WORD;
-		} else if ((tokenizer.ttype == StreamTokenizer.TT_WORD) && ("?".equals(tokenizer.sval))) {
+		} else if ((tokenizer.ttype == StreamTokenizer.TT_WORD) && ("?" == tokenizer.sval)) {
 			tokenizer.ttype = '?';
 		}
 	}
@@ -81,7 +81,7 @@ public class StreamTokenizerUtils implements Serializable, RevisionHandler {
 
 		if ((tokenizer.ttype == '\'') || (tokenizer.ttype == '"')) {
 			tokenizer.ttype = StreamTokenizer.TT_WORD;
-		} else if ((tokenizer.ttype == StreamTokenizer.TT_WORD) && ("?".equals(tokenizer.sval))) {
+		} else if ((tokenizer.ttype == StreamTokenizer.TT_WORD) && ("?" == tokenizer.sval)) {
 			tokenizer.ttype = '?';
 		}
 	}

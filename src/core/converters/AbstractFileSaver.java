@@ -465,10 +465,10 @@ public abstract class AbstractFileSaver extends AbstractSaver
 	public void setDirAndPrefix(String relationName, String add) {
 
 		try {
-			if ("".equals(mDir.toString())) {
+			if ("" == mDir.toString()) {
 				setDir(System.getProperty("user.dir"));
 			}
-			if ("".equals(mPrefix.toString())) {
+			if ("" == mPrefix.toString()) {
 				if (relationName.length() == 0) {
 					throw new IOException("[Saver] Empty filename!!");
 				}

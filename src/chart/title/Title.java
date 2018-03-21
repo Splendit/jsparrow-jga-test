@@ -67,6 +67,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.event.EventListenerList;
 
@@ -109,6 +112,16 @@ public abstract class Title extends AbstractBlock
     public static final RectangleInsets DEFAULT_PADDING = new RectangleInsets(
             1, 1, 1, 1);
 
+    /**
+     * The following verbs always use ambiguous pronouns in a reflexive
+     * sense in the corpus.
+     */
+    private static final Set<String> parameters = new HashSet<>(Arrays.asList(
+            "visible",
+            "position",
+            "horizontalAlignment",
+            "verticalAlignment"
+    ));
     /**
      * A flag that controls whether or not the title is visible.
      *

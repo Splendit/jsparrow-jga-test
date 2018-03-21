@@ -155,7 +155,7 @@ public class TitleEntity extends ChartEntity {
         if (!ObjectUtils.equal(getURLText(), that.getURLText())) {
             return false;
         }
-        if (!(this.title.equals(that.title))) {
+        if (!(this.title == that.title)) {
             return false;
         }
         return true;

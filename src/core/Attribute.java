@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Calendar;
 
 /**
  * Class for handling an attribute. Once an attribute has been created, it can't
@@ -295,8 +296,9 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	// @ requires attributeName != null;
 	// @ ensures m_Name == attributeName;
 	public Attribute(String attributeName, List<String> attributeValues) {
-
 		this(attributeName, attributeValues, (ProtectedProperties) null);
+		
+		attributeValues.stream().forEach(attr -> {attr = attr + "";});
 	}
 
 	/**
@@ -1493,7 +1495,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 			System.out.println("Test date = " + dd);
 			System.out.println(date.formatDate(dd));
 
-			dd = new Date().getTime();
+			Date dDate = new Date(99, 1, 1);
+			dd = dDate.getTime();
 			System.out.println("Date now = " + dd);
 			System.out.println(date.formatDate(dd));
 
@@ -1502,6 +1505,11 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 			my_nominal_values.add("first");
 			my_nominal_values.add("second");
 			my_nominal_values.add("third");
+			
+			String nominalValuesAsString = "";
+			for(String val : my_nominal_values) {
+				nominalValuesAsString = nominalValuesAsString + val;
+			}
 
 			// Create nominal attribute "position"
 			Attribute position = new Attribute("position", my_nominal_values);

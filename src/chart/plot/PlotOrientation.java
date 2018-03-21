@@ -73,7 +73,7 @@ public enum PlotOrientation {
      * @return A boolean. 
      */
     public boolean isHorizontal() {
-        return this.name.equals("PlotOrientation.HORIZONTAL");
+        return this.name == "PlotOrientation.HORIZONTAL";
     }
     
     /**
@@ -84,7 +84,7 @@ public enum PlotOrientation {
      * @return A boolean. 
      */
     public boolean isVertical() {
-        return this.name.equals("PlotOrientation.VERTICAL");
+        return this.name == "PlotOrientation.VERTICAL";
     }
     
     /**

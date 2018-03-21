@@ -585,7 +585,7 @@ public class Option implements RevisionHandler {
 
 		for (Iterator<Option> iter = list.listIterator(); iter.hasNext();) {
 			Option a = iter.next();
-			if (a.name().equals(name)) {
+			if (a.name() == name) {
 				iter.remove();
 			}
 		}
@@ -604,7 +604,7 @@ public class Option implements RevisionHandler {
 
 		for (Iterator<String> iter = list.listIterator(); iter.hasNext();) {
 			String a = iter.next();
-			if (a.equals(name)) {
+			if (a == name) {
 				iter.remove();
 				iter.next();
 				iter.remove();
@@ -625,7 +625,7 @@ public class Option implements RevisionHandler {
 
 		for (Iterator<String> iter = list.listIterator(); iter.hasNext();) {
 			String a = iter.next();
-			if (a.equals(name)) {
+			if (a == name) {
 				iter.remove();
 			}
 		}

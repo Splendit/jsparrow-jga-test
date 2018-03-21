@@ -674,7 +674,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			}
 			String sParent = (String) JOptionPane.showInputDialog(null, "Select parent node ", "Nodes", 0, null,
 					options, options[0]);
-			if (sParent == null || "".equals(sParent)) {
+			if (sParent == null || "" == sParent) {
 				return;
 			}
 			// update all data structures
@@ -705,7 +705,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	void deleteArc(String[] options) {
 		String sResult = (String) JOptionPane.showInputDialog(null, "Select arc to delete", "Arcs", 0, null, options,
 				options[0]);
-		if (sResult != null && !"".equals(sResult)) {
+		if (sResult != null && !("" == sResult)) {
 			int nPos = sResult.indexOf(" -> ");
 			String sParent = sResult.substring(0, nPos);
 			String sChild = sResult.substring(nPos + 4);
@@ -719,7 +719,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	 */
 	void renameNode(int nTargetNode) {
 		String sName = JOptionPane.showInputDialog(null, null, "New name for node", JOptionPane.OK_CANCEL_OPTION);
-		if (sName == null || "".equals(sName)) {
+		if (sName == null || "" == sName) {
 			return;
 		}
 		repaint();
@@ -732,7 +732,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	void renameValue(int nTargetNode, String sValue) {
 		String sNewValue = JOptionPane.showInputDialog(null, "New name for value " + sValue, "Node " + null,
 				JOptionPane.OK_CANCEL_OPTION);
-		if (sNewValue == null || "".equals(sNewValue)) {
+		if (sNewValue == null || "" == sNewValue) {
 			return;
 		}
 		a_undo.setEnabled(true);
@@ -754,7 +754,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		String sValue = new String("Value");
 		String sNewValue = JOptionPane.showInputDialog(null, "New value " + sValue, "Node " + null,
 				JOptionPane.OK_CANCEL_OPTION);
-		if (sNewValue == null || "".equals(sNewValue)) {
+		if (sNewValue == null || "" == sNewValue) {
 			return;
 		}
 		updateStatus();
@@ -1934,7 +1934,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ae) {
-			if (!"".equals(m_sFileName)) {
+			if (!("" == m_sFileName)) {
 				saveFile(m_sFileName);
 				m_jStatusBar.setText("Saved as " + m_sFileName);
 			} else {
@@ -1948,7 +1948,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
 			fc.addChoosableFileFilter(ef1);
 			fc.setDialogTitle("Save Graph As");
-			if (!"".equals(m_sFileName)) {
+			if (!("" == m_sFileName)) {
 				// can happen on actionQuit
 				fc.setSelectedFile(new File(m_sFileName));
 			}
@@ -2655,7 +2655,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			ActionListener act = new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent ae) {
-					if ("Add node".equals(ae.getActionCommand())) {
+					if ("Add node" == ae.getActionCommand()) {
 						a_addnode.addNode(m_nPosX, m_nPosY);
 						return;
 					}
@@ -2772,23 +2772,23 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			ActionListener act = new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent ae) {
-					if ("Rename".equals(ae.getActionCommand())) {
+					if ("Rename" == ae.getActionCommand()) {
 						renameNode(m_nCurrentNode);
 						return;
 					}
-					if ("Add parent".equals(ae.getActionCommand())) {
+					if ("Add parent" == ae.getActionCommand()) {
 						addArcInto(m_nCurrentNode);
 						return;
 					}
-					if ("Add value".equals(ae.getActionCommand())) {
+					if ("Add value" == ae.getActionCommand()) {
 						addValue();
 						return;
 					}
-					if ("Delete node".equals(ae.getActionCommand())) {
+					if ("Delete node" == ae.getActionCommand()) {
 						deleteNode(m_nCurrentNode);
 						return;
 					}
-					if ("Edit CPT".equals(ae.getActionCommand())) {
+					if ("Edit CPT" == ae.getActionCommand()) {
 						editCPT(m_nCurrentNode);
 						return;
 					}

@@ -42,7 +42,7 @@ public class Environment implements RevisionHandler {
 	private static Environment mSystemWide = new Environment();
 
 	// Map to hold all the system environment variables + java properties
-	private final Map<String, String> mEnvVars = new TreeMap<>();
+	private static final Map<String, String> mEnvVars = new TreeMap<>();
 
 	/**
 	 * Constructs a new Environment object with all environment variables and

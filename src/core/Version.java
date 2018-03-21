@@ -121,27 +121,27 @@ public class Version implements Comparable<String>, RevisionHandler {
 						revision = Integer.parseInt(tmpStr.substring(0, tmpStr.indexOf(".")));
 						tmpStr = tmpStr.substring(tmpStr.indexOf(".") + 1);
 
-						if (!"".equals(tmpStr)) {
+						if (!("" == tmpStr)) {
 							pnt = Integer.parseInt(tmpStr);
 						} else {
 							pnt = 0;
 						}
 					} else {
-						if (!"".equals(tmpStr)) {
+						if (!("" == tmpStr)) {
 							revision = Integer.parseInt(tmpStr);
 						} else {
 							revision = 0;
 						}
 					}
 				} else {
-					if (!"".equals(tmpStr)) {
+					if (!("" == tmpStr)) {
 						minor = Integer.parseInt(tmpStr);
 					} else {
 						minor = 0;
 					}
 				}
 			} else {
-				if (!"".equals(tmpStr)) {
+				if (!("" == tmpStr)) {
 					major = Integer.parseInt(tmpStr);
 				} else {
 					major = 0;
@@ -297,31 +297,31 @@ public class Version implements Comparable<String>, RevisionHandler {
 		tmpStr = "5.0.1";
 		System.out.println("\ncomparing with " + tmpStr);
 		System.out.println("isOlder? " + v.isOlder(tmpStr));
-		System.out.println("equals ? " + v.equals(tmpStr));
+		System.out.println("equals ? " + v == tmpStr);
 		System.out.println("isNewer? " + v.isNewer(tmpStr));
 
 		tmpStr = VERSION;
 		System.out.println("\ncomparing with " + tmpStr);
 		System.out.println("isOlder? " + v.isOlder(tmpStr));
-		System.out.println("equals ? " + v.equals(tmpStr));
+		System.out.println("equals ? " + v == tmpStr);
 		System.out.println("isNewer? " + v.isNewer(tmpStr));
 
 		tmpStr = "3.4.0";
 		System.out.println("\ncomparing with " + tmpStr);
 		System.out.println("isOlder? " + v.isOlder(tmpStr));
-		System.out.println("equals ? " + v.equals(tmpStr));
+		System.out.println("equals ? " + v == tmpStr);
 		System.out.println("isNewer? " + v.isNewer(tmpStr));
 
 		tmpStr = "3.4";
 		System.out.println("\ncomparing with " + tmpStr);
 		System.out.println("isOlder? " + v.isOlder(tmpStr));
-		System.out.println("equals ? " + v.equals(tmpStr));
+		System.out.println("equals ? " + v == tmpStr);
 		System.out.println("isNewer? " + v.isNewer(tmpStr));
 
 		tmpStr = "5";
 		System.out.println("\ncomparing with " + tmpStr);
 		System.out.println("isOlder? " + v.isOlder(tmpStr));
-		System.out.println("equals ? " + v.equals(tmpStr));
+		System.out.println("equals ? " + v == tmpStr);
 		System.out.println("isNewer? " + v.isNewer(tmpStr));
 	}
 }

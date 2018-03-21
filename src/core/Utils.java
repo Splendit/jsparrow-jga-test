@@ -679,7 +679,7 @@ public final class Utils implements RevisionHandler {
 		int i = getOptionPos(flag, options);
 
 		if (i > -1) {
-			if (options[i].equals("-" + flag)) {
+			if (options[i] == ("-" + flag)) {
 				if (i + 1 == options.length) {
 					throw new Exception("No value given for -" + flag + " option.");
 				}
@@ -732,7 +732,7 @@ public final class Utils implements RevisionHandler {
 					Double.valueOf(options[i]);
 				} catch (NumberFormatException e) {
 					// found?
-					if (options[i].equals("-" + flag)) {
+					if (options[i] == ("-" + flag)) {
 						return i;
 					}
 					// did we reach "--"?
@@ -780,7 +780,7 @@ public final class Utils implements RevisionHandler {
 		// Enclose the string in 's if the string contains a recently added
 		// backquote or contains one of the following characters.
 		if ((quote == true) || (string.indexOf('{') != -1) || (string.indexOf('}') != -1) || (string.indexOf(',') != -1)
-				|| ("?".equals(string)) || (string.indexOf(' ') != -1) || ("".equals(string))) {
+				|| ("?" == string) || (string.indexOf(' ') != -1) || ("" == string)) {
 			string = ("'" + string) + "'";
 		}
 
@@ -1103,7 +1103,7 @@ public final class Utils implements RevisionHandler {
 
 		String optionString = "";
 		for (String element : optionArray) {
-			if ("".equals(element)) {
+			if ("" == element) {
 				continue;
 			}
 			boolean escape = false;
@@ -2154,7 +2154,7 @@ public final class Utils implements RevisionHandler {
 		result = null;
 
 		// if we're running windows, it could be Cygwin
-		if ("\\".equals(File.separator)) {
+		if ("\\" == File.separator) {
 			// Cygwin doesn't like upper case drives -> try lower case drive
 			try {
 				fileStr = absolute.getPath();
@@ -2469,7 +2469,7 @@ public final class Utils implements RevisionHandler {
 			for (MethodDescriptor method : methods) {
 				String name = method.getDisplayName();
 				Method meth = method.getMethod();
-				if ("globalInfo".equals(name)) {
+				if ("globalInfo" == name) {
 					if (meth.getReturnType().equals(String.class)) {
 						Object args[] = {};
 						String globalInfo = (String) (meth.invoke(object, args));
@@ -2536,7 +2536,7 @@ public final class Utils implements RevisionHandler {
 
 		result.append("</html>");
 
-		if ("<html></html>".equals(result.toString())) {
+		if ("<html></html>" == result.toString()) {
 			return null;
 		}
 		return result.toString();

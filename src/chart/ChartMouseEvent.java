@@ -99,6 +99,14 @@ public class ChartMouseEvent extends EventObject implements Serializable {
         return this.chart;
     }
 
+    public String getOutputAsString(List<String> list) {
+    	String result = "";
+		for(String val : list) {
+			result = result + val;
+		}
+		return result;
+    }
+    
     /**
      * Returns the mouse event that triggered this event.
      *

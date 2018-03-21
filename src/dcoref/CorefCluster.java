@@ -28,6 +28,7 @@ package dcoref;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +53,7 @@ public class CorefCluster implements Serializable{
   protected final Set<Number> numbers;
   protected final Set<Gender> genders;
   protected final Set<Animacy> animacies;
-  protected final Set<String> nerStrings;
+  private static final Set<String> nerStrings = new HashSet<>(Arrays.asList("singular", "plural"));
   protected final Set<String> heads;
 
   /** All words in this cluster - for word inclusion feature  */
@@ -77,7 +78,6 @@ public class CorefCluster implements Serializable{
     numbers = EnumSet.noneOf(Number.class);
     genders = EnumSet.noneOf(Gender.class);
     animacies = EnumSet.noneOf(Animacy.class);
-    nerStrings = new HashSet<>();
     heads = new HashSet<>();
     words = new HashSet<>();
     firstMention = null;

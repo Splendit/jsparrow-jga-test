@@ -72,6 +72,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.SortOrder;
@@ -112,6 +114,15 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 
 	/** The default item paint. */
 	public static final Paint DEFAULT_ITEM_PAINT = Color.BLACK;
+
+	/** List of default parameters. */
+	private static final List<String> parameters = new ArrayList<String>(Arrays.asList(
+			"font",
+			"color",
+			"backgroundPaint",
+			"hLayout",
+			"vLayout"
+			));
 
 	/** The sources for legend items. */
 	private LegendItemSource[] sources;

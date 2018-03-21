@@ -1086,7 +1086,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 		}
 
 		// Does the new attribute have a different name?
-		if (!att.name().equals(m_Attributes.get(position).name())) {
+		if (!(att.name() == m_Attributes.get(position).name())) {
 
 			// Need to check if attribute name already exists
 			Attribute candidate = attribute(att.name());
@@ -2560,20 +2560,20 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 				System.out.println(i.toSummaryString());
 			}
 			// read file and print statistics
-			else if ((args.length == 1) && (!"-h".equals(args[0])) && (!"help".equals(args[0]))) {
+			else if ((args.length == 1) && (!("-h" == args[0])) && (!("help" == args[0]))) {
 				DataSource source = new DataSource(args[0]);
 				i = source.getDataSet();
 				System.out.println(i.toSummaryString());
 			}
 			// read two files, merge them and print result to stdout
-			else if ((args.length == 3) && ("merge".equals(args[0].toLowerCase()))) {
+			else if ((args.length == 3) && ("merge" == args[0].toLowerCase())) {
 				DataSource source1 = new DataSource(args[1]);
 				DataSource source2 = new DataSource(args[2]);
 				i = Instances.mergeInstances(source1.getDataSet(), source2.getDataSet());
 				System.out.println(i);
 			}
 			// read two files, append them and print result to stdout
-			else if ((args.length == 3) && ("append".equals(args[0].toLowerCase()))) {
+			else if ((args.length == 3) && ("append" == args[0].toLowerCase())) {
 				DataSource source1 = new DataSource(args[1]);
 				DataSource source2 = new DataSource(args[2]);
 				String msg = source1.getStructure().equalHeadersMsg(source2.getStructure());
@@ -2591,7 +2591,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 				}
 			}
 			// read two files and compare their headers
-			else if ((args.length == 3) && ("headers".equals(args[0].toLowerCase()))) {
+			else if ((args.length == 3) && ("headers" == args[0].toLowerCase())) {
 				DataSource source1 = new DataSource(args[1]);
 				DataSource source2 = new DataSource(args[2]);
 				String msg = source1.getStructure().equalHeadersMsg(source2.getStructure());
@@ -2603,7 +2603,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 			}
 			// read file and seed value, randomize data and print result to
 			// stdout
-			else if ((args.length == 3) && ("randomize".equals(args[0].toLowerCase()))) {
+			else if ((args.length == 3) && ("randomize" == args[0].toLowerCase())) {
 				DataSource source = new DataSource(args[2]);
 				i = source.getDataSet();
 				i.randomize(new Random(Integer.parseInt(args[1])));
