@@ -49,6 +49,7 @@ import java.util.Vector;
  * @author Eibe Frank (eibe@cs.waikato.ac.nz)
  * @version $Revision$
  */
+@SuppressWarnings("rawtypes")
 public class Option implements RevisionHandler {
 
 	/** A cache of property descriptors */

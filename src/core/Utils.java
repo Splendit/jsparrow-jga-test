@@ -54,6 +54,7 @@ import java.util.Vector;
  * @author Julien Prados
  * @version $Revision$
  */
+@SuppressWarnings("rawtypes")
 public final class Utils implements RevisionHandler {
 
 	/**

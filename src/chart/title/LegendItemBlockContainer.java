@@ -60,6 +60,7 @@ import data.general.Dataset;
  *
  * @since 1.0.2
  */
+@SuppressWarnings("rawtypes")
 public class LegendItemBlockContainer extends BlockContainer {
 
     /**

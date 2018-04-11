@@ -52,6 +52,7 @@ import chart.util.PublicCloneable;
 /**
  * A collection of (key, object) pairs.
  */
+@SuppressWarnings("rawtypes")
 public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 
     /** For serialization. */

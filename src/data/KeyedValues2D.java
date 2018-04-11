@@ -47,6 +47,7 @@ import java.util.List;
  * An extension of the {@link Values2D} interface where a unique key is
  * associated with the row and column indices.
  */
+@SuppressWarnings("rawtypes")
 public interface KeyedValues2D extends Values2D {
 
     /**

@@ -57,6 +57,7 @@ import gui.GenericObjectEditorHistory.HistorySelectionListener;
  * @author Richard Kirkby (rkirkby@cs.waikato.ac.nz)
  * @version $Revision$
  */
+@SuppressWarnings("rawtypes")
 public class PropertyPanel extends JPanel {
 
 	/** for serialization */

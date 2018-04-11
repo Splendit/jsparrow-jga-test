@@ -43,6 +43,7 @@ import javax.swing.ListModel;
  * @author fracpete (fracpete at waikato dot ac dot nz)
  * @version $Revision$
  */
+@SuppressWarnings("rawtypes")
 public class CheckBoxList extends JList {
 
 	/** for serialization */

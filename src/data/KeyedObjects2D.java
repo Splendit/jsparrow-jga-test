@@ -52,6 +52,7 @@ import java.util.List;
  * A data structure that stores zero, one or many objects, where each object is
  * associated with two keys (a 'row' key and a 'column' key).
  */
+@SuppressWarnings("rawtypes")
 public class KeyedObjects2D implements Cloneable, Serializable {
 
     /** For serialization. */

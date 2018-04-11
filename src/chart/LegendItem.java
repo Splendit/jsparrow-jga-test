@@ -90,6 +90,7 @@ import data.general.Dataset;
  * A temporary storage object for recording the properties of a legend item,
  * without any consideration for layout issues.
  */
+@SuppressWarnings("rawtypes")
 public class LegendItem implements Cloneable, Serializable {
 
     /** For serialization. */

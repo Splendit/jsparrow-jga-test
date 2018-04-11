@@ -73,6 +73,7 @@ import java.util.Map;
 /**
  * A class containing useful utility methods relating to serialization.
  */
+@SuppressWarnings("rawtypes")
 public class SerialUtils {
 
     /**

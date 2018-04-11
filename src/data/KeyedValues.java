@@ -54,6 +54,7 @@ import java.util.List;
  * @see Values
  * @see DefaultKeyedValues
  */
+@SuppressWarnings("rawtypes")
 public interface KeyedValues extends Values {
 
     /**

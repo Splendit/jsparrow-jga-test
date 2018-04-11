@@ -259,6 +259,7 @@ import chart.util.SerialUtils;
  * component of the chart.  The chart is redrawn automatically whenever this
  * notification is received.
  */
+@SuppressWarnings("rawtypes")
 public class ChartPanel extends JPanel implements ChartChangeListener,
         ChartProgressListener, ActionListener, MouseListener,
         MouseMotionListener, OverlayChangeListener, Printable, Serializable {
