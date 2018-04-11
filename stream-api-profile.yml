@@ -1,0 +1,17 @@
+!jsparrow.config
+profiles:
+- name: Stream API
+  rules:
+  - WhileToForEach
+  - ForToForEach
+  - EnhancedForLoopToStreamForEach
+  - LambdaForEachIfWrapperToFilter
+  - LambdaForEachCollect
+  - LambdaForEachMap
+  - FlatMapInsteadOfNestedLoops
+  - EnhancedForLoopToStreamAnyMatch
+  - EnhancedForLoopToStreamFindFirst
+  - EnhancedForLoopToStreamSum
+  - StringBuildingLoop
+rules: []
+selectedProfile: ''

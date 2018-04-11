@@ -1,0 +1,19 @@
+!jsparrow.config
+profiles:
+- name: Java 8
+  rules:
+  - FunctionalInterface
+  - PutIfAbsent
+  - EnhancedForLoopToStreamForEach
+  - LambdaForEachIfWrapperToFilter
+  - StatementLambdaToExpression
+  - LambdaForEachCollect
+  - LambdaForEachMap
+  - FlatMapInsteadOfNestedLoops
+  - EnhancedForLoopToStreamAnyMatch
+  - EnhancedForLoopToStreamFindFirst
+  - EnhancedForLoopToStreamSum
+  - StringBuildingLoop
+  - LambdaToMethodReference
+rules: []
+selectedProfile: ''
