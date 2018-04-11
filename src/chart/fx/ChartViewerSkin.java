@@ -61,6 +61,7 @@ import javafx.scene.shape.Rectangle;
  * 
  * @since 1.0.18
  */
+@SuppressWarnings("restriction")
 public class ChartViewerSkin extends SkinBase<ChartViewer>  {
 
     /** The chart canvas. */

@@ -59,6 +59,7 @@ import chart.fx.ChartViewer;
  * 
  * @since 1.0.18
  */
+@SuppressWarnings("restriction")
 public class ChartMouseEventFX extends EventObject implements Serializable {
 
     /** For serialization. */

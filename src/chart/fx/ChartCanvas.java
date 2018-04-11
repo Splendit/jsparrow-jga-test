@@ -93,6 +93,7 @@ import javafx.scene.text.FontSmoothingType;
  * 
  * @since 1.0.18
  */
+@SuppressWarnings("restriction")
 public class ChartCanvas extends Canvas implements ChartChangeListener,
         OverlayChangeListener {
     
@@ -157,7 +158,7 @@ public class ChartCanvas extends Canvas implements ChartChangeListener,
      * 
      * @param chart  the chart. 
      */
-    public ChartCanvas(JFreeChart chart) {
+	public ChartCanvas(JFreeChart chart) {
         this.chart = chart;
         if (this.chart != null) {
             this.chart.addChangeListener(this);

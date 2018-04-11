@@ -55,6 +55,7 @@ import chart.util.ParamChecks;
  * 
  * @since 1.0.18
  */
+@SuppressWarnings("restriction")
 public class AbstractMouseHandlerFX implements MouseHandlerFX {
 
     /** The handler id. */

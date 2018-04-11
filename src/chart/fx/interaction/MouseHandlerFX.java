@@ -63,6 +63,7 @@ import chart.fx.ChartCanvas;
  * 
  * @since 1.0.18
  */
+@SuppressWarnings("restriction")
 public interface MouseHandlerFX {
 
     /**

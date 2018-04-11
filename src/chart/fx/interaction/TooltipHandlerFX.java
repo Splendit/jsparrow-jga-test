@@ -55,6 +55,7 @@ import chart.fx.ChartCanvas;
  * 
  * @since 1.0.18
  */
+@SuppressWarnings("restriction")
 public class TooltipHandlerFX extends AbstractMouseHandlerFX 
         implements MouseHandlerFX {
     
