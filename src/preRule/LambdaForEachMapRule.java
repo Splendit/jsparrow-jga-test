@@ -24,13 +24,9 @@ public class LambdaForEachMapRule {
 		list.stream().map(s -> s.substring(1) // comment after s.substring(1)
 		).forEach(sb::append);
 
+		// I am safer here
 		// I could get lost in the map
-		list.stream().map(s -> s.substring(1)).forEach(subString -> {
-			if (!subString.isEmpty()) {
-				// I am safer here
-				sb.append(subString);
-			}
-		});
+		list.stream().map(s -> s.substring(1)).filter(subString -> !subString.isEmpty()).forEach(sb::append);
 
 		// save me 1
 		// save me 2
@@ -84,17 +80,14 @@ public class LambdaForEachMapRule {
 		List<String> list = generateList(input);
 		StringBuilder sb = new StringBuilder();
 
+		// save me 3
+		// save me 4
 		// save me 2
 		list.stream().filter(s -> !s.isEmpty()).map(s -> {
 			// save me 1
 			int i = 10;
 			return s.substring(1) + i;
-		}).forEach(subString -> {
-			// save me 3
-			String lower = subString.toLowerCase();
-			// save me 4
-			sb.append(lower);
-		});
+		}).map(String::toLowerCase).forEach(sb::append);
 
 		return sb.toString();
 	}
@@ -255,10 +248,8 @@ public class LambdaForEachMapRule {
 		numbers.add(4.5);
 
 		StringBuilder sb = new StringBuilder();
-		numbers.stream().filter(n -> n.doubleValue() > 0).map((Number n) -> (Double) n).forEach((Double d) -> {
-			String s = d.toString();
-			sb.append(s);
-		});
+		numbers.stream().filter(n -> n.doubleValue() > 0).map((Number n) -> (Double) n).map((Double d) -> d.toString())
+				.forEach(sb::append);
 
 		return sb.toString();
 	}
@@ -323,10 +314,8 @@ public class LambdaForEachMapRule {
 
 		List<Object> rawList = generateRawListOfStrings();
 		StringBuilder sb = new StringBuilder();
-		rawList.stream().filter(o -> o != null).map((Object n) -> (String) n).forEach((final String s) -> {
-			Number d = (int) Integer.valueOf(s) / 2;
-			sb.append(d);
-		});
+		rawList.stream().filter(o -> o != null).map((Object n) -> (String) n)
+				.map((final String s) -> (int) Integer.valueOf(s) / 2).forEach(sb::append);
 
 		return sb.toString();
 	}

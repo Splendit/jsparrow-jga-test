@@ -119,7 +119,7 @@ public class FlatMapInsteadOfNestedLoopsRule {
 		 */
 		matrix3.stream().flatMap(List::stream).forEach(second -> {
 			int size = matrix3.size();
-			second.forEach(third -> third.forEach(System.out::print));
+			second.stream().flatMap(List::stream).forEach(System.out::print);
 		});
 	}
 }

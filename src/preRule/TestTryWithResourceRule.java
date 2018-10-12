@@ -153,10 +153,8 @@ public class TestTryWithResourceRule {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(path));
 				BufferedReader br2 = new BufferedReader(new FileReader(path))) {
-			try {
-				BufferedReader br3 = new BufferedReader(new FileReader(path));
+			try (BufferedReader br3 = new BufferedReader(new FileReader(path))) {
 				br3.read();
-				br3.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
