@@ -32,7 +32,7 @@ public class NominalAttributeInfo implements AttributeInfo {
 	/**
 	 * 
 	 */
-	private final long serialVersionUID = 1L;
+	private final static long serialVersionUID = 1L;
 
 	/** The attribute's values. */
 	protected/* @ spec_public @ */ArrayList<Object> m_Values;
