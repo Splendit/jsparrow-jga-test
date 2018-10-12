@@ -3,24 +3,33 @@ package preRule;
 @SuppressWarnings("nls")
 public class TestInefficientConstructorPrimitiveRule {
 
+	Byte b1 = Byte.valueOf((byte) 1);
+	Byte b3 = Byte.valueOf("1");
+
 	public Integer primIntegerToIntegerTest() {
-		return new Integer(1);
+		return Integer.valueOf(1);
 	}
 
 	public Integer stringToIntegerTest() {
-		return /* leading comment */ new /* internal comment */ Integer( /* argument */ "1") /* trailing comment */;
+		/* leading comment */
+		/* internal comment */
+		/* trailing comment */
+		return Integer.valueOf(/* argument */ "1");
 	}
 
 	public Double primDoubleToDoubleTest() {
-		return  /* leading comment */ new /* internal comment */ Double( /* one . o */ 1.0) /* trailing comment */;
+		/* leading comment */
+		/* internal comment */
+		/* trailing comment */
+		return Double.valueOf(/* one . o */ 1.0);
 	}
 
 	public Double stringToDoubleTest() {
-		return new Double(/* string one dot zero */ "1.0");
+		return Double.valueOf(/* string one dot zero */ "1.0");
 	}
 
 	public Float primFloatToFloatTest() {
-		return new Float(/* float one dot zero */1.0f);
+		return Float.valueOf(/* float one dot zero */1.0f);
 	}
 
 	public Float primDoubleToFloatTest() {
@@ -28,39 +37,36 @@ public class TestInefficientConstructorPrimitiveRule {
 	}
 
 	public Float stringToFloatTest() {
-		return new Float("1.0f");
+		return Float.valueOf("1.0f");
 	}
 
 	public Long primLongToLongTest() {
-		return new Long(/* One Long */1L);
+		return Long.valueOf(/* One Long */1L);
 	}
 
 	public Long stringToLongTest() {
-		return new Long("1L");
+		return Long.valueOf("1L");
 	}
 
 	public Short primShortToShortTest() {
-		return new Short((short) 1);
+		return Short.valueOf((short) 1);
 	}
 
 	public Short stringToShortTest() {
-		return new Short("1");
+		return Short.valueOf("1");
 	}
 
 	public Character characterToCharacterTest() {
-		return new Character('c');
+		return Character.valueOf('c');
 	}
 
 	public Byte primByteToByteTest() {
-		return new Byte((byte) 1);
+		return Byte.valueOf((byte) 1);
 	}
 
 	public Byte stringToByteTest() {
-		return new Byte("1");
+		return Byte.valueOf("1");
 	}
-
-	Byte b1 = new Byte((byte) 1);
-	Byte b3 = new Byte("1");
 
 	public Number doubleToNumberTest() {
 		return new TestNumberConstructor(2d).getValue();
@@ -71,7 +77,7 @@ public class TestInefficientConstructorPrimitiveRule {
 		private Number value;
 
 		protected TestNumberConstructor(double value) {
-			this(new Double(value));
+			this(Double.valueOf(value));
 		}
 
 		protected TestNumberConstructor(Number value) {

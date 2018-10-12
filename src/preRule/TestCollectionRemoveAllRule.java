@@ -6,253 +6,244 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"nls", "unused"})
+@SuppressWarnings({ "nls", "unused" })
 public class TestCollectionRemoveAllRule {
 	private List<String> generateList(String input) {
 		return Arrays.asList(input.split(";"));
 	}
 
-	public String testIfCollectionIsEmpty(String input){
+	public String testIfCollectionIsEmpty(String input) {
 		List<String> resultList = generateList(input);
-		
-		resultList /* expression comment */ . /* invocation comment */ removeAll( /* param comment */ resultList) /* trailing comment */;
+
+		/* invocation comment */
+		/* param comment */
+		resultList /* expression comment */.clear();
 
 		resultList // I don't want to break anything
-			.removeAll(resultList);
-		
+				.clear();
+
 		StringBuilder sb = new StringBuilder();
-		
-		resultList.stream().forEach((s)->sb.append(s));
-		
+
+		resultList.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testProperCollectionIsEmpty(String input){
+
+	public String testProperCollectionIsEmpty(String input) {
 		List<String> resultList = generateList(input);
 		List<String> resultList2 = generateList(input);
 		resultList2.add("d");
-		
+
 		resultList.removeAll(resultList2);
-		
+
 		StringBuilder sb = new StringBuilder();
-		
-		resultList2.stream().forEach((s)->sb.append(s));
-		
+
+		resultList2.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testConvertMultipleCollections(String input){
+
+	public String testConvertMultipleCollections(String input) {
 		List<String> resultList1 = generateList(input);
 		List<String> resultList2 = generateList(input);
 		List<String> resultList3 = generateList(input);
-		
+
 		resultList2.add("d");
-		
-		resultList1.removeAll(resultList1);
-		resultList2.removeAll(resultList2);
-		resultList3.removeAll(resultList3);
-		
+
+		resultList1.clear();
+		resultList2.clear();
+		resultList3.clear();
+
 		StringBuilder sb = new StringBuilder();
-		
-		resultList1.stream().forEach((s)->sb.append(s));
-		resultList2.stream().forEach((s)->sb.append(s));
-		resultList3.stream().forEach((s)->sb.append(s));
-		
+
+		resultList1.stream().forEach(sb::append);
+		resultList2.stream().forEach(sb::append);
+		resultList3.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testNestedIf(String input){
+
+	public String testNestedIf(String input) {
 		List<String> resultList = generateList(input);
 		List<String> resultList2 = generateList(input);
 		resultList2.add("d");
-		
-		if(resultList2.isEmpty()) {			
-			resultList.removeAll(resultList);
+
+		if (resultList2.isEmpty()) {
+			resultList.clear();
 		}
-		
+
 		StringBuilder sb = new StringBuilder();
-		
-		resultList2.stream().forEach((s)->sb.append(s));
-		
+
+		resultList2.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testNestedFor(String input){
+
+	public String testNestedFor(String input) {
 		List<String> resultList = generateList(input);
 		List<String> resultList2 = generateList(input);
 		resultList2.add("d");
-		
-		for (String s : resultList2) {
-			if(!resultList.isEmpty()) {			
-				resultList.removeAll(resultList);
-			}
-		}
-		
-		StringBuilder sb = new StringBuilder();
-		
-		resultList2.stream().forEach((s)->sb.append(s));
-		
-		return sb.toString();
-	}
-	
-	public String testNestedLambda(String input){
-		List<String> resultList = generateList(input);
-		List<String> resultList2 = generateList(input);
-		resultList2.add("d");
-		
+
 		resultList2.forEach(s -> {
-			if(!resultList.isEmpty()) {			
-				resultList.removeAll(resultList);
+			if (!resultList.isEmpty()) {
+				resultList.clear();
 			}
 		});
-		
+
 		StringBuilder sb = new StringBuilder();
-		
-		resultList2.stream().forEach((s)->sb.append(s));
-		
+
+		resultList2.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testConvertInSwitchCase(String input){
+
+	public String testNestedLambda(String input) {
 		List<String> resultList = generateList(input);
 		List<String> resultList2 = generateList(input);
 		resultList2.add("d");
-		
-		switch(resultList2.size()) {
+
+		resultList2.forEach(s -> {
+			if (!resultList.isEmpty()) {
+				resultList.clear();
+			}
+		});
+
+		StringBuilder sb = new StringBuilder();
+
+		resultList2.stream().forEach(sb::append);
+
+		return sb.toString();
+	}
+
+	public String testConvertInSwitchCase(String input) {
+		List<String> resultList = generateList(input);
+		List<String> resultList2 = generateList(input);
+		resultList2.add("d");
+
+		switch (resultList2.size()) {
 		case 0:
-			resultList.removeAll(resultList);
+			resultList.clear();
 			break;
 		case 1:
-			resultList.removeAll(resultList);
+			resultList.clear();
 			break;
 		default:
-			resultList.removeAll(resultList);	
+			resultList.clear();
 		}
-		
+
 		StringBuilder sb = new StringBuilder();
-		
-		resultList2.stream().forEach((s)->sb.append(s));
-		
+
+		resultList2.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testConvertInWhileLoop(String input){
+
+	public String testConvertInWhileLoop(String input) {
 		List<String> resultList = generateList(input);
 		List<String> resultList2 = generateList(input);
 		resultList2.add("d");
-		
-		Iterator<String> iterator = resultList2.iterator();
-		while(iterator.hasNext()) {
-			String s = iterator.next();
-			switch(s) {
+
+		for (String s : resultList2) {
+			switch (s) {
 			case "a":
-				resultList.removeAll(resultList);
+				resultList.clear();
 				break;
 			case "d":
-				resultList.removeAll(resultList);
+				resultList.clear();
 				break;
 			}
 		}
 
 		StringBuilder sb = new StringBuilder();
-		resultList.stream().forEach((s)->sb.append(s));
-		
+		resultList.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testEmptyCollection(String input){
+
+	public String testEmptyCollection(String input) {
 		List<String> resultList = generateList(input);
-		
+
 		resultList.removeAll(new ArrayList<String>());
-		
+
 		StringBuilder sb = new StringBuilder();
-		
-		resultList.stream().forEach((s)->sb.append(s));
-		
+
+		resultList.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testModifiedCollection(String input){
+
+	public String testModifiedCollection(String input) {
 		List<String> resultList = generateList(input);
-		
+
 		resultList.removeAll(resultList.stream().collect(Collectors.toList()));
-		
+
 		StringBuilder sb = new StringBuilder();
-		
-		resultList.stream().forEach((s)->sb.append(s));
-		
+
+		resultList.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testReferencedCollection(String input){
+
+	public String testReferencedCollection(String input) {
 		List<String> resultList = generateList(input);
 		List<String> resultList2 = resultList;
-		
+
 		resultList.removeAll(resultList2);
-		
+
 		StringBuilder sb = new StringBuilder();
-		
-		resultList.stream().forEach((s)->sb.append(s));
-		
+
+		resultList.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testNumericCollection(String input){
+
+	public String testNumericCollection(String input) {
 		List<String> resultList = generateList(input);
-		List<Number> numericList = 
-				resultList
-				.stream()
-				.map(String::hashCode)
-				.collect(Collectors.toList());
-		
-		resultList.removeAll(resultList);
-		numericList.removeAll(numericList);
-		
+		List<Number> numericList = resultList.stream().map(String::hashCode).collect(Collectors.toList());
+
+		resultList.clear();
+		numericList.clear();
+
 		StringBuilder sb = new StringBuilder();
-		
-		numericList.stream().forEach((n)->sb.append(n));
-		
+
+		numericList.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testMultipleConvertionPerLine(String input){
+
+	public String testMultipleConvertionPerLine(String input) {
 		List<String> resultList = generateList(input);
-		List<Number> numericList = 
-				resultList
-				.stream()
-				.map(String::hashCode)
-				.collect(Collectors.toList());
-		
-		resultList.removeAll(resultList);numericList.removeAll(numericList);numericList.removeAll(numericList);
+		List<Number> numericList = resultList.stream().map(String::hashCode).collect(Collectors.toList());
+
+		resultList.clear();
+		numericList.clear();
+		numericList.clear();
 		numericList.removeAll(resultList);
-		
+
 		StringBuilder sb = new StringBuilder();
-		
-		numericList.stream().forEach((n)->sb.append(n));
-		resultList.stream().forEach((s) -> sb.append(s));
-		
+
+		numericList.stream().forEach(sb::append);
+		resultList.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
-	
-	public String testSavingComments(String input){
+
+	public String testSavingComments(String input) {
 		List<String> resultList = generateList(input);
-		
-		resultList
+
 		// to not be lost
-		.removeAll(resultList);
-		
-		resultList 
+		resultList.clear();
+
 		/* trailing comments */
-		.removeAll(resultList);
-		
-		resultList.removeAll(
-				// to not be lost
-				resultList);
-		
+		resultList.clear();
+
+		// to not be lost
+		resultList.clear();
+
 		StringBuilder sb = new StringBuilder();
-		
-		resultList.stream().forEach((s)->sb.append(s));
-		
+
+		resultList.stream().forEach(sb::append);
+
 		return sb.toString();
 	}
 }

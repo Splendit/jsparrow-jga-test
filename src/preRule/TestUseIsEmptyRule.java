@@ -17,64 +17,64 @@ public class TestUseIsEmptyRule {
 
 	public void withDefaultInteger() {
 		Map<String, String> m = new HashMap<>();
-		if (m.size() == 0) {
+		if (m.isEmpty()) {
 		}
 
 		Collection<String> l = new ArrayList<>();
-		if (l.size() == 0) {
+		if (l.isEmpty()) {
 		}
 
 		String s = "";
-		if (s.length() == 0) {
+		if (s.isEmpty()) {
 		}
 	}
 
 	public void withSwitchedOperands() {
 		Map<String, String> m = new HashMap<>();
-		if (0 == m.size()) {
+		if (m.isEmpty()) {
 		}
 
 		Collection<String> l = new ArrayList<>();
-		if (0 == l.size()) {
+		if (l.isEmpty()) {
 		}
 
 		String s = "";
-		if (0 == s.length()) {
+		if (s.isEmpty()) {
 		}
 	}
 
 	public void withOddNumbers() {
 		String s = "";
-		if (s.length() == -0) {
+		if (s.isEmpty()) {
 		}
-		if (s.length() == +0) {
+		if (s.isEmpty()) {
 		}
-		if (s.length() == 0.0f) {
+		if (s.isEmpty()) {
 		}
-		if (s.length() == -0.0f) {
+		if (s.isEmpty()) {
 		}
-		if (s.length() == 0.0d) {
+		if (s.isEmpty()) {
 		}
-		if (s.length() == -0.0d) {
+		if (s.isEmpty()) {
 		}
 	}
-	
+
 	public void withOdderNumbers() {
 		String s = "";
-		if (s.length() == -0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000) {
+		if (s.isEmpty()) {
 		}
-		if (s.length() == +0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000) {
+		if (s.isEmpty()) {
 		}
-		if (s.length() == 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f) {
+		if (s.isEmpty()) {
 		}
-		if (s.length() == -0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f) {
+		if (s.isEmpty()) {
 		}
-		if (s.length() == 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000d) {
+		if (s.isEmpty()) {
 		}
-		if (s.length() == -0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000d) {
+		if (s.isEmpty()) {
 		}
 	}
-	
+
 	public void withOdderNumbersNoChange() {
 		String s = "";
 		if (s.length() == -0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001) {
@@ -101,14 +101,16 @@ public class TestUseIsEmptyRule {
 		if (s.length() == -0.1f) {
 		}
 	}
-	
+
 	public void withDefaultInteger_savingComments() {
 		Map<String, String> m = new HashMap<>();
-		if (/* save me */ m.size() == 0) {
+		/* save me */
+		if (m.isEmpty()) {
 		}
-		
+
+		// I don't want to break anything
 		if (m // I don't want to break anything
-				.size() == 0) {
+				.isEmpty()) {
 		}
 	}
 }

@@ -6,85 +6,68 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"nls", "unused", "rawtypes"})
+@SuppressWarnings({ "nls", "unused", "rawtypes" })
 public class TestForToForEachListIteratingIndexRule {
-	
-	private List<String> generateList(String input) {
-		return Arrays.asList(input.split(";"));
-	}
-	
-	private List<Integer> generateHashCodeList(String input) {
-		List<String> foo = generateList(input);
-		List<Integer> fooHashCodes = foo.stream().map(s -> s.hashCode()).collect(Collectors.toList());
-		return fooHashCodes;
-	}
-	
+
 	String iterator;
 	Runnable r = () -> {
 		List<String> fInterfaceRule = generateList("");
 		StringBuilder sb = new StringBuilder();
+		/* between head and body */
+		// comment inside
+		// comment after
 		// comment before
-		for( /* init 1 */ int i = 0; /* init 2 */ i< fInterfaceRule // comment after fInterfaceRule
-				.size(); /* inc */ i++) /* between head and body */ {
-			// comment inside
-			sb.append(fInterfaceRule.get(i));
-		} // comment after
+		/* init 2 */
+		// comment after fInterfaceRule
+		/* init 1 */
+		/* inc */
+		// comment after fInterfaceRule
+		fInterfaceRule // comment after fInterfaceRule
+				.forEach(sb::append);
 	};
-	
-	@interface MyFooAnnotation {
-		String iterator = "";
-		Runnable r = () -> {
-			String iterator;
-			List<String> fInterfaceRule = new ArrayList<>();
-			StringBuilder sb = new StringBuilder();
-			// multiple
-			// line
-			// comment
-			for(int i = 0; i< fInterfaceRule.size(); i++) {
-				sb.append(fInterfaceRule.get(i));
-			}
-		};
+
+	private List<String> generateList(String input) {
+		return Arrays.asList(input.split(";"));
 	}
-	
+
+	private List<Integer> generateHashCodeList(String input) {
+		List<String> foo = generateList(input);
+		List<Integer> fooHashCodes = foo.stream().map(String::hashCode).collect(Collectors.toList());
+		return fooHashCodes;
+	}
+
 	public String testRawType(String input) {
 		List rawList = generateList(input);
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i<rawList.size(); i++) {
+		for (int i = 0; i < rawList.size(); i++) {
 			sb.append(rawList.get(i));
 		}
 		return sb.toString();
 	}
-	
+
 	public String testWildCard(String input) {
 		List<?> fooList = generateList(input);
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i<fooList.size(); i++) {
+		for (int i = 0; i < fooList.size(); i++) {
 			sb.append(fooList.get(i));
 		}
 		return sb.toString();
 	}
-	
+
 	public String testIeratingThroughListOfLists(String input) {
 		List<List<String>> nestedList = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < nestedList.size(); i++) {
-			List<String> val = nestedList.get(i);
-			for(int j = 0; j<val.size(); j++) {
-				sb.append(val.get(j));
-			}
-		}
+		nestedList.stream().flatMap(List::stream).forEach(sb::append);
 		return "";
 	}
-	
+
 	public String testDublicateIteratorName(String input) {
 		List<String> fooList = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < fooList.size(); i++) {
-			sb.append(fooList.get(i));
-			for(int j = 0; j<fooList.size(); j++) {
-				sb.append(fooList.get(i) + input + fooList.get(j));
-			}
-		}
+		fooList.forEach(aFooList -> {
+			sb.append(aFooList);
+			fooList.forEach(aFooList1 -> sb.append(aFooList + input + aFooList1));
+		});
 		return "";
 	}
 
@@ -92,11 +75,10 @@ public class TestForToForEachListIteratingIndexRule {
 		List<String> foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
 
-		for (int i = 0; i < foo.size(); i++) {
-			String s = foo.get(i);
+		foo.forEach(s -> {
 			sb.append(s);
-			sb.append(foo.get(i));
-		}
+			sb.append(s);
+		});
 	}
 
 	public String testIteratingIndex(String input) {
@@ -104,45 +86,42 @@ public class TestForToForEachListIteratingIndexRule {
 
 		StringBuilder sb = new StringBuilder();
 
-		int i;
-		for (i = 0; i < foo.size(); i++) {
-			String s = foo.get(i);
-			sb.append(s);
-		}
+		foo.forEach(sb::append);
 
 		return sb.toString();
 	}
-	
-	
+
 	public String tesDuplicateIteratorName(String input) {
 		List<String> foo = generateList(input);
 
 		StringBuilder sb = new StringBuilder();
-		int i = 0, j;
-		
-		for (i = 0; i < foo.size(); i++) {
+		int j;
+
+		foo.forEach(aFoo -> {
 			// i want my comments here
-			if(foo.size() > 0) {				
-				String s = foo.get(i);
-				"".equals(foo.get(i));
+			if (foo.size() > 0) {
+				String s = aFoo;
+				"".equals(aFoo);
 				sb.append(s);
 			} else {
-				String s = foo.get(i), d;
-				"".equals(foo.get(i));
+				String s = aFoo;
+				String d;
+				"".equals(aFoo);
 				sb.append(s);
 			}
 
-		}
+		});
 
 		return sb.toString();
 	}
-	
+
 	public String tesLoopCondition(String input) {
 		List<String> foo = generateList(input);
 
 		StringBuilder sb = new StringBuilder();
-		int i = 0, j;
-		
+		int i = 0;
+		int j;
+
 		for (i = 0; i <= foo.size(); i++) {
 			// i want my comments here
 			String s = foo.get(i);
@@ -188,14 +167,14 @@ public class TestForToForEachListIteratingIndexRule {
 		List<String> foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
 
-		for (int j = 0; j < foo.size(); j++) {
+		foo.forEach(aFoo -> {
 			int i = 0;
 			int k = 0;
 			String it = foo.get(i);
 			String it2 = foo.get(k);
 
 			sb.append(it + "," + it2 + ";");
-		}
+		});
 
 		return sb.toString();
 	}
@@ -236,15 +215,11 @@ public class TestForToForEachListIteratingIndexRule {
 
 		StringBuilder sb = new StringBuilder();
 
-		for (int i = 0; i < foo.size(); i++) {
-			String s = foo.get(i);
+		foo.forEach(s -> {
 			s += ";";
 			sb.append(s);
-			for (int j = 0; j < secondFoo.size(); j++) {
-				String r = secondFoo.get(j);
-				sb.append(r);
-			}
-		}
+			secondFoo.forEach(sb::append);
+		});
 
 		return sb.toString();
 	}
@@ -253,13 +228,14 @@ public class TestForToForEachListIteratingIndexRule {
 		List<String> foo = generateList(input);
 
 		StringBuilder sb = new StringBuilder();
-		String s, t;
-		for (Iterator<String> iterator = foo.iterator(); iterator.hasNext();) {
-			s = iterator.next();
+		String s;
+		String t;
+		for (String aFoo2 : foo) {
+			s = aFoo2;
 			s += ";";
 			sb.append(s);
-			for (Iterator<String> iterator2 = foo.iterator(); iterator2.hasNext();) {
-				t = iterator2.next();
+			for (String aFoo : foo) {
+				t = aFoo;
 				sb.append(t);
 			}
 		}
@@ -267,21 +243,17 @@ public class TestForToForEachListIteratingIndexRule {
 		return sb.toString();
 	}
 
-	//SIM-212
+	// SIM-212
 	public String testDoubleIterationWithSize(String input) {
 		List<String> foo = generateList(input);
 
 		StringBuilder sb = new StringBuilder();
 
-		for (int i = 0; i < foo.size(); i++) {
-			String s = foo.get(i);
+		foo.forEach(s -> {
 			s += ";";
 			sb.append(s);
-			for (int j = 0; j < foo.size(); j++) {
-				String r = foo.get(j);
-				sb.append(r);
-			}
-		}
+			foo.forEach(sb::append);
+		});
 
 		return sb.toString();
 	}
@@ -293,16 +265,13 @@ public class TestForToForEachListIteratingIndexRule {
 
 		StringBuilder sb = new StringBuilder();
 
-		for (int i = 0; i < stFoo.size(); i++) {
-			String s = stFoo.get(i);
+		for (String s : stFoo) {
 			s += ";";
 			sb.append(s);
-			for (int j = 0; j < ndFoo.size(); j++) {
-				String n = ndFoo.get(j);
+			for (String n : ndFoo) {
 				sb.append(n + ",");
-				for (int k = 0; k < rdFoo.size(); k++) {
-					String t = stFoo.get(i);
-					String r = rdFoo.get(k);
+				for (String r : rdFoo) {
+					String t = s;
 					sb.append(r + t);
 				}
 			}
@@ -316,19 +285,15 @@ public class TestForToForEachListIteratingIndexRule {
 
 		StringBuilder sb = new StringBuilder();
 
-		int i;
-		for (i = 0; i < foo.size(); i++) {
-			String it = foo.get(i);
+		foo.forEach(it -> {
 			String someConstant = "const";
 			sb.append(it + someConstant);
-		}
+		});
 
-		int j;
-		for (j = 0; j < foo.size(); j++) {
-			String it = foo.get(j);
+		foo.forEach(it -> {
 			String someConstant = "const";
 			sb.append(it + someConstant);
-		}
+		});
 
 		return sb.toString();
 	}
@@ -338,11 +303,10 @@ public class TestForToForEachListIteratingIndexRule {
 
 		StringBuilder sb = new StringBuilder();
 		if (foo != null) {
-			for (int i = 0; i < foo.size(); i++) {
-				String it = foo.get(i);
+			foo.forEach(it -> {
 				String someConstant = "const";
 				sb.append(it + someConstant);
-			}
+			});
 		}
 
 		return sb.toString();
@@ -354,15 +318,14 @@ public class TestForToForEachListIteratingIndexRule {
 		StringBuilder sb = new StringBuilder();
 		try {
 			if (foo != null) {
-				for (int i = 0; i < foo.size(); i++) {
+				foo.forEach(s -> {
 					String someConstant = "const";
 					try {
-						sb.append(foo.get(i) + someConstant);
+						sb.append(s + someConstant);
 					} finally {
-						String s = foo.get(i);
 						sb.append(",");
 					}
-				}
+				});
 			}
 		} catch (Exception e) {
 			sb.append(e.getMessage());
@@ -379,7 +342,7 @@ public class TestForToForEachListIteratingIndexRule {
 		StringBuilder sb = new StringBuilder();
 
 		int i;
-		for (i = 0; i < foo.size(); i = i + 2) {
+		for (i = 0; i < foo.size(); i += 2) {
 			String s = foo.get(i);
 			sb.append(s);
 		}
@@ -392,7 +355,8 @@ public class TestForToForEachListIteratingIndexRule {
 
 		StringBuilder sb = new StringBuilder();
 
-		int i, a;
+		int i;
+		int a;
 		for (i = 0, a = 0; i < foo.size(); i++) {
 			String s = foo.get(i);
 			sb.append(s);
@@ -406,7 +370,8 @@ public class TestForToForEachListIteratingIndexRule {
 
 		StringBuilder sb = new StringBuilder();
 
-		int i, a;
+		int i;
+		int a;
 		for (i = 0, a = 0; i < foo.size(); i++, a++) {
 			String s = foo.get(i);
 			sb.append(s);
@@ -420,16 +385,12 @@ public class TestForToForEachListIteratingIndexRule {
 
 		StringBuilder sb = new StringBuilder();
 
-		int i;
-		for (i = 0; i < foo.size(); i = i + 1) {
-			// FIXME SIM-212
-			Number s = foo.get(i);
-			sb.append(s.toString());
-		}
+		// FIXME SIM-212
+		foo.forEach(s -> sb.append(s.toString()));
 
 		return sb.toString();
 	}
-	
+
 	public String testForToForEachNonIterable(String input) {
 
 		MyCollection<String> foo = new MyCollection<>();
@@ -441,219 +402,207 @@ public class TestForToForEachListIteratingIndexRule {
 
 		return sb.toString();
 	}
-	
+
 	public String testPlusEqualsUpdater(String input) {
 		List<String> foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
 
-		int i;
-		for (i = 0; i < foo.size(); i+=1) {
-			String s = foo.get(i);
-			sb.append(s);
-		}
+		foo.forEach(sb::append);
 
 		return sb.toString();
 	}
-	
+
 	public String testPlusEqualsUpdaterInBody(String input) {
 		List<String> foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
 
-		int i;
-		for (i = 0; i < foo.size();) {
-			String s = foo.get(i);
-			sb.append(s);
-			i+=1;
-		}
+		foo.forEach(sb::append);
 
 		return sb.toString();
 	}
-	
+
 	public String testPrefixUpdater(String input) {
 		List<String> foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
 
-		int i;
-		for (i = 0; i < foo.size(); ++i) {
-			String s = foo.get(i);
-			sb.append(s);
+		foo.forEach(sb::append);
+
+		return sb.toString();
+	}
+
+	public void stringTemplate4CornerCase() {
+
+		List<Object> exprs = new ArrayList<>();
+		for (int i = 0; i < exprs.size(); i++) {
+			Object attr = exprs.get(i);
+			if (attr != null) {
+				exprs.set(i, null);
+
+			}
+		}
+	}
+
+	public String avoidEmptyStatement(String input) {
+		List<String> foo = generateList(input);
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < foo.size(); i++) {
+			foo.get(i);
+			sb.append(foo.get(i));
 		}
 
 		return sb.toString();
 	}
-	
-	public void stringTemplate4CornerCase() {
-		
-		List<Object> exprs = new ArrayList<>();
-		for (int i = 0; i < exprs.size(); i++) {
-			  Object attr = exprs.get(i);
-			  if ( attr!=null ) {
-				  exprs.set(i, null);
-				  
-			  }
+
+	public static boolean hasDuplicateItems(List<Object> array) {
+		// jFreeChart corner case
+		for (int i = 0; i < array.size(); i++) {
+			for (int j = 0; j < i; j++) {
+				Object o1 = array.get(i);
+				Object o2 = array.get(j);
+				if (o1 != null && o2 != null) {
+					if (o1.equals(o2)) {
+						return true;
+					}
+				}
 			}
-	}
-	
-	public String avoidEmptyStatement(String input) {
-		List<String> foo = generateList(input);
-		StringBuilder sb = new StringBuilder();
-		
-		for(int i = 0; i<foo.size(); i++) {
-			foo.get(i);
-			sb.append(foo.get(i));
 		}
-		
-		return sb.toString();
+		return false;
 	}
-	
-    public static boolean hasDuplicateItems(List<Object> array) {
-    	// jFreeChart corner case
-        for (int i = 0; i < array.size(); i++) {
-            for (int j = 0; j < i; j++) {
-            	Object o1 = array.get(i);
-                Object o2 = array.get(j);
-                if (o1 != null && o2 != null) {
-                    if (o1.equals(o2)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-    
+
 	public String rawIteratingObject(String input) {
 		List<List<String>> listOfLists = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
-		
-		for(int i = 0; i < listOfLists.size(); i++) {
+
+		for (int i = 0; i < listOfLists.size(); i++) {
 			List rawIterator = listOfLists.get(i);
 			// Incorrect casting to double
 			Double d = (Double) rawIterator.get(0);
 			sb.append(d);
 		}
-		
+
 		return sb.toString();
 	}
-	
+
 	public <T extends Foo> void listOfTypeArguments() {
 		List<T> elements = new ArrayList<>();
-		for(int i = 0; i<elements.size(); i++) {
-			T foo = elements.get(i);
+		elements.forEach(foo -> {
 			foo.toString();
 			foo.isFoo();
-		}
+		});
 	}
-	
+
 	public <T extends Foo> void captureOfTypeArguments() {
 		List<? extends T> elements = new ArrayList<>();
-		for(int i = 0; i<elements.size(); i++) {
-			T foo = elements.get(i);
+		elements.forEach(foo -> {
 			foo.toString();
 			foo.isFoo();
-		}
+		});
 	}
-	
+
 	public <T extends MyCollection<String>> void listOfParameterizedTypeArguments() {
 		List<T> elements = new ArrayList<>();
-		for(int i = 0; i<elements.size(); i++) {
-			T foo = elements.get(i);
+		elements.forEach(foo -> {
 			foo.toString();
 			foo.hasNext();
-		}
+		});
 	}
-	
+
 	public String qualifiedNameType() {
 		List<java.lang.Boolean> javaLangBooleans = Arrays.asList(true, true, false);
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i<javaLangBooleans.size(); i++) {
-			sb.append(javaLangBooleans.get(i));
-		}
+		javaLangBooleans.forEach(sb::append);
 		return sb.toString();
 	}
-	
+
 	public String testSName(String input) {
 		List<String> s = generateList(input);
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i< s.size(); i++) {
-			sb.append(s.get(i));
-		}
+		s.forEach(sb::append);
 		return sb.toString();
 	}
-	
+
 	public String packageKeyWord(String input) {
 		List<String> packages = generateList(input);
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i< packages.size(); i++) {
-			sb.append(packages.get(i));
-		}
+		packages.forEach(sb::append);
 		return sb.toString();
 	}
-	
+
 	public String doubleKeyWord(String input) {
 		List<Double> doubles = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i< doubles.size(); i++) {
-			sb.append(doubles.get(i));
-		}
+		doubles.forEach(sb::append);
 		return sb.toString();
 	}
-	
+
+	public static Foo createFoo(String input) {
+		return new TestForToForEachListIteratingIndexRule().new Foo(input);
+	}
+
+	@interface MyFooAnnotation {
+		String iterator = "";
+		Runnable r = () -> {
+			String iterator;
+			List<String> fInterfaceRule = new ArrayList<>();
+			StringBuilder sb = new StringBuilder();
+			// multiple
+			// line
+			// comment
+			fInterfaceRule.forEach(sb::append);
+		};
+	}
+
 	private class GenericClassSample<T> {
 		class InnerType {
-			
+
 			public void useInnerCollection(List<InnerType> myInnerCList) {
 				int size = 0;
-				for(int i = 0; i < myInnerCList.size(); i++) {
-					InnerType innerCObje = myInnerCList.get(i);
+				for (GenericClassSample<T>.InnerType innerCObje : myInnerCList) {
 					size++;
 				}
 			}
 		}
 	}
-	
+
 	class Foo {
 		private String foo;
-		
+
 		public Foo(String foo) {
 			this.foo = foo;
 		}
-		
+
 		@Override
 		public String toString() {
 			return this.foo;
 		}
-		
+
 		public boolean isFoo() {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * This collection is not subtype of {@code Iterable}.
 	 */
 	private class MyCollection<T> {
 		private final int size = 5;
 		private int index = 0;
-		
+
 		public boolean hasNext() {
 			return index < size;
 		}
-		
+
 		public int size() {
 			return 0;
 		}
-		
+
 		public T get(int i) {
 			return null;
 		}
 	}
-	
+
 	private class Boolean {
 		public boolean val = false;
-	}
-
-	public static Foo createFoo(String input) {
-		return new TestForToForEachListIteratingIndexRule().new Foo(input);
 	}
 }

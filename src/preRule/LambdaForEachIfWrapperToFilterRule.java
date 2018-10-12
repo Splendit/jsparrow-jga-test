@@ -16,142 +16,81 @@ public class LambdaForEachIfWrapperToFilterRule {
 	public List<Boolean> booleanList = Arrays.asList(true, false, true, true, false);
 
 	public void doSomething() {
-		list.stream().forEach(/* save me 5 - leading lambda */ s -> /* save me 6 - leading lambda body */ {
-			
-			// save me - leading if statement
-			if (s.length() > 3 // comment after if condition
-					) {
-				// save me 2
-				System.out.println(s);
-				// save me 3
-				System.out.println(s + s);
-			}
-		}
-		// save me 4 - trailing lambda 1
-		
+		/* save me 5 - leading lambda */
 		// save me 7 - trailing lambda 2
-				);
-
-		list.parallelStream().forEach(s -> {
-			if (s.equals("asdf")) {
-				System.out.println(s);
-			} 
-			
-			// i'm last but not least
-			
+		/* save me 6 - leading lambda body */
+		// save me - leading if statement
+		// save me 4 - trailing lambda 1
+		list.stream().filter(s -> s.length() > 3 // comment after if condition
+		).forEach(s -> {
+			// save me 2
+			System.out.println(s);
+			// save me 3
+			System.out.println(s + s);
 		});
 
-		list.parallelStream().forEach(s -> {
-			if ("asdf".equals(s)) {
-				System.out.println(s);
-			} // i'm last but not least
-		});
+		// i'm last but not least
+		list.parallelStream().filter(s -> "asdf".equals(s)).forEach(System.out::println);
 
-		list.forEach(s -> {
-			if (s.length() > 3) {
-				System.out.println(s);
-			}
-		});
+		// i'm last but not least
+		list.parallelStream().filter(s -> "asdf".equals(s)).forEach(System.out::println);
 
-		intList.stream().forEach(i -> {
-			if (i < 5) {
-				System.out.println(i);
-				i++;
-				System.out.println(i);
-			}
-		});
+		list.stream().filter(s -> s.length() > 3).forEach(System.out::println);
 
-		intList.stream().forEach(i -> {
-			if (i == 5) {
-				System.out.println(i);
-			}
-		});
-
-		booleanList.stream().forEach(b -> {
-			if(b) {
-				System.out.println(b);
-			}
-		});
-
-		booleanList.stream().forEach(b -> {
-			if(!b) {
-				System.out.println(b);
-			}
-		});
-
-		intList.stream().filter(i -> i == 5).forEach(i -> {
+		intList.stream().filter(i -> i < 5).forEach(i -> {
+			System.out.println(i);
+			i++;
 			System.out.println(i);
 		});
 
+		intList.stream().filter(i -> i == 5).forEach(System.out::println);
+
+		booleanList.stream().filter(b -> b).forEach(System.out::println);
+
+		booleanList.stream().filter(b -> !b).forEach(System.out::println);
+
+		intList.stream().filter(i -> i == 5).forEach(System.out::println);
+
 		intList.stream().forEach(i -> {
-			if(getRandomNuber() > 0) {
+			if (getRandomNuber() > 0) {
 				System.out.println(i);
 			}
 		});
 
 		intList.stream().forEach(i -> {
 			int j;
-			if((j = getRandomNuber()) > 0) {
+			if ((j = getRandomNuber()) > 0) {
 				System.out.println(i + j);
 			}
 		});
 
 		intList.stream().forEach(i -> {
-			if(i < 0) {
+			if (i < 0) {
 				System.out.println(i);
 			} else {
 				System.out.println(i + 1);
 			}
 		});
 
-		intList.stream().forEach(i -> {
-			if(i < 0) {
-				System.out.println(i);
-			} else {
-				
-			}
-		});
+		intList.stream().filter(i -> i < 0).forEach(System.out::println);
 
-		intList.stream().forEach(i -> {
-			if(i < 0) {
-				System.out.println(i);
-			} else {
-				;
-			}
-		});
+		intList.stream().filter(i -> i < 0).forEach(System.out::println);
 
-		intList.stream().forEach(i -> {
-			if(i < 0) {
-				System.out.println(i);
-			} else ;
-		});
+		intList.stream().filter(i -> i < 0).forEach(System.out::println);
 
-		intList.stream().forEach(i -> {
-			if(i < 0) {
-				System.out.println(i);
-			} else {
-				;
-				;
-				;
-			}
-		});
+		intList.stream().filter(i -> i < 0).forEach(System.out::println);
 	}
-	
+
 	public void forEachOnCollection() {
-		list.forEach(s -> {
-			if (s.length() > 3) {
-				System.out.println(s);
-				System.out.println(s + s);
-			}
+		list.stream().filter(s -> s.length() > 3).forEach(s -> {
+			System.out.println(s);
+			System.out.println(s + s);
 		});
 	}
-	
+
 	public void ifWithExpressionStatementBody(String input) {
 		StringBuilder sb = new StringBuilder();
-		list.stream().forEach(s -> {
-			if(!s.isEmpty()) 
-				sb.append(s);
-		});
+		list.stream().filter(s -> !s.isEmpty()).forEach(sb::append);
 	}
 
 	private int getRandomNuber() {

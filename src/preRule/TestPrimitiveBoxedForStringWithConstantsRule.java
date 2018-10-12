@@ -4,43 +4,45 @@ package preRule;
 public class TestPrimitiveBoxedForStringWithConstantsRule {
 
 	public String testIntegerLiteralConcat() {
-		return "" /* save me */ +  4;
+		/* save me */
+		return Integer.toString(4);
 	}
 
 	public String testIntegerNewLiteralTostring() {
-		return new Integer(4).toString();
+		return Integer.toString(4);
 	}
 
 	public String testIntegerValueOfToString() {
-		return Integer.valueOf(4).toString();
+		return Integer.toString(4);
 	}
 
 	public String testLongLiteralConcat() {
-		return "" + 4L;
+		return Long.toString(4L);
 	}
 
 	public String testLongLongNewLiteralTostring() {
-		return new Long(4L)/* save me */.toString();
+		/* save me */
+		return Long.toString(4L);
 	}
 
 	public String testLongIntegerNewLiteralTostring() {
-		return new Long(4).toString();
+		return Long.toString(4);
 	}
 
 	public String testLongLongValueOfToString() {
-		return Long.valueOf(4L).toString();
+		return Long.toString(4L);
 	}
 
 	public String testLongIntegerValueOfToString() {
-		return Long.valueOf(4).toString();
+		return Long.toString(4);
 	}
 
 	public String testFloatLiteralConcat() {
-		return "" + 4F;
+		return Float.toString(4F);
 	}
 
 	public String testFloatNewLiteralTostring() {
-		return new Float(4F).toString();
+		return Float.toString(4F);
 	}
 
 	public String testFloatDoubleNewLiteralTostring() {
@@ -48,58 +50,58 @@ public class TestPrimitiveBoxedForStringWithConstantsRule {
 	}
 
 	public String testFloatLongNewLiteralTostring() {
-		return new Float(4L).toString();
+		return Float.toString(4L);
 	}
 
 	public String testFloatIntegerNewLiteralTostring() {
-		return new Float(4).toString();
+		return Float.toString(4);
 	}
 
 	public String testFloatValueOfToString() {
-		return Float.valueOf(4F).toString();
+		return Float.toString(4F);
 	}
 
 	public String testFloatLongValueOfToString() {
-		return Float.valueOf(4L).toString();
+		return Float.toString(4L);
 	}
 
 	public String testFloatIntegerValueOfToString() {
-		return Float.valueOf(4).toString();
+		return Float.toString(4);
 	}
 
 	public String testDoubleLiteralConcat() {
-		return "" + 4D;
+		return Double.toString(4D);
 	}
 
 	public String testDoubleNewLiteralTostring() {
-		return new Double(4D).toString();
+		return Double.toString(4D);
 	}
 
 	public String testDoubleFloatNewLiteralTostring() {
-		return new Double(4F).toString();
+		return Double.toString(4F);
 	}
 
 	public String testDoubleLongNewLiteralTostring() {
-		return new Double(4L).toString();
+		return Double.toString(4L);
 	}
 
 	public String testDoubleIntegerNewLiteralTostring() {
-		return new Double(4).toString();
+		return Double.toString(4);
 	}
 
 	public String testDoubleValueOfToString() {
-		return Double.valueOf(4D).toString();
+		return Double.toString(4D);
 	}
 
 	public String testDoubleFloatValueOfToString() {
-		return Double.valueOf(4F).toString();
+		return Double.toString(4F);
 	}
 
 	public String testDoubleLongValueOfToString() {
-		return Double.valueOf(4L).toString();
+		return Double.toString(4L);
 	}
 
 	public String testDoubleIntegerValueOfToString() {
-		return Double.valueOf(4).toString();
+		return Double.toString(4);
 	}
 }

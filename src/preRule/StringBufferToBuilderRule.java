@@ -9,8 +9,10 @@ package preRule;
 public class StringBufferToBuilderRule {
 	private StringBuffer stringBuffer1 = new StringBuffer();
 	private StringBuffer stringBuffer2;
-	private StringBuffer stringBuffer3 = new StringBuffer(), stringBuffer4;
-	private StringBuffer stringBuffer5, stringBuffer6 = new StringBuffer();
+	private StringBuffer stringBuffer3 = new StringBuffer();
+	private StringBuffer stringBuffer4;
+	private StringBuffer stringBuffer5;
+	private StringBuffer stringBuffer6 = new StringBuffer();
 
 	public StringBuffer stringBuffer7 = new StringBuffer();
 
@@ -19,14 +21,19 @@ public class StringBufferToBuilderRule {
 	}
 
 	private void test1() {
-		//a comment here
-		StringBuffer /* internal comment in declaration */ localStringBuffer1 // I don't want to break anything
-		= new /* internal comment in initializer */ StringBuffer(); // trailing comment
-		StringBuffer localStringBuffer2 = null;
-		StringBuffer localStringBuffer3, localStringBuffer4 = new StringBuffer();
+		// a comment here
+		/* internal comment in declaration */
+		// I don't want to break anything
+		/* internal comment in initializer */
+		// trailing comment
+		StringBuilder localStringBuffer1 // I don't want to break anything
+				= new StringBuilder();
+		StringBuilder localStringBuffer2 = null;
+		StringBuilder localStringBuffer3;
+		StringBuilder localStringBuffer4 = new StringBuilder();
 
 		if (localStringBuffer2 == null) {
-			localStringBuffer2 = new StringBuffer();
+			localStringBuffer2 = new StringBuilder();
 		}
 
 		stringBuffer1.append("asdf").append("jkl");
@@ -36,15 +43,16 @@ public class StringBufferToBuilderRule {
 	}
 
 	private StringBuffer test2() {
-		StringBuffer localStringBuffer1 = new StringBuffer();
-		StringBuffer localStringBuffer2 = null;
-		StringBuffer localStringBuffer3 = null, localStringBuffer4 = new StringBuffer();
+		StringBuilder localStringBuffer1 = new StringBuilder();
+		StringBuilder localStringBuffer2 = null;
+		StringBuilder localStringBuffer3 = null;
+		StringBuffer localStringBuffer4 = new StringBuffer();
 
 		if (localStringBuffer2 == null) {
-			localStringBuffer2 = new StringBuffer();
+			localStringBuffer2 = new StringBuilder();
 		}
 		if (localStringBuffer3 == null) {
-			localStringBuffer3 = new StringBuffer();
+			localStringBuffer3 = new StringBuilder();
 		}
 
 		stringBuffer1.append("asdf").append("jkl");
@@ -56,57 +64,61 @@ public class StringBufferToBuilderRule {
 	}
 
 	private StringBuffer test3(StringBuffer stringBufferArg) {
-		StringBuffer localStringBuffer1 = new StringBuffer();
+		StringBuilder localStringBuffer1 = new StringBuilder();
 		StringBuffer localStringBuffer2 = stringBufferArg;
-		StringBuffer localStringBuffer3 = null, localStringBuffer4 = new StringBuffer();
+		StringBuilder localStringBuffer3 = null;
+		StringBuffer localStringBuffer4 = new StringBuffer();
 
 		if (localStringBuffer2 == null) {
 			localStringBuffer2 = new StringBuffer();
 		}
 		if (localStringBuffer3 == null) {
-			localStringBuffer3 = new StringBuffer();
+			localStringBuffer3 = new StringBuilder();
 		}
 
 		return localStringBuffer4;
 	}
 
 	private StringBuffer test4(StringBuffer stringBufferArg) {
-		StringBuffer localStringBuffer1 = new StringBuffer();
-		StringBuffer localStringBuffer2 = null;
-		StringBuffer localStringBuffer3 = null, localStringBuffer4 = new StringBuffer();
+		StringBuilder localStringBuffer1 = new StringBuilder();
+		StringBuilder localStringBuffer2 = null;
+		StringBuilder localStringBuffer3 = null;
+		StringBuilder localStringBuffer4 = new StringBuilder();
 
 		if (localStringBuffer2 == null) {
-			localStringBuffer2 = new StringBuffer();
+			localStringBuffer2 = new StringBuilder();
 		}
 		if (localStringBuffer3 == null) {
-			localStringBuffer3 = new StringBuffer();
+			localStringBuffer3 = new StringBuilder();
 		}
 
 		return stringBufferArg;
 	}
 
 	private StringBuffer test5(StringBuffer stringBufferArg) {
-		StringBuffer localStringBuffer1 = new StringBuffer();
+		StringBuilder localStringBuffer1 = new StringBuilder();
 		StringBuffer localStringBuffer2 = null;
-		StringBuffer localStringBuffer3 = null, localStringBuffer4 = new StringBuffer();
+		StringBuilder localStringBuffer3 = null;
+		StringBuilder localStringBuffer4 = new StringBuilder();
 
 		if (localStringBuffer2 == null) {
 			localStringBuffer2 = stringBufferArg;
 		}
 		if (localStringBuffer3 == null) {
-			localStringBuffer3 = new StringBuffer();
+			localStringBuffer3 = new StringBuilder();
 		}
 
 		return stringBufferArg;
 	}
 
 	private StringBuffer test6(StringBuffer stringBufferArg) {
-		StringBuffer localStringBuffer1 = new StringBuffer();
-		StringBuffer localStringBuffer2 = null;
-		StringBuffer localStringBuffer3 = null, localStringBuffer4 = new StringBuffer();
+		StringBuilder localStringBuffer1 = new StringBuilder();
+		StringBuilder localStringBuffer2 = null;
+		StringBuffer localStringBuffer3 = null;
+		StringBuilder localStringBuffer4 = new StringBuilder();
 
 		if (localStringBuffer2 == null) {
-			localStringBuffer2 = new StringBuffer();
+			localStringBuffer2 = new StringBuilder();
 		}
 		if (localStringBuffer3 == null) {
 			localStringBuffer3 = stringBufferArg;
@@ -116,7 +128,7 @@ public class StringBufferToBuilderRule {
 	}
 
 	private void test7() {
-		StringBuffer localStringBuffer1 = new StringBuffer();
+		StringBuilder localStringBuffer1 = new StringBuilder();
 		StringBuffer localStringBuffer2 = new StringBuffer();
 
 		test6(localStringBuffer2);

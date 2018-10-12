@@ -12,7 +12,7 @@ import java.util.Locale;
 public class StringUtilsRefactorRule {
 
 	public boolean testEmpty(String testString) {
-		return  /* test */ testString // save me
+		return /* test */ testString // save me
 				.isEmpty() /* trailing comment */;
 	}
 
@@ -98,23 +98,24 @@ public class StringUtilsRefactorRule {
 		if (input.contains(splitSign)) {
 			if ("?".equals(splitSign)) {
 				/*
-				 * We need to escape the "?" because otherwise there is the
-				 * following exception: java.util.regex.PatternSyntaxException:
-				 * Dangling meta character '?' near index 0
+				 * We need to escape the "?" because otherwise there is the following exception:
+				 * java.util.regex.PatternSyntaxException: Dangling meta character '?' near
+				 * index 0
 				 */
 				splitSign = splitSign.replace("?", "\\?");
 			}
 			if ("|".equals(splitSign)) {
 				/*
-				 * We need to escape the "|" because otherwise an empty String
-				 * is taken as split sign.
+				 * We need to escape the "|" because otherwise an empty String is taken as split
+				 * sign.
 				 */
 				splitSign = splitSign.replace("|", "\\|");
 			}
 			return limit == 0 ? Arrays.toString(input.split(splitSign))
 					: Arrays.toString(input.split(splitSign, limit));
-		} else
+		} else {
 			return input;
+		}
 	}
 
 	public String testReplaceCornerCaseCharSequence(String testString) {
@@ -157,7 +158,7 @@ public class StringUtilsRefactorRule {
 		testString.toLowerCase();
 		return testString.toLowerCase(l);
 	}
-	
+
 	public String testSubstring(String testString) {
 		testString.substring(0);
 		return testString.substring(0, 0);

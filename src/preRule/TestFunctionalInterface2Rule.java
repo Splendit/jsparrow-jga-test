@@ -11,16 +11,27 @@ import java.util.List;
 
 public abstract class TestFunctionalInterface2Rule {
 	Object fields;
+	MouseAdapter a = new MouseAdapter() {
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			e.getX();
+			e.getY();
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			mouseMoved(e);
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
+	};
 
 	public void setFields(Object fields) {
 		Object proxyFields = Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[] { List.class },
-				new InvocationHandler() {
-
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						return method.invoke(fields, args);
-					}
-				});
+				(Object proxy, Method method, Object[] args) -> method.invoke(fields, args));
 		this.fields = proxyFields;
 	}
 
@@ -41,24 +52,6 @@ public abstract class TestFunctionalInterface2Rule {
 		this.fields = proxyFields;
 	}
 
-	MouseAdapter a = new MouseAdapter() {
-
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			e.getX();
-			e.getY();
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			mouseMoved(e);
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-		}
-	};
-
 	public void testNotCorrectTypeVarDecl() {
 		Object o = new Runnable() {
 			@Override
@@ -68,10 +61,7 @@ public abstract class TestFunctionalInterface2Rule {
 	}
 
 	public void testCorrectTypeVarDecl() {
-		Runnable r = new Runnable() {
-			@Override
-			public void run() {
-			}
+		Runnable r = () -> {
 		};
 	}
 
@@ -86,10 +76,7 @@ public abstract class TestFunctionalInterface2Rule {
 
 	public void testCorrectTypeAssignment() {
 		Runnable r;
-		r = new Runnable() {
-			@Override
-			public void run() {
-			}
+		r = () -> {
 		};
 	}
 
@@ -104,12 +91,8 @@ public abstract class TestFunctionalInterface2Rule {
 	}
 
 	public void testCorrectForInitializer() {
-		for (Runnable r = new Runnable() {
+		for (Runnable r = () -> {
 
-			@Override
-			public void run() {
-
-			}
 		}; true;) {
 			break;
 		}
@@ -128,12 +111,8 @@ public abstract class TestFunctionalInterface2Rule {
 	}
 
 	public void testCorrectTryWithResourceHeader() {
-		try (Closeable c = new Closeable() {
+		try (Closeable c = () -> {
 
-			@Override
-			public void close() throws IOException {
-
-			}
 		}) {
 
 		} catch (IOException e) {
@@ -156,12 +135,8 @@ public abstract class TestFunctionalInterface2Rule {
 	}
 
 	public void testCorrectMethodInvocation() {
-		doSomethingRunnable(new Runnable() {
+		doSomethingRunnable(() -> {
 
-			@Override
-			public void run() {
-
-			}
 		});
 	}
 
@@ -176,12 +151,8 @@ public abstract class TestFunctionalInterface2Rule {
 	}
 
 	public void testCorrectMethodInvocation2ndParam() {
-		doSomethingRunnable("addition", new Runnable() {
+		doSomethingRunnable("addition", () -> {
 
-			@Override
-			public void run() {
-
-			}
 		});
 	}
 
@@ -211,16 +182,6 @@ public abstract class TestFunctionalInterface2Rule {
 		});
 	}
 
-	private class MyRunnableClass {
-		public MyRunnableClass(Runnable run) {
-		}
-	}
-
-	private class MyClass {
-		public MyClass(Object run) {
-		}
-	}
-
 	private void doSomething(Object o) {
 
 	}
@@ -235,5 +196,15 @@ public abstract class TestFunctionalInterface2Rule {
 
 	private void doSomethingRunnable(String s, Runnable o) {
 
+	}
+
+	private class MyRunnableClass {
+		public MyRunnableClass(Runnable run) {
+		}
+	}
+
+	private class MyClass {
+		public MyClass(Object run) {
+		}
 	}
 }

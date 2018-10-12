@@ -5,25 +5,26 @@ import java.math.RoundingMode;
 public class TestEnumsWithoutEqualsRule {
 
 	public void replaceEqualsWithInfix(RoundingMode roundingMode) {
-		if (roundingMode.equals(RoundingMode.UP)) {
+		if (roundingMode == RoundingMode.UP) {
 			return;
 		}
-		if (RoundingMode.UP.equals(roundingMode)) {
+		if (RoundingMode.UP == roundingMode) {
 			return;
 		}
-		if (!roundingMode.equals(RoundingMode.UP)) {
+		if (roundingMode != RoundingMode.UP) {
 			return;
 		}
-		if (!RoundingMode.UP.equals(roundingMode)) {
+		if (RoundingMode.UP != roundingMode) {
 			return;
 		}
-		if (roundingMode.equals(RoundingMode.UP) && true) {
+		if (roundingMode == RoundingMode.UP && true) {
 			return;
 		}
-		if (RoundingMode.UP.equals(roundingMode) && true) {
+		if (RoundingMode.UP == roundingMode && true) {
 			return;
 		}
-		if (RoundingMode.UP. /* saving comments */ equals(roundingMode)) {
+		/* saving comments */
+		if (RoundingMode.UP == roundingMode) {
 			return;
 		}
 	}
@@ -45,19 +46,23 @@ public class TestEnumsWithoutEqualsRule {
 			return;
 		}
 	}
-	
+
 	public void savingComments(RoundingMode roundingMode) {
-		
-		if (RoundingMode.UP. /* saving comments */ equals(roundingMode)) {
+
+		/* saving comments */
+		if (RoundingMode.UP == roundingMode) {
 			return;
 		}
-		
+
 		if (RoundingMode.UP // I don't want to break anything
-				.equals(roundingMode)) {
+		== roundingMode) {
 			return;
 		}
-		
-		if ( /* leading comment */ RoundingMode.UP /* expression comment */ . /* invocation comment */ equals(/* param comment */ roundingMode) /* trailing comments */) {
+
+		/* invocation comment */
+		/* leading comment */
+		/* trailing comments */
+		if (RoundingMode.UP /* expression comment */ == /* param comment */ roundingMode) {
 			return;
 		}
 	}

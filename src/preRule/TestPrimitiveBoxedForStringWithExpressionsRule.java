@@ -1,75 +1,72 @@
 package preRule;
 
 public class TestPrimitiveBoxedForStringWithExpressionsRule {
-	
+
 	private int intSampleMethod() {
 		return 1;
 	}
-	
+
 	private int intSampleMethod(String intVal) {
 		return Integer.valueOf(intVal);
 	}
-	
+
 	public String testIntegerValueOfExpressionToString(int input) {
-		return Integer.
-				// test
-				valueOf(input + 3).toString();
+		// test
+		return Integer.toString(input + 3);
 	}
-	
+
 	public String testIntegerValueOfExpressionWithMethodInvoke(int input) {
-		return Integer /* expression comment */
-				
-				// test
-				. /* invocation comment */ valueOf( /* internal arg comment */ intSampleMethod() + input).toString(); 
+		// test
+		/* invocation comment */
+		/* expression comment */
+		return Integer.toString(/* internal arg comment */ intSampleMethod() + input);
 	}
-	
+
 	public String test_lineCommentFollowingExpression(int input) {
-		
-		return Integer //test
-			.valueOf(intSampleMethod() + input).toString();
+
+		// test
+		return Integer.toString(intSampleMethod() + input);
 	}
-	
+
 	public String testIntegerValueOfMixedTypeExpression(int input) {
-		return Integer.valueOf(input + new Integer(1) + intSampleMethod()).toString();
+		return Integer.toString(input + Integer.valueOf(1) + intSampleMethod());
 	}
-	
+
 	public String testIntegerValueOfCascadeExpressions(int input) {
-		return Integer.valueOf(input + intSampleMethod()).toString() 
-				+ Integer.valueOf(input + "abc".length()).toString();
+		return Integer.toString(input + intSampleMethod()) + Integer.toString(input + "abc".length());
 	}
-	
+
 	public String testIntegerValueOfInIfCondition(int input) {
 		String result = "";
-		if(!Integer.valueOf(input).toString().isEmpty()
-				|| Integer.valueOf(5).toString().length() == 1) {
+		if (!Integer.toString(input).isEmpty() || Integer.toString(5).length() == 1) {
 			result = Integer.toString(input);
 		}
 		return result;
 	}
-	
+
 	public String testIntegerBoxingOnExpression(int input) {
-		
-		String savingCmments = /* leading comment */ new /* declaration comment */ Integer( /* ctor arg comment */ 5 + input + intSampleMethod("2")) /* toString expression comment */ .toString() /* trailing comment */ ;
-		
-		String result =  new Integer(5 + input + intSampleMethod("2")).toString()
-				+ new Integer(input + intSampleMethod()).toString();
+
+		/* declaration comment */
+		/* toString expression comment */
+		String savingCmments = /* leading comment */ Integer
+				.toString(/* ctor arg comment */ 5 + input + intSampleMethod("2")) /* trailing comment */ ;
+
+		String result = Integer.toString(5 + input + intSampleMethod("2"))
+				+ Integer.toString(input + intSampleMethod());
 		return result;
 	}
-	
+
 	public String testNestedIntegerBoxing(int input) {
-		String val = Integer.valueOf(Integer.valueOf(input) + 1).toString();
+		String val = Integer.toString(Integer.valueOf(input) + 1);
 		return val;
 	}
-	
-	
+
 	public String testMethodInvocationIntegerBoxing(int input) {
-		String val = Integer
-				.valueOf(intSampleMethod(Integer.valueOf(3).toString()) + 4)
-				.toString();
+		String val = Integer.toString(intSampleMethod(Integer.toString(3)) + 4);
 		return val;
 	}
-	
+
 	public String testLiteralConcatWithExpression(int input) {
-		return "" + (input + 1 + intSampleMethod("4"));
+		return Integer.toString((input + 1 + intSampleMethod("4")));
 	}
 }

@@ -7,25 +7,26 @@ public class TestStringFormatLineSeparatorRule {
 
 	public String testStringFormatLineSeparator01() {
 
-		return String.format(/* save me */"\n\n");
+		/* save me */
+		return String.format("%n%n");
 
 	}
 
 	public String testStringFormatLineSeparator02() {
 
-		return String.format(Locale.GERMAN, "\n\n");
+		return String.format(Locale.GERMAN, "%n%n");
 
 	}
 
 	public String testStringFormatLineSeparator03() {
 
-		return String.format("\r\n\r\n");
+		return String.format("%n%n");
 
 	}
 
 	public String testStringFormatLineSeparator04() {
 
-		return String.format(Locale.GERMAN, "\r\n\r\n%n");
+		return String.format(Locale.GERMAN, "%n%n%n");
 
 	}
 

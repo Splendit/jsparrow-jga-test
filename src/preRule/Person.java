@@ -3,7 +3,7 @@ package preRule;
 import java.time.LocalDate;
 import java.util.function.Predicate;
 
-public class Person  {
+public class Person {
 	private String name;
 	private LocalDate birthday;
 	private Person parent1;

@@ -4,33 +4,42 @@ package preRule;
 public class TestInefficientConstructorBooleanRule {
 
 	public Boolean booleanTrueTest() {
-		return /* save me */ new Boolean(true);
+		/* save me */
+		return Boolean.valueOf(true);
 	}
 
 	public Boolean booleanTrueLiteralTest() {
-		Boolean t = new Boolean // I don't want to break anything
-				("true");
-		return /* leading comment */ new /* internal comment */ Boolean( /* argument comment */"true") /* trailing comment */;
+		// I don't want to break anything
+		Boolean t = Boolean // I don't want to break anything
+				.valueOf(true);
+		/* leading comment */
+		/* internal comment */
+		/* argument comment */
+		/* trailing comment */
+		return Boolean.valueOf(true);
 	}
 
 	public Boolean booleanFalseTest() {
-		return /* leading comment */ new /* internal comment */ Boolean( /* argument comment */ false) /* trailing comment */ ;
+		/* leading comment */
+		/* internal comment */
+		/* trailing comment */
+		return Boolean.valueOf(/* argument comment */ false);
 	}
 
 	public Boolean booleanFalseLiteralTest() {
-		return new Boolean("false");
+		return Boolean.valueOf(false);
 	}
 
 	public Boolean booleanFalseAnyLiteralTest() {
-		return new Boolean("anyOtherStringThanTrue");
+		return Boolean.valueOf(false);
 	}
 
 	public Boolean booleanVariableBooleanTest(boolean input) {
-		return new Boolean(/* save me */ input);
+		return Boolean.valueOf(/* save me */ input);
 	}
 
 	public Boolean booleanVariableStringTest(String input) {
-		return new Boolean(/* save me */ input);
+		return Boolean.valueOf(/* save me */ input);
 	}
 
 	public Boolean booleanTrueValueOfTest() {
@@ -38,7 +47,7 @@ public class TestInefficientConstructorBooleanRule {
 	}
 
 	public Boolean booleanTrueLiteralValueOfTest() {
-		return Boolean.valueOf("true");
+		return Boolean.valueOf(true);
 	}
 
 	public Boolean booleanFalseValueOfTest() {
@@ -46,11 +55,11 @@ public class TestInefficientConstructorBooleanRule {
 	}
 
 	public Boolean booleanFalseLiteralValueOfTest() {
-		return Boolean.valueOf("false");
+		return Boolean.valueOf(false);
 	}
 
 	public Boolean booleanAnyValueOfTest() {
-		return Boolean.valueOf("anyOtherStringThanTrue");
+		return Boolean.valueOf(false);
 	}
 
 	public Boolean booleanVariableBooleanTest(Boolean input) {
@@ -66,7 +75,7 @@ public class TestInefficientConstructorBooleanRule {
 	}
 
 	public Boolean booleanWithMethodInvocationTest() {
-		return new Boolean(true).booleanValue();
+		return Boolean.valueOf(true).booleanValue();
 	}
 
 	public Boolean booleanTrueValueOfMethodInvocationTest() {

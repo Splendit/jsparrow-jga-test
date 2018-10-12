@@ -10,44 +10,60 @@ import java.util.List;
 
 @SuppressWarnings({ "unused", "nls" })
 public class MultiVariableDeclarationLineRule {
-	private int a, b;
-	int c = 10, d;
-	@TestAnnotation List<Integer> list = new LinkedList<>(), list2;
+	private int a;
+	private int b;
+	int c = 10;
+	int d;
+	@TestAnnotation
+	List<Integer> list = new LinkedList<>();
+	@TestAnnotation
+	List<Integer> list2;
 
 	public String methodWithVariables() {
-		Integer foo = 0, foo2, foo3 = Integer.valueOf(0);
-		final List<? extends String> strings, strings2 = new ArrayList<>();
+		Integer foo = 0;
+		Integer foo2;
+		Integer foo3 = Integer.valueOf(0);
+		final List<? extends String> strings;
+		final List<? extends String> strings2 = new ArrayList<>();
 		if (foo > 0) {
-			int e, f = 0;
+			int e;
+			int f = 0;
 
 			list.stream().map(element -> {
-				int x, y = -20;
+				int x;
+				int y = -20;
 
 				return element;
 			});
 		}
 		return "";
 	}
-	
+
 	public void saveComments() {
-		int a, // unlinked comment 
-		b;
-		
-		int c, // unlinked comment after c
-		d // comment after d
-		, e
+		// unlinked comment
+		int a;
+		int b;
+
+		// unlinked comment after c
+		int c; // trailing comment
+		int d // comment after d
+		;
+		int e
 		// comment after e
-		; // trailing comment
-		
+		;
+
+		// I don't want to break anything...
 		int // I don't want to break anything...
-		f, 
-		g;
+		f;
+		int g;
 	}
 
 	enum Foo {
 		ASD, DFG;
 
-		int a, b, c;
+		int a;
+		int b;
+		int c;
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -56,6 +72,7 @@ public class MultiVariableDeclarationLineRule {
 
 		public boolean testEnabled() default true;
 
-		public String test = "", test2 = String.valueOf(10);
+		public String test = "";
+		public String test2 = String.valueOf(10);
 	}
 }

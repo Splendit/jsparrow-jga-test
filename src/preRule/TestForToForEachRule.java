@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"nls", "unused", "unchecked", "rawtypes"})
+@SuppressWarnings({ "nls", "unused", "unchecked", "rawtypes" })
 public class TestForToForEachRule {
+
+	private List<String> a;
 
 	private List<String> generateList(String input) {
 		return Arrays.asList(input.split(";"));
@@ -17,36 +19,36 @@ public class TestForToForEachRule {
 
 	private List<Integer> generateHashCodeList(String input) {
 		List<String> foo = generateList(input);
-		List<Integer> fooHashCodes = foo.stream().map(s -> s.hashCode()).collect(Collectors.toList());
+		List<Integer> fooHashCodes = foo.stream().map(String::hashCode).collect(Collectors.toList());
 		return fooHashCodes;
 	}
-	
+
 	public String unsafeIteratorName(String input) {
 		List<String> l = generateList(input);
 		StringBuilder sb = new StringBuilder();
 		String aL = "I am here to confuse you ~_^ ";
-		
+
+		// comment inside
+		// comment after
 		// comment before
-		for (Iterator<String> iterator = l //
-				.iterator(); iterator.hasNext();) {
-			// comment inside
-			sb.append(iterator.next());
-		} // comment after
+		//
+		l //
+				.forEach(sb::append);
 		return sb.toString();
 	}
-	
+
 	public String emptyLoopCondition(String input) {
 		StringBuilder sb = new StringBuilder();
 		List<String> foo = generateList(input);
-		for (Iterator<String> iterator = foo.iterator(); ;) {
-			if(!iterator.hasNext()) {
+		for (Iterator<String> iterator = foo.iterator();;) {
+			if (!iterator.hasNext()) {
 				break;
 			}
 			sb.append(iterator.next());
 		}
 		return sb.toString();
 	}
-	
+
 	public String testConvertIteratorToForEachTemp(String input) {
 		List<String> foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
@@ -61,19 +63,13 @@ public class TestForToForEachRule {
 		}
 		return sb.toString();
 	}
-	
+
 	public String testConvertIteratorToForEachTemp2(String input) {
 		List<String> foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
 
-		// iterator declaration
-		Iterator<String> iterator = foo.iterator();
-		for (; iterator.hasNext();) {
-			// I have my comments
-			String s = iterator.next();
-			sb.append(s);
-		}
-		
+		foo.forEach(sb::append);
+
 		return sb.toString();
 	}
 
@@ -81,10 +77,7 @@ public class TestForToForEachRule {
 		List<String> foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
 
-		for (Iterator<String> iterator = foo.iterator(); iterator.hasNext();) {
-			String s = iterator.next();
-			sb.append(s);
-		}
+		foo.forEach(sb::append);
 		return sb.toString();
 	}
 
@@ -134,14 +127,10 @@ public class TestForToForEachRule {
 		List<String> foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
 
-		for (Iterator<String> iterator = foo.iterator(); iterator.hasNext();) {
-			String s = iterator.next();
-			for (Iterator<String> innerIterator = foo.iterator(); innerIterator.hasNext();) {
-				String t = innerIterator.next();
-				sb.append(t + ",");
-			}
+		foo.forEach(s -> {
+			foo.forEach(t -> sb.append(t + ","));
 			sb.append(s + ";");
-		}
+		});
 
 		return sb.toString();
 	}
@@ -163,24 +152,19 @@ public class TestForToForEachRule {
 		List<String> foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
 
-		for (Iterator<String> iterator = foo.iterator(); iterator.hasNext();) {
+		foo.forEach(aFoo -> {
 			String anotherString = "foo";
-			iterator.next();
 			sb.append(anotherString);
-		}
+		});
 		return sb.toString();
 	}
-
 
 	public String testIterateNumberCollection(String input) {
 		List<? extends Number> foo = generateHashCodeList(input);
 
 		StringBuilder sb = new StringBuilder();
 
-		for (Iterator<? extends Number> iterator = foo.iterator(); iterator.hasNext();) {
-			Number s = iterator.next();
-			sb.append(s.toString());
-		}
+		foo.forEach(s -> sb.append(s.toString()));
 
 		return sb.toString();
 	}
@@ -191,15 +175,13 @@ public class TestForToForEachRule {
 		StringBuilder sb = new StringBuilder();
 
 		int i;
-		for (i = 0; i < foo.size(); i = i + 2) {
+		for (i = 0; i < foo.size(); i += 2) {
 			Number s = foo.get(i);
 			sb.append(s.toString());
 		}
 
 		return sb.toString();
 	}
-
-	private List<String> a;
 
 	public String testIteratingIndexMoreLevels(String input) {
 		a = generateList(input);
@@ -213,10 +195,10 @@ public class TestForToForEachRule {
 
 	public Object encode(final Object value) {
 		if (value != null) {
-			Map<String, Object> map = new LinkedHashMap<String, Object>();
+			Map<String, Object> map = new LinkedHashMap<>();
 			List<Object> list = (List<Object>) value;
 			for (int i = 0; i < list.size(); i++) {
-				map.put(i + "", list.get(i));
+				map.put(Integer.toString(i), list.get(i));
 			}
 			return map;
 		}
@@ -236,17 +218,17 @@ public class TestForToForEachRule {
 		}
 		return true;
 	}
-	
+
 	public boolean testIteratingNonJavaIterators() {
 		MyCollection<Number> myCollection = new MyCollection<>();
-		
-		for(Iterator<Number> iterator = myCollection.iterator(); iterator.hasNext(); ) {
+
+		for (Iterator<Number> iterator = myCollection.iterator(); iterator.hasNext();) {
 			Number c = iterator.next();
 			// do nothing
 		}
 		return false;
 	}
-	
+
 	public String rawIterable(String input) {
 		List foo = generateList(input);
 		StringBuilder sb = new StringBuilder();
@@ -259,24 +241,24 @@ public class TestForToForEachRule {
 	}
 
 	private class Point {
-		private final List<Double> coordinates = new ArrayList<Double>();
+		private final List<Double> coordinates = new ArrayList<>();
 
 		public List<Double> getCoordinates() {
 			return coordinates;
 		}
 	}
-	
+
 	/**
 	 * This collection is not subtype of {@code Iterable}.
 	 */
 	private class MyCollection<T> {
 		private final int size = 5;
 		private int index = 0;
-		
+
 		public boolean hasNext() {
 			return index < size;
 		}
-		
+
 		public Iterator<T> iterator() {
 			return new Iterator<T>() {
 

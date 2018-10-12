@@ -20,57 +20,57 @@ public class OptionalIfPresentRule {
 
 	public void default_comment(Optional<String> input) {
 		if (input.isPresent()) {
-			String value = input.get(); //comment after value initialization
+			String value = input.get(); // comment after value initialization
 			System.out.println(value);
-		} 
+		}
 	}
-	
+
 	public void default_comment1(Optional<String> input) {
 		if (input.isPresent()) { // comment after isPresent
 			String value = input.get();
 			System.out.println(value);
-		} 
+		}
 	}
-	
+
 	public void default_comment2(Optional<String> input) {
-		//comment above isPresent
+		// comment above isPresent
 		if (input.isPresent()) {
 			String value = input.get();
 			System.out.println(value);
-		} 
+		}
 	}
 
 	public void default_comment3(Optional<String> input) {
-		//comment unconnected
-		
+		// comment unconnected
+
 		if (input.isPresent()) {
 			String value = input.get();
 			System.out.println(value);
-		} 
+		}
 	}
 
 	public void default_comment4(Optional<String> input) {
 		if (input.isPresent()) {
-			//comment under isPresent
+			// comment under isPresent
 			String value = input.get();
 			System.out.println(value);
-		} 
+		}
 	}
-	
+
 	public void default_comment5(Optional<String> input) {
 		if (input.isPresent()) {
 			String value = input.get();
-			//comment under value initialization
+			// comment under value initialization
 			System.out.println(value);
-		} 
+		}
 	}
-	
+
 	public void default_comment6(Optional<String> input) {
 		if (input.isPresent()) {
 			String value = input.get();
 			System.out.println(value);
-			//comment at the end of isPresent block
-		} 
+			// comment at the end of isPresent block
+		}
 	}
 
 	public void singleIfBlockBody_shouldTransform(Optional<String> input) {
@@ -86,29 +86,29 @@ public class OptionalIfPresentRule {
 			// comment at the end of isPresent block
 		}
 	}
-	
+
 	public void singleIfBlockBody_savingComments_shouldTransform(Optional<String> input) {
 		// leading comment
-		if /* 1 */ ( /* 2 */input /* 3 */. /* 4 */isPresent/*  5 */(/* 6 */)/* 7 */)/* 8 */ {/* 9.1 */
-			/*9.2  */
-			String /* 10 */ value /* 11 */ =  /* 12 */ input/* 13 */./* 14 */get/* 15 */(/* 16 */)/* 17 */;/* 18 */
+		if /* 1 */ ( /* 2 */input /* 3 */. /* 4 */isPresent/* 5 */(/* 6 */)/* 7 */)/* 8 */ {/* 9.1 */
+			/* 9.2 */
+			String /* 10 */ value /* 11 */ = /* 12 */ input/* 13 */./* 14 */get/* 15 */(/* 16 */)/* 17 */;/* 18 */
 			/* 19 */
 			if /* 20 */ ( /* 21 */ true /* 22 */) /* 23 */ { /* 24 */
 				/* 25 */
 				System/* 26 */.out./* 27 */println(value);/* 28 */
 				/* 29 */
-			}/* 30 */
-			
+			} /* 30 */
+
 			/* 31 */
-		}/* 32 */
+		} /* 32 */
 		/* 33 */
 	}
-	
+
 	public void defaultUseCase_savingComments_shouldTransform(Optional<String> input) {
 		/*
 		 * Comment 25 is still being lost...
 		 */
-		
+
 		/* 1 */
 		if /* 2 */ (/* 3 */input/* 4 */./* 5 */isPresent(/* 6 */)/* 7 */)/* 8 */ {/* 9 */
 			/* 10 */
@@ -116,33 +116,35 @@ public class OptionalIfPresentRule {
 			/* 20 */
 			System.out.println(/* 21 */value/* 22 */);/* 23 */
 			/* 24 */
-		}/* 25 */
+		} /* 25 */
 		/* 26 */
 	}
-	
+
 	public void nestedOptionalIsPresent_shouldTransform(Optional<String> input) {
 		if (input.isPresent()) {
 			String value = input.get();
 			System.out.println(value);
-			if(input.isPresent()) {
+			if (input.isPresent()) {
 				String value2 = input.get();
 				System.out.println(value2);
 			}
-		} 
+		}
 	}
 
 	public void singleIfStatementBody_shouldTransform(Optional<String> input) {
-		if (input.isPresent())
+		if (input.isPresent()) {
 			if (true) {
 				String value = input.get();
 				System.out.println(value);
 			}
+		}
 	}
 
 	public void multipleInitialiyers_shouldTransform(Optional<String> input) {
 		if (input.isPresent()) {
 			// comment under isPresent
-			String value = input.get(), second = "";
+			String value = input.get();
+			String second = "";
 			System.out.println(value);
 			System.out.println(second);
 		}
@@ -202,8 +204,9 @@ public class OptionalIfPresentRule {
 	}
 
 	public void singleBodyStatement_shouldTransform(Optional<String> input) {
-		if (input.isPresent())
+		if (input.isPresent()) {
 			System.out.println(input.get());
+		}
 		System.out.println("I'm out!");
 	}
 
@@ -218,10 +221,10 @@ public class OptionalIfPresentRule {
 			}
 		}
 	}
-	
+
 	public void multipleGetConflictingNames_shouldTransform(Optional<String> input, int i) {
 		if (input.isPresent()) {
-			if(i == 0) {
+			if (i == 0) {
 				String value = input.get();
 				System.out.println(value);
 			} else {
@@ -362,7 +365,7 @@ public class OptionalIfPresentRule {
 			System.out.println(value);
 		}
 	}
-	
+
 	public void discardedSingleOptionalGet_shouldNotTransform() {
 		Optional<String> input = findUserName("");
 		if (input.isPresent()) {
@@ -370,7 +373,7 @@ public class OptionalIfPresentRule {
 			String myVar = "somewar";
 		}
 	}
-	
+
 	public void discardedOptionalGet_shouldTransform() {
 		Optional<String> input = findUserName("");
 		if (input.isPresent()) {
@@ -379,26 +382,26 @@ public class OptionalIfPresentRule {
 			findUserName(myVar);
 		}
 	}
-	
+
 	public void unusedAssignmentWithOptionalGet_shouldTransform() {
 		Optional<String> input = findUserName("");
 		if (input.isPresent()) {
 			String myVar = input.get();
 		}
 	}
-	
+
 	public void internalNonFinalVariables_shouldTransform() {
 		Optional<String> input = findUserName("");
 		if (input.isPresent()) {
-			  for (int i = 0; i < 15; i++) {
-			    if (true) {
-			      System.out.println("Test");
-			    } else {
-			      String value = input.get();
-			      System.out.println("Test");
-			    }
-			  }
+			for (int i = 0; i < 15; i++) {
+				if (true) {
+					System.out.println("Test");
+				} else {
+					String value = input.get();
+					System.out.println("Test");
+				}
 			}
+		}
 	}
 
 	private Optional<String> findUserName(String user) {
@@ -423,7 +426,7 @@ public class OptionalIfPresentRule {
 		public String get() {
 			return "";
 		}
-		
+
 		public void clashingWithFieldAccess_shouldTransform(Optional<String> input) {
 			if (input.isPresent()) {
 				String value = input.get();

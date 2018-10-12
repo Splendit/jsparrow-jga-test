@@ -4,95 +4,96 @@ package preRule;
 public class TestPrimitiveObjectUseEqualsRule {
 
 	public void testIntegerShouldRefactor() {
-		Integer a = new Integer(1);
-		Integer b = new Integer(2);
+		Integer a = Integer.valueOf(1);
+		Integer b = Integer.valueOf(2);
 
-		if (a == b) {
-		}
-
-		if (a != b) {
+		if (a.equals(b)) {
 		}
 
-		if (!(a == b)) {
+		if (!a.equals(b)) {
 		}
 
-		if (!(a != b)) {
+		if (!(a.equals(b))) {
 		}
 
-		if (new Integer(1) == new Integer(2)) {
+		if (!(!a.equals(b))) {
 		}
 
-		if (new Integer(1) != new Integer(2)) {
+		if (Integer.valueOf(1).equals(Integer.valueOf(2))) {
 		}
-		
-		if (/* saving comments */a == b) {
+
+		if (!Integer.valueOf(1).equals(Integer.valueOf(2))) {
 		}
-		
-		if (a == /* saving comments */ b) {
+
+		/* saving comments */
+		if (a.equals(b)) {
 		}
-		
-		if (a == b /* saving comments */) {
+
+		if (a.equals(/* saving comments */ b)) {
 		}
-		
+
+		if (a.equals(b /* saving comments */)) {
+		}
+
 		if (// save comments
-				a == b /* saving comments */) {
+		a.equals(b /* saving comments */)) {
 		}
-		
+
 		if (a // save comments
-				 == b // save comments
-				 ) {
+				.equals(b // save comments
+				)) {
 		}
 	}
 
 	public void testStringShouldRefactor() {
-		String a = new String("a");
-		String b = new String("b");
+		String a = "a";
+		String b = "b";
 
-		if (a == b) {
+		if (a.equals(b)) {
 		}
 
-		if (a != b) {
+		if (!a.equals(b)) {
 		}
 
-		if (!(a == b)) {
+		if (!(a.equals(b))) {
 		}
 
-		if (!(a != b)) {
+		if (!(!a.equals(b))) {
 		}
 
-		if ("a" == "b") {
+		if ("a".equals("b")) {
 		}
 
-		if ("a" != "b") {
+		if (!"a".equals("b")) {
 		}
 
-		if (new String("a") == new String("b")) {
+		if ("a".equals("b")) {
 		}
 
-		if (new String("a") != new String("b")) {
+		if (!"a".equals("b")) {
 		}
 	}
 
 	public void testOtherPrimitivesShouldRefactor() {
-		if (new Byte("1") == new Byte("2")) {
+		if (Byte.valueOf("1").equals(Byte.valueOf("2"))) {
 		}
 
-		if (new Character('a') == new Character('b')) {
+		if (Character.valueOf('a').equals(Character.valueOf('b'))) {
 		}
 
-		if (new Short("1") == new Short("2")) {
+		if (Short.valueOf("1").equals(Short.valueOf("2"))) {
 		}
 
-		if (new Long(1) == new Long(2)) {
+		if (Long.valueOf(1).equals(Long.valueOf(2))) {
 		}
 
-		if (new Float(1) == new Float(2)) {
+		if (Float.valueOf(1).equals(Float.valueOf(2))) {
 		}
 
-		if (new Double(1) == new Double(2)) {
+		if (Double.valueOf(1).equals(Double.valueOf(2))) {
 		}
 
-		if (new Boolean(true) == new Boolean(false)) {
+		if (Boolean.valueOf(true).equals(Boolean.valueOf(false))) {
 		}
 	}
 
@@ -102,10 +103,10 @@ public class TestPrimitiveObjectUseEqualsRule {
 		if (a == b) {
 		}
 
-		if (new Integer(1) == 2) {
+		if (Integer.valueOf(1) == 2) {
 		}
 
-		if (1 == new Integer(2)) {
+		if (1 == Integer.valueOf(2)) {
 		}
 
 		if (1f == 2f) {
@@ -122,8 +123,8 @@ public class TestPrimitiveObjectUseEqualsRule {
 	}
 
 	public void testOtherInfixShouldNotRefactor() {
-		Integer a = new Integer(1);
-		Integer b = new Integer(2);
+		Integer a = Integer.valueOf(1);
+		Integer b = Integer.valueOf(2);
 
 		if (a >= b) {
 		}
@@ -140,10 +141,10 @@ public class TestPrimitiveObjectUseEqualsRule {
 
 	public void testCastedExpressionShouldNotRefactor() {
 		int c = 0;
-		Integer d = new Integer(1);
-		if ((Integer) c == d) {
+		Integer d = Integer.valueOf(1);
+		if (((Integer) c).equals(d)) {
 		}
-		if (d == (Integer) c) {
+		if (d.equals((Integer) c)) {
 		}
 		if (c == (Integer) d) {
 		}

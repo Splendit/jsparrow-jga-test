@@ -17,27 +17,27 @@ public class IndexOfToContainsRule {
 		String s = "searchString";
 
 		// not contains
-		if (l.indexOf(s) == -1) {
+		if (!l.contains(s)) {
 			l.add(s);
 		}
 
-		if (l.indexOf(s) < 0) {
+		if (!l.contains(s)) {
 			l.add(s);
 		}
 
-		if (l.indexOf(s) <= -1) {
+		if (!l.contains(s)) {
 			l.add(s);
 		}
 
-		if (-1 == l.indexOf(s)) {
+		if (!l.contains(s)) {
 			l.add(s);
 		}
 
-		if (0 > l.indexOf(s)) {
+		if (!l.contains(s)) {
 			l.add(s);
 		}
 
-		if (-1 >= l.indexOf(s)) {
+		if (!l.contains(s)) {
 			l.add(s);
 		}
 
@@ -46,27 +46,27 @@ public class IndexOfToContainsRule {
 		}
 
 		// contains
-		if (l.indexOf(s) != -1) {
+		if (l.contains(s)) {
 			l.remove(s);
 		}
 
-		if (l.indexOf(s) > -1) {
+		if (l.contains(s)) {
 			l.remove(s);
 		}
 
-		if (l.indexOf(s) >= 0) {
+		if (l.contains(s)) {
 			l.remove(s);
 		}
 
-		if (-1 != l.indexOf(s)) {
+		if (l.contains(s)) {
 			l.remove(s);
 		}
 
-		if (-1 < l.indexOf(s)) {
+		if (l.contains(s)) {
 			l.remove(s);
 		}
 
-		if (0 <= l.indexOf(s)) {
+		if (l.contains(s)) {
 			l.remove(s);
 		}
 
@@ -110,22 +110,25 @@ public class IndexOfToContainsRule {
 
 		int index = l.indexOf(s);
 		System.out.println("object found at index: " + index);
-		
+
 		/*
 		 * Some cases with comments
 		 */
-		
-		if (/* saving comments */ l.indexOf(s) == -1) {
+
+		/* saving comments */
+		if (!l.contains(s)) {
 			l.add(s);
 		}
-		
-		if (l // index of
-				.indexOf(s) == -1) {
+
+		// index of
+		if (!l // index of
+				.contains(s)) {
 			l.add(s);
 		}
-		
-		if (l // I don't want to break anything
-				.indexOf(s) < 0) {
+
+		// I don't want to break anything
+		if (!l // I don't want to break anything
+				.contains(s)) {
 			l.add(s);
 		}
 	}
@@ -134,27 +137,27 @@ public class IndexOfToContainsRule {
 		String s = "Hello World";
 
 		// not contains
-		if (s.indexOf("ello") == -1) {
+		if (!s.contains("ello")) {
 			System.out.println(s);
 		}
 
-		if (s.indexOf("ello") < 0) {
+		if (!s.contains("ello")) {
 			System.out.println(s);
 		}
 
-		if (s.indexOf("ello") <= -1) {
+		if (!s.contains("ello")) {
 			System.out.println(s);
 		}
 
-		if (-1 == s.indexOf("ello")) {
+		if (!s.contains("ello")) {
 			System.out.println(s);
 		}
 
-		if (0 > s.indexOf("ello")) {
+		if (!s.contains("ello")) {
 			System.out.println(s);
 		}
 
-		if (-1 >= s.indexOf("ello")) {
+		if (!s.contains("ello")) {
 			System.out.println(s);
 		}
 
@@ -163,35 +166,36 @@ public class IndexOfToContainsRule {
 		}
 
 		// contains
-		if (s.indexOf("ello") != -1) {
-			System.out.println(s);
-		}
-
-		if (s.indexOf("ello") > -1) {
-			System.out.println(s);
-		}
-
-		if (s.indexOf("ello") >= 0) {
-			System.out.println(s);
-		}
-
-		if (-1 != s.indexOf("ello")) {
-			System.out.println(s);
-		}
-
-		if (-1 < s.indexOf("ello")) {
-			System.out.println(s);
-		}
-
-		if (0 <= s.indexOf("ello")) {
+		if (s.contains("ello")) {
 			System.out.println(s);
 		}
 
 		if (s.contains("ello")) {
 			System.out.println(s);
 		}
-		
-		if (/* save me */ s.indexOf("ello") != -1) {
+
+		if (s.contains("ello")) {
+			System.out.println(s);
+		}
+
+		if (s.contains("ello")) {
+			System.out.println(s);
+		}
+
+		if (s.contains("ello")) {
+			System.out.println(s);
+		}
+
+		if (s.contains("ello")) {
+			System.out.println(s);
+		}
+
+		if (s.contains("ello")) {
+			System.out.println(s);
+		}
+
+		/* save me */
+		if (s.contains("ello")) {
 			System.out.println(s);
 		}
 

@@ -11,9 +11,8 @@ import java.util.Observer;
  * @since 2.1.1
  */
 @SuppressWarnings("serial")
-public class ReImplementingInterfaceRule<E> extends SuperClass3<E>
-		implements List<E>, Iterable<E> // 
-		, Comparable<E>, Observer {
+public class ReImplementingInterfaceRule<E> extends SuperClass3<E> implements Iterable<E> //
+{
 	@Override
 	public int compareTo(E o) {
 		// TODO Auto-generated method stub
@@ -44,13 +43,13 @@ class SuperClass2<E> extends SuperClass1<E> implements Comparable<E>, Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
 
 @SuppressWarnings("serial")
-class SuperClass3<E> extends SuperClass2<E> implements Observer {
+class SuperClass3<E> extends SuperClass2<E> {
 
 	@Override
 	public int compareTo(E o) {
@@ -71,11 +70,11 @@ class SuperClass4 implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
 
-class SuperClass5 extends SuperClass4 implements Observer {
-	
+class SuperClass5 extends SuperClass4 {
+
 }

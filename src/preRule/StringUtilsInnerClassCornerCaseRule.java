@@ -1,7 +1,7 @@
 package preRule;
 
 /**
- * Having an inner class named StringUtils. 
+ * Having an inner class named StringUtils.
  * 
  * @author Ardit Ymeri
  * @since 1.0
@@ -13,7 +13,7 @@ public class StringUtilsInnerClassCornerCaseRule {
 	public int testIndexOf(String testString) {
 		return testString.indexOf("e");
 	}
-	
+
 	class StringUtils {
 		public int indexOf(String s1, String s2) {
 			// do nothing

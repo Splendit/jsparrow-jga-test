@@ -2,6 +2,44 @@ package preRule;
 
 public abstract class TestFunctionalInterface3Rule {
 
+	static {
+		staticGetRunnableHash();
+	}
+
+	static {
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+				hashCode();
+			}
+		};
+		r.run();
+	}
+
+	static {
+		staticGetRunnable();
+	}
+
+	static {
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+				getClass();
+			}
+		};
+		r.run();
+	}
+
+	{
+		Runnable r = this::hashCode;
+		r.run();
+	}
+
+	{
+		Runnable r = () -> getClass();
+		r.run();
+	}
+
 	@Override
 	public int hashCode() {
 		return 0;
@@ -16,37 +54,8 @@ public abstract class TestFunctionalInterface3Rule {
 		};
 	}
 
-	static {
-		staticGetRunnableHash();
-	}
-
 	public Runnable getRunnableHash() {
-		return new Runnable() {
-			@Override
-			public void run() {
-				hashCode();
-			}
-		};
-	}
-
-	static {
-		Runnable r = new Runnable() {
-			@Override
-			public void run() {
-				hashCode();
-			}
-		};
-		r.run();
-	}
-
-	{
-		Runnable r = new Runnable() {
-			@Override
-			public void run() {
-				hashCode();
-			}
-		};
-		r.run();
+		return this::hashCode;
 	}
 
 	private static Runnable staticGetRunnable() {
@@ -58,37 +67,8 @@ public abstract class TestFunctionalInterface3Rule {
 		};
 	}
 
-	static {
-		staticGetRunnable();
-	}
-
 	public Runnable getRunnable() {
-		return new Runnable() {
-			@Override
-			public void run() {
-				getClass();
-			}
-		};
-	}
-
-	static {
-		Runnable r = new Runnable() {
-			@Override
-			public void run() {
-				getClass();
-			}
-		};
-		r.run();
-	}
-
-	{
-		Runnable r = new Runnable() {
-			@Override
-			public void run() {
-				getClass();
-			}
-		};
-		r.run();
+		return () -> getClass();
 	}
 
 }
