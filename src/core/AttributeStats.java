@@ -62,12 +62,9 @@ public class AttributeStats implements Serializable, RevisionHandler {
 	/**
 	 * Updates the counters for one more observed distinct value.
 	 *
-	 * @param value
-	 *            the value that has just been seen
-	 * @param count
-	 *            the number of times the value appeared
-	 * @param weight
-	 *            the weight mass of the value
+	 * @param value  the value that has just been seen
+	 * @param count  the number of times the value appeared
+	 * @param weight the weight mass of the value
 	 */
 	protected void addDistinct(double value, int count, double weight) {
 
@@ -76,9 +73,9 @@ public class AttributeStats implements Serializable, RevisionHandler {
 				uniqueCount++;
 			}
 			if (Utils.eq(value, (double) ((int) value))) {
-				intCount = intCount + count;
+				intCount += count;
 			} else {
-				realCount = realCount + count;
+				realCount += count;
 			}
 			if (nominalCounts != null) {
 				nominalCounts[(int) value] = count;
@@ -96,7 +93,7 @@ public class AttributeStats implements Serializable, RevisionHandler {
 	@Override
 	public String toString() {
 
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(Utils.padLeft("Type", 4)).append(Utils.padLeft("Nom", 5));
 		sb.append(Utils.padLeft("Int", 5)).append(Utils.padLeft("Real", 5));
 		sb.append(Utils.padLeft("Missing", 12));
@@ -114,22 +111,22 @@ public class AttributeStats implements Serializable, RevisionHandler {
 		percent = Math.round(100.0 * intCount / totalCount);
 		if (nominalCounts != null) {
 			sb.append(Utils.padLeft("Nom", 4)).append(' ');
-			sb.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
-			sb.append(Utils.padLeft(new Integer(0).toString(), 3)).append("% ");
+			sb.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
+			sb.append(Utils.padLeft(Integer.toString(0), 3)).append("% ");
 		} else {
 			sb.append(Utils.padLeft("Num", 4)).append(' ');
-			sb.append(Utils.padLeft(new Integer(0).toString(), 3)).append("% ");
-			sb.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
+			sb.append(Utils.padLeft(Integer.toString(0), 3)).append("% ");
+			sb.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
 		}
 		percent = Math.round(100.0 * realCount / totalCount);
-		sb.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
-		sb.append(Utils.padLeft(new Integer(missingCount).toString(), 5)).append(" /");
+		sb.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
+		sb.append(Utils.padLeft(Integer.toString(missingCount), 5)).append(" /");
 		percent = Math.round(100.0 * missingCount / totalCount);
-		sb.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
-		sb.append(Utils.padLeft(new Integer(uniqueCount).toString(), 5)).append(" /");
+		sb.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
+		sb.append(Utils.padLeft(Integer.toString(uniqueCount), 5)).append(" /");
 		percent = Math.round(100.0 * uniqueCount / totalCount);
-		sb.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
-		sb.append(Utils.padLeft(new Integer(distinctCount).toString(), 5)).append(' ');
+		sb.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
+		sb.append(Utils.padLeft(Integer.toString(distinctCount), 5)).append(' ');
 		if (nominalCounts != null) {
 			for (int iterator : nominalCounts) {
 				sb.append(Utils.padLeft(Integer.toString(iterator), 5));
