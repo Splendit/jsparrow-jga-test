@@ -29,9 +29,15 @@ package gui.graphvisualizer;
  */
 public class GraphEdge extends Object {
 
-	public int src, dest, type;
-	
-	public String srcLbl, destLbl;
+	public int src;
+
+	public int dest;
+
+	public int type;
+
+	public String srcLbl;
+
+	public String destLbl;
 
 	public GraphEdge(int s, int d, int t) {
 		src = s;
