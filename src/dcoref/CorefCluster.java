@@ -37,65 +37,86 @@ import java.util.Set;
 import dcoref.Dictionaries.Animacy;
 import dcoref.Dictionaries.Gender;
 import dcoref.Dictionaries.Number;
+import java.util.Collections;
+
 /**
  * One cluster for the SieveCoreferenceSystem.
  *
  * @author Heeyoung Lee
  */
-public class CorefCluster implements Serializable{
+public class CorefCluster implements Serializable {
 
-  private static final long serialVersionUID = 8655265337578515592L;
+	private static final long serialVersionUID = 8655265337578515592L;
 
-  protected final Set<String> corefMentions;
-  protected final int clusterID;
+	private static final Set<String> nerStrings = Collections
+			.unmodifiableSet(new HashSet<>(Arrays.asList("singular", "plural")));
 
-  // Attributes for cluster - can include multiple attribute e.g., {singular, plural}
-  protected final Set<Number> numbers;
-  protected final Set<Gender> genders;
-  protected final Set<Animacy> animacies;
-  private static final Set<String> nerStrings = new HashSet<>(Arrays.asList("singular", "plural"));
-  protected final Set<String> heads;
+	protected final Set<String> corefMentions;
 
-  /** All words in this cluster - for word inclusion feature  */
-  public final Set<String> words;
+	protected final int clusterID;
 
-  /** The first mention in this cluster */
-  protected String firstMention;
+	// Attributes for cluster - can include multiple attribute e.g., {singular,
+	// plural}
+	protected final Set<Number> numbers;
 
-  /** Return the most representative mention in the chain.
-   *  A proper noun mention or a mention with more pre-modifiers is preferred.
-   */
-  protected String representative;
+	protected final Set<Gender> genders;
 
-  public int getClusterID(){ return clusterID; }
-  public Set<String> getCorefMentions() { return corefMentions; }
-  public String getFirstMention() { return firstMention; }
-  public String getRepresentativeMention() { return representative; }
+	protected final Set<Animacy> animacies;
 
-  public CorefCluster(int ID) {
-    clusterID = ID;
-    corefMentions = new HashSet<>();
-    numbers = EnumSet.noneOf(Number.class);
-    genders = EnumSet.noneOf(Gender.class);
-    animacies = EnumSet.noneOf(Animacy.class);
-    heads = new HashSet<>();
-    words = new HashSet<>();
-    firstMention = null;
-    representative = null;
-  }
+	protected final Set<String> heads;
 
-  public CorefCluster(int ID, Set<String> mentions){
-    this(ID);
-    // Register mentions
-    corefMentions.addAll(mentions);
-    // Get list of mentions in textual order
-    List<String> sortedMentions = new ArrayList<>(mentions.size());
-    sortedMentions.addAll(mentions);
-    // Set default for first / representative mention
-    if (sortedMentions.size() > 0) {
-      firstMention = sortedMentions.get(0);
-      representative = sortedMentions.get(0); // will be updated below
-    }
-  }
+	/** All words in this cluster - for word inclusion feature */
+	public final Set<String> words;
+
+	/** The first mention in this cluster */
+	protected String firstMention;
+
+	/**
+	 * Return the most representative mention in the chain. A proper noun mention or
+	 * a mention with more pre-modifiers is preferred.
+	 */
+	protected String representative;
+
+	public CorefCluster(int ID) {
+		clusterID = ID;
+		corefMentions = new HashSet<>();
+		numbers = EnumSet.noneOf(Number.class);
+		genders = EnumSet.noneOf(Gender.class);
+		animacies = EnumSet.noneOf(Animacy.class);
+		heads = new HashSet<>();
+		words = new HashSet<>();
+		firstMention = null;
+		representative = null;
+	}
+
+	public CorefCluster(int ID, Set<String> mentions) {
+		this(ID);
+		// Register mentions
+		corefMentions.addAll(mentions);
+		// Get list of mentions in textual order
+		List<String> sortedMentions = new ArrayList<>(mentions.size());
+		sortedMentions.addAll(mentions);
+		// Set default for first / representative mention
+		if (sortedMentions.size() > 0) {
+			firstMention = sortedMentions.get(0);
+			representative = sortedMentions.get(0); // will be updated below
+		}
+	}
+
+	public int getClusterID() {
+		return clusterID;
+	}
+
+	public Set<String> getCorefMentions() {
+		return corefMentions;
+	}
+
+	public String getFirstMention() {
+		return firstMention;
+	}
+
+	public String getRepresentativeMention() {
+		return representative;
+	}
 
 }
