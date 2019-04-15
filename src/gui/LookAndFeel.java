@@ -38,6 +38,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import core.Environment;
 import core.Settings;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A little helper class for setting the Look and Feel of the user interface.
@@ -99,8 +100,8 @@ public class LookAndFeel {
 			UIManager.setLookAndFeel(classname);
 			result = true;
 
-			if (System.getProperty("os.name").toLowerCase().contains("mac os x")
-					&& !classname.contains("com.apple.laf")) {
+			if (StringUtils.contains(System.getProperty("os.name").toLowerCase(), "mac os x")
+					&& !StringUtils.contains(classname, "com.apple.laf")) {
 				KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher((KeyEvent e) -> {
 					if (!e.isConsumed()) {
 						if (e.isMetaDown()) {
@@ -116,7 +117,7 @@ public class LookAndFeel {
 
 			// workaround for scrollbar handle disappearing bug in Nimbus LAF:
 			// https://bugs.openjdk.java.net/browse/JDK-8134828
-			if (classname.toLowerCase().contains("nimbus")) {
+			if (StringUtils.contains(classname.toLowerCase(), "nimbus")) {
 				javax.swing.LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
 				UIDefaults defaults = lookAndFeel.getDefaults();
 				defaults.put("ScrollBar.minimumThumbSize", new Dimension(30, 30));
@@ -143,7 +144,7 @@ public class LookAndFeel {
 		String laf = forLookAndFeelOnly.getSetting(appID, lookAndFeelKey, defaultLookAndFeel,
 				Environment.getSystemWide());
 
-		if (laf.length() > 0 && laf.contains(".") && LookAndFeel.setLookAndFeel(laf)) {
+		if (laf.length() > 0 && StringUtils.contains(laf, ".") && LookAndFeel.setLookAndFeel(laf)) {
 		} else {
 			LookAndFeel.setLookAndFeel();
 		}
@@ -164,7 +165,7 @@ public class LookAndFeel {
 			// theme, hence we don't set any theme by default if we're on a
 			// Linux
 			// box.
-			if ("linux".equalsIgnoreCase(System.getProperty("os.name"))) {
+			if (StringUtils.equalsIgnoreCase("linux", System.getProperty("os.name"))) {
 				return true;
 			} else {
 				classname = getSystemLookAndFeel();

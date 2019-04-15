@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class for handling an instance. All values (numeric, date, nominal, string or
@@ -462,7 +463,8 @@ public class DenseInstance extends AbstractInstance {
 			System.out.println("Shallow copy: " + copy);
 
 			my_nominal_values.add("five");
-			values.addAll(my_nominal_values.stream().map(o -> o.substring(0)).collect(Collectors.toList()));
+			values.addAll(
+					my_nominal_values.stream().map(o -> StringUtils.substring(o, 0)).collect(Collectors.toList()));
 
 			// Set dataset for shallow copy
 			copy.setDataset(inst.dataset());

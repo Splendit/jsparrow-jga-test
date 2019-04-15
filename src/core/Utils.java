@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Vector;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class implementing some simple utility methods.
@@ -200,7 +201,7 @@ public final class Utils implements RevisionHandler {
 		// eg: see jdk1.1/docs/guide/misc/resources.html
 		int slInd = resourceName.lastIndexOf('/');
 		if (slInd != -1) {
-			resourceName = resourceName.substring(slInd + 1);
+			resourceName = StringUtils.substring(resourceName, slInd + 1);
 		}
 
 		// Allow a properties file in the WekaPackageManager.PROPERTIES_DIR to
@@ -284,11 +285,11 @@ public final class Utils implements RevisionHandler {
 		StringBuilder result = new StringBuilder();
 		int oldLoc = 0;
 		int loc = 0;
-		while ((loc = inString.indexOf(substring, oldLoc)) != -1) {
-			result.append(inString.substring(oldLoc, loc));
+		while ((loc = StringUtils.indexOf(inString, substring, oldLoc)) != -1) {
+			result.append(StringUtils.substring(inString, oldLoc, loc));
 			oldLoc = loc + substring.length();
 		}
-		result.append(inString.substring(oldLoc));
+		result.append(StringUtils.substring(inString, oldLoc));
 		return result.toString();
 	}
 
@@ -305,12 +306,12 @@ public final class Utils implements RevisionHandler {
 		StringBuilder result = new StringBuilder();
 		int oldLoc = 0;
 		int loc = 0;
-		while ((loc = inString.indexOf(subString, oldLoc)) != -1) {
-			result.append(inString.substring(oldLoc, loc));
+		while ((loc = StringUtils.indexOf(inString, subString, oldLoc)) != -1) {
+			result.append(StringUtils.substring(inString, oldLoc, loc));
 			result.append(replaceString);
 			oldLoc = loc + subString.length();
 		}
-		result.append(inString.substring(oldLoc));
+		result.append(StringUtils.substring(inString, oldLoc));
 		return result.toString();
 	}
 
@@ -407,7 +408,7 @@ public final class Utils implements RevisionHandler {
 
 		if (afterDecimalPoint > 0) {
 			// Get position of decimal point and insert decimal point
-			dotPosition = tempString.indexOf('.');
+			dotPosition = StringUtils.indexOf(tempString, '.');
 			if (dotPosition == -1) {
 				dotPosition = tempString.length();
 			} else {
@@ -709,17 +710,19 @@ public final class Utils implements RevisionHandler {
 		boolean quote = false;
 
 		// backquote the following characters
-		if ((string.indexOf('\n') != -1) || (string.indexOf('\r') != -1) || (string.indexOf('\'') != -1)
-				|| (string.indexOf('"') != -1) || (string.indexOf('\\') != -1) || (string.indexOf('\t') != -1)
-				|| (string.indexOf('%') != -1) || (string.indexOf('\u001E') != -1)) {
+		if ((StringUtils.indexOf(string, '\n') != -1) || (StringUtils.indexOf(string, '\r') != -1)
+				|| (StringUtils.indexOf(string, '\'') != -1) || (StringUtils.indexOf(string, '"') != -1)
+				|| (StringUtils.indexOf(string, '\\') != -1) || (StringUtils.indexOf(string, '\t') != -1)
+				|| (StringUtils.indexOf(string, '%') != -1) || (StringUtils.indexOf(string, '\u001E') != -1)) {
 			string = backQuoteChars(string);
 			quote = true;
 		}
 
 		// Enclose the string in 's if the string contains a recently added
 		// backquote or contains one of the following characters.
-		if ((quote == true) || (string.indexOf('{') != -1) || (string.indexOf('}') != -1) || (string.indexOf(',') != -1)
-				|| ("?".equals(string)) || (string.indexOf(' ') != -1) || ("".equals(string))) {
+		if ((quote == true) || (StringUtils.indexOf(string, '{') != -1) || (StringUtils.indexOf(string, '}') != -1)
+				|| (StringUtils.indexOf(string, ',') != -1) || ("?".equals(string))
+				|| (StringUtils.indexOf(string, ' ') != -1) || ("".equals(string))) {
 			string = ("'" + string) + "'";
 		}
 
@@ -735,12 +738,13 @@ public final class Utils implements RevisionHandler {
 	 * @see #quote(String)
 	 */
 	public static String unquote(String string) {
-		if (string.startsWith("'") && string.endsWith("'")) {
-			string = string.substring(1, string.length() - 1);
+		if (StringUtils.startsWith(string, "'") && StringUtils.endsWith(string, "'")) {
+			string = StringUtils.substring(string, 1, string.length() - 1);
 
-			if ((string.contains("\\n")) || (string.contains("\\r")) || (string.contains("\\'"))
-					|| (string.contains("\\\"")) || (string.contains("\\\\")) || (string.contains("\\t"))
-					|| (string.contains("\\%")) || (string.contains("\\u001E"))) {
+			if ((StringUtils.contains(string, "\\n")) || (StringUtils.contains(string, "\\r"))
+					|| (StringUtils.contains(string, "\\'")) || (StringUtils.contains(string, "\\\""))
+					|| (StringUtils.contains(string, "\\\\")) || (StringUtils.contains(string, "\\t"))
+					|| (StringUtils.contains(string, "\\%")) || (StringUtils.contains(string, "\\u001E"))) {
 				string = unbackQuoteChars(string);
 			}
 		}
@@ -765,15 +769,15 @@ public final class Utils implements RevisionHandler {
 		char charsFind[] = { '\\', '\'', '\t', '\n', '\r', '"', '%', '\u001E' };
 		String charsReplace[] = { "\\\\", "\\'", "\\t", "\\n", "\\r", "\\\"", "\\%", "\\u001E" };
 		for (int i = 0; i < charsFind.length; i++) {
-			if (string.indexOf(charsFind[i]) != -1) {
+			if (StringUtils.indexOf(string, charsFind[i]) != -1) {
 				newStringBuffer = new StringBuilder();
-				while ((index = string.indexOf(charsFind[i])) != -1) {
+				while ((index = StringUtils.indexOf(string, charsFind[i])) != -1) {
 					if (index > 0) {
-						newStringBuffer.append(string.substring(0, index));
+						newStringBuffer.append(StringUtils.substring(string, 0, index));
 					}
 					newStringBuffer.append(charsReplace[i]);
 					if ((index + 1) < string.length()) {
-						string = string.substring(index + 1);
+						string = StringUtils.substring(string, index + 1);
 					} else {
 						string = "";
 					}
@@ -797,14 +801,14 @@ public final class Utils implements RevisionHandler {
 
 		// Replace with \n
 		StringBuilder newStringBuffer = new StringBuilder();
-		while ((index = string.indexOf('\n')) != -1) {
+		while ((index = StringUtils.indexOf(string, '\n')) != -1) {
 			if (index > 0) {
-				newStringBuffer.append(string.substring(0, index));
+				newStringBuffer.append(StringUtils.substring(string, 0, index));
 			}
 			newStringBuffer.append('\\');
 			newStringBuffer.append('n');
 			if ((index + 1) < string.length()) {
-				string = string.substring(index + 1);
+				string = StringUtils.substring(string, index + 1);
 			} else {
 				string = "";
 			}
@@ -814,14 +818,14 @@ public final class Utils implements RevisionHandler {
 
 		// Replace with \r
 		newStringBuffer = new StringBuilder();
-		while ((index = string.indexOf('\r')) != -1) {
+		while ((index = StringUtils.indexOf(string, '\r')) != -1) {
 			if (index > 0) {
-				newStringBuffer.append(string.substring(0, index));
+				newStringBuffer.append(StringUtils.substring(string, 0, index));
 			}
 			newStringBuffer.append('\\');
 			newStringBuffer.append('r');
 			if ((index + 1) < string.length()) {
-				string = string.substring(index + 1);
+				string = StringUtils.substring(string, index + 1);
 			} else {
 				string = "";
 			}
@@ -841,13 +845,13 @@ public final class Utils implements RevisionHandler {
 
 		// Replace with \n
 		StringBuilder newStringBuffer = new StringBuilder();
-		while ((index = string.indexOf("\\n")) != -1) {
+		while ((index = StringUtils.indexOf(string, "\\n")) != -1) {
 			if (index > 0) {
-				newStringBuffer.append(string.substring(0, index));
+				newStringBuffer.append(StringUtils.substring(string, 0, index));
 			}
 			newStringBuffer.append('\n');
 			if ((index + 2) < string.length()) {
-				string = string.substring(index + 2);
+				string = StringUtils.substring(string, index + 2);
 			} else {
 				string = "";
 			}
@@ -857,13 +861,13 @@ public final class Utils implements RevisionHandler {
 
 		// Replace with \r
 		newStringBuffer = new StringBuilder();
-		while ((index = string.indexOf("\\r")) != -1) {
+		while ((index = StringUtils.indexOf(string, "\\r")) != -1) {
 			if (index > 0) {
-				newStringBuffer.append(string.substring(0, index));
+				newStringBuffer.append(StringUtils.substring(string, 0, index));
 			}
 			newStringBuffer.append('\r');
 			if ((index + 2) < string.length()) {
-				string = string.substring(index + 2);
+				string = StringUtils.substring(string, index + 2);
 			} else {
 				string = "";
 			}
@@ -924,7 +928,7 @@ public final class Utils implements RevisionHandler {
 			curPos = str.length();
 			index = -1;
 			for (int i = 0; i < pos.length; i++) {
-				pos[i] = str.indexOf(charsFind[i]);
+				pos[i] = StringUtils.indexOf(str, charsFind[i]);
 				if ((pos[i] > -1) && (pos[i] < curPos)) {
 					index = i;
 					curPos = pos[i];
@@ -936,9 +940,9 @@ public final class Utils implements RevisionHandler {
 				newStringBuffer.append(str);
 				str = "";
 			} else {
-				newStringBuffer.append(str.substring(0, pos[index]));
+				newStringBuffer.append(StringUtils.substring(str, 0, pos[index]));
 				newStringBuffer.append(charsReplace[index]);
-				str = str.substring(pos[index] + charsFind[index].length());
+				str = StringUtils.substring(str, pos[index] + charsFind[index].length());
 			}
 		}
 
@@ -967,10 +971,10 @@ public final class Utils implements RevisionHandler {
 			while ((i < str.length()) && (Character.isWhitespace(str.charAt(i)))) {
 				i++;
 			}
-			str = str.substring(i);
+			str = StringUtils.substring(str, i);
 
 			// stop when str is empty
-			if (str.isEmpty()) {
+			if (StringUtils.isEmpty(str)) {
 				break;
 			}
 
@@ -996,10 +1000,10 @@ public final class Utils implements RevisionHandler {
 				}
 
 				// add the founded string to the option vector (without quotes)
-				String optStr = str.substring(1, i);
+				String optStr = StringUtils.substring(str, 1, i);
 				optStr = unbackQuoteChars(optStr);
 				optionsVec.addElement(optStr);
-				str = str.substring(i + 1);
+				str = StringUtils.substring(str, i + 1);
 			} else {
 				// find first whiteSpace
 				i = 0;
@@ -1008,9 +1012,9 @@ public final class Utils implements RevisionHandler {
 				}
 
 				// add the founded string to the option vector
-				String optStr = str.substring(0, i);
+				String optStr = StringUtils.substring(str, 0, i);
 				optionsVec.addElement(optStr);
-				str = str.substring(i);
+				str = StringUtils.substring(str, i);
 			}
 		}
 
@@ -1051,7 +1055,7 @@ public final class Utils implements RevisionHandler {
 			}
 			optionString += " ";
 		}
-		return optionString.trim();
+		return StringUtils.trim(optionString);
 	}
 
 	/**
@@ -1083,7 +1087,7 @@ public final class Utils implements RevisionHandler {
 	 */
 	public static Object forName(Class<?> classType, String className, String[] options) throws Exception {
 
-		if ("true".equalsIgnoreCase(System.getProperty("weka.test.maventest", ""))) {
+		if (StringUtils.equalsIgnoreCase("true", System.getProperty("weka.test.maventest", ""))) {
 			return forNameNoSchemeMatch(classType, className, options);
 		}
 
@@ -1180,7 +1184,7 @@ public final class Utils implements RevisionHandler {
 			}
 		}
 
-		return result.toString().trim();
+		return StringUtils.trim(result.toString());
 	}
 
 	/**
@@ -2017,7 +2021,7 @@ public final class Utils implements RevisionHandler {
 			// Cygwin doesn't like upper case drives -> try lower case drive
 			try {
 				fileStr = absolute.getPath();
-				fileStr = fileStr.substring(0, 1).toLowerCase() + fileStr.substring(1);
+				fileStr = StringUtils.lowerCase(fileStr.substring(0, 1)) + StringUtils.substring(fileStr, 1);
 				result = createRelativePath(new File(fileStr));
 			} catch (Exception e) {
 				// no luck with Cygwin workaround, convert it like it is
@@ -2049,32 +2053,32 @@ public final class Utils implements RevisionHandler {
 		StringBuilder relativePath = new StringBuilder();
 
 		// file is in user dir (or subdir)
-		int subdir = targetPath.indexOf(userPath);
+		int subdir = StringUtils.indexOf(targetPath, userPath);
 		if (subdir == 0) {
 			if (userPath.length() == targetPath.length()) {
 				relativePath.append(fileName);
 			} else {
 				int ll = userPath.length();
-				relativePath.append(targetPath.substring(ll));
+				relativePath.append(StringUtils.substring(targetPath, ll));
 				relativePath.append(fileName);
 			}
 		} else {
 			int sepCount = 0;
 			String temp = userPath;
-			while (temp.contains(File.separator)) {
-				int ind = temp.indexOf(File.separator);
+			while (StringUtils.contains(temp, File.separator)) {
+				int ind = StringUtils.indexOf(temp, File.separator);
 				sepCount++;
-				temp = temp.substring(ind + 1, temp.length());
+				temp = StringUtils.substring(temp, ind + 1, temp.length());
 			}
 
 			String targetTemp = targetPath;
 			String userTemp = userPath;
 			int tcount = 0;
-			while (targetTemp.contains(File.separator)) {
-				int ind = targetTemp.indexOf(File.separator);
-				int ind2 = userTemp.indexOf(File.separator);
-				String tpart = targetTemp.substring(0, ind + 1);
-				String upart = userTemp.substring(0, ind2 + 1);
+			while (StringUtils.contains(targetTemp, File.separator)) {
+				int ind = StringUtils.indexOf(targetTemp, File.separator);
+				int ind2 = StringUtils.indexOf(userTemp, File.separator);
+				String tpart = StringUtils.substring(targetTemp, 0, ind + 1);
+				String upart = StringUtils.substring(userTemp, 0, ind2 + 1);
 				if (tpart.compareTo(upart) != 0) {
 					if (tcount == 0) {
 						tcount = -1;
@@ -2082,14 +2086,14 @@ public final class Utils implements RevisionHandler {
 					break;
 				}
 				tcount++;
-				targetTemp = targetTemp.substring(ind + 1, targetTemp.length());
-				userTemp = userTemp.substring(ind2 + 1, userTemp.length());
+				targetTemp = StringUtils.substring(targetTemp, ind + 1, targetTemp.length());
+				userTemp = StringUtils.substring(userTemp, ind2 + 1, userTemp.length());
 			}
 			if (tcount == -1) {
 				// then target file is probably on another drive (under windows)
 				throw new Exception("Can't construct a path to file relative to user " + "dir.");
 			}
-			if (!targetTemp.contains(File.separator)) {
+			if (!StringUtils.contains(targetTemp, File.separator)) {
 				targetTemp = "";
 			}
 			for (int i = 0; i < sepCount - tcount; i++) {
@@ -2268,10 +2272,10 @@ public final class Utils implements RevisionHandler {
 			line = "";
 
 			while (boundaryEnd != BreakIterator.DONE) {
-				word = iterator.substring(boundaryStart, boundaryEnd);
+				word = StringUtils.substring(iterator, boundaryStart, boundaryEnd);
 				if (line.length() >= columns) {
 					if (word.length() == 1) {
-						if (punctuation.indexOf(word.charAt(0)) > -1) {
+						if (StringUtils.indexOf(punctuation, word.charAt(0)) > -1) {
 							line += word;
 							word = "";
 						}
@@ -2334,20 +2338,20 @@ public final class Utils implements RevisionHandler {
 			StringBuilder firstLine = new StringBuilder();
 			firstLine.append("<font color=blue>");
 			boolean addFirstBreaks = true;
-			int indexOfDot = gi.indexOf(".");
+			int indexOfDot = StringUtils.indexOf(gi, ".");
 			if (indexOfDot > 0) {
-				firstLine.append(gi.substring(0, gi.indexOf(".")));
+				firstLine.append(StringUtils.substring(gi, 0, StringUtils.indexOf(gi, ".")));
 				if (gi.length() - indexOfDot < 3) {
 					addFirstBreaks = false;
 				}
-				gi = gi.substring(indexOfDot + 1, gi.length());
+				gi = StringUtils.substring(gi, indexOfDot + 1, gi.length());
 			} else {
 				firstLine.append(gi);
 				gi = "";
 			}
 			firstLine.append("</font>");
-			if ((addFirstBreaks) && !(gi.startsWith("\n\n"))) {
-				if (!gi.startsWith("\n")) {
+			if ((addFirstBreaks) && !(StringUtils.startsWith(gi, "\n\n"))) {
+				if (!StringUtils.startsWith(gi, "\n")) {
 					firstLine.append("<br>");
 				}
 				firstLine.append("<br>");
@@ -2360,7 +2364,7 @@ public final class Utils implements RevisionHandler {
 
 		if (addCapabilities) {
 			if (object instanceof CapabilitiesHandler) {
-				if (!result.toString().endsWith("<br><br>")) {
+				if (!StringUtils.endsWith(result.toString(), "<br><br>")) {
 					result.append("<br>");
 				}
 				String caps = "<font color=red>CAPABILITIES</font>";
@@ -2403,7 +2407,7 @@ public final class Utils implements RevisionHandler {
 		int previous = 0;
 		while (true) {
 			int next = biterator.next();
-			String toAdd = input.substring(linestart, previous);
+			String toAdd = StringUtils.substring(input, linestart, previous);
 			if (next == BreakIterator.DONE) {
 				sb.append(toAdd);
 				break;
@@ -2414,7 +2418,7 @@ public final class Utils implements RevisionHandler {
 			} else {
 				int newLineIndex = toAdd.lastIndexOf('\n');
 				if (newLineIndex != -1) {
-					sb.append(toAdd.substring(0, newLineIndex + 1));
+					sb.append(StringUtils.substring(toAdd, 0, newLineIndex + 1));
 					linestart += newLineIndex + 1;
 				}
 			}

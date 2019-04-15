@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class to store information about an option.
@@ -154,16 +155,16 @@ public class Option implements RevisionHandler {
 				if (o.commandLineParamName().length() > 0) {
 					opOrder[index] = o.displayOrder();
 					String description = o.description();
-					if (!description.startsWith("\t")) {
+					if (!StringUtils.startsWith(description, "\t")) {
 						description = "\t" + description;
 					}
 					description = description.replace("\n", "\n\t");
 					String name = o.commandLineParamName();
-					if (name.startsWith("-")) {
-						name = name.substring(1, name.length());
+					if (StringUtils.startsWith(name, "-")) {
+						name = StringUtils.substring(name, 1, name.length());
 					}
 					String synopsis = o.commandLineParamSynopsis();
-					if (!synopsis.startsWith("-")) {
+					if (!StringUtils.startsWith(synopsis, "-")) {
 						synopsis = "-" + synopsis;
 					}
 					int numParams = o.commandLineParamIsFlag() ? 0 : 1;
@@ -441,7 +442,7 @@ public class Option implements RevisionHandler {
 								optionValues.add(optionValue);
 								while (true) {
 									optionValue = Utils.getOption(parameterDescription.commandLineParamName(), options);
-									if (optionValue.isEmpty()) {
+									if (StringUtils.isEmpty(optionValue)) {
 										break;
 									}
 									optionValues.add(optionValue);
@@ -472,7 +473,7 @@ public class Option implements RevisionHandler {
 								} catch (NumberFormatException e) {
 									// try to match tag strings
 									for (int z = 0; z < legalTags.length; z++) {
-										if (legalTags[z].getReadable().equals(optionValue.trim())) {
+										if (legalTags[z].getReadable().equals(StringUtils.trim(optionValue))) {
 											tagIndex = z;
 											break;
 										}

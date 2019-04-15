@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class parses an inputstream or a string in XMLBIF ver. 0.3 format, and
@@ -134,15 +135,15 @@ public class BIFParser implements GraphConstants {
 			// getting nodes position
 			templist = ((Element) nl.item(i)).getElementsByTagName("PROPERTY");
 			for (int j = 0; j < templist.getLength(); j++) {
-				if (templist.item(j).getFirstChild().getNodeValue().startsWith("position")) {
+				if (StringUtils.startsWith(templist.item(j).getFirstChild().getNodeValue(), "position")) {
 					String xy = templist.item(j).getFirstChild().getNodeValue();
 					// System.out.println("x: "+
 					// xy.substring(xy.indexOf('(')+1, xy.indexOf(','))+
 					// " y: "+
 					// xy.substring(xy.indexOf(',')+1, xy.indexOf(')'))
 					// );
-					n.x = Integer.parseInt(xy.substring(xy.indexOf('(') + 1, xy.indexOf(',')).trim());
-					n.y = Integer.parseInt(xy.substring(xy.indexOf(',') + 1, xy.indexOf(')')).trim());
+					n.x = Integer.parseInt(StringUtils.trim(xy.substring(xy.indexOf('(') + 1, xy.indexOf(','))));
+					n.y = Integer.parseInt(StringUtils.trim(xy.substring(xy.indexOf(',') + 1, xy.indexOf(')'))));
 					break;
 				}
 			}

@@ -35,6 +35,7 @@ import core.EnvironmentHandler;
 import core.Option;
 import core.OptionHandler;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Abstract class for Savers that save to a file
@@ -299,7 +300,7 @@ public abstract class AbstractFileSaver extends AbstractSaver
 		if (outputString.length() != 0) {
 			boolean validExt = false;
 			for (String ext : getFileExtensions()) {
-				if (outputString.endsWith(ext)) {
+				if (StringUtils.endsWith(outputString, ext)) {
 					validExt = true;
 					break;
 				}
@@ -307,7 +308,8 @@ public abstract class AbstractFileSaver extends AbstractSaver
 			// add appropriate file extension
 			if (!validExt) {
 				if (outputString.lastIndexOf('.') != -1) {
-					outputString = (outputString.substring(0, outputString.lastIndexOf('.'))) + fileExtension;
+					outputString = (StringUtils.substring(outputString, 0, outputString.lastIndexOf('.')))
+							+ fileExtension;
 				} else {
 					outputString = outputString + fileExtension;
 				}
@@ -392,10 +394,10 @@ public abstract class AbstractFileSaver extends AbstractSaver
 						throw new IOException("File already exists.");
 					}
 				}
-				if (out.indexOf(File.separatorChar) == -1) {
+				if (StringUtils.indexOf(out, File.separatorChar) == -1) {
 					success = file.createNewFile();
 				} else {
-					String outPath = out.substring(0, out.indexOf(File.separatorChar));
+					String outPath = StringUtils.substring(out, 0, StringUtils.indexOf(out, File.separatorChar));
 					File dir = new File(outPath);
 					if (dir.exists()) {
 						success = file.createNewFile();
@@ -455,12 +457,12 @@ public abstract class AbstractFileSaver extends AbstractSaver
 				setDir(System.getProperty("user.dir"));
 			}
 			if ("".equals(mPrefix)) {
-				if (relationName.isEmpty()) {
+				if (StringUtils.isEmpty(relationName)) {
 					throw new IOException("[Saver] Empty filename!!");
 				}
 				String concat = mDir + File.separator + relationName + add + fileExtension;
-				if (!concat.toLowerCase().endsWith(fileExtension)
-						&& !concat.toLowerCase().endsWith(fileExtension + fileExtensionCompressed)) {
+				if (!StringUtils.endsWith(concat.toLowerCase(), fileExtension)
+						&& !StringUtils.endsWith(concat.toLowerCase(), fileExtension + fileExtensionCompressed)) {
 					concat = concat + fileExtension;
 				}
 				setFile(new File(concat));
@@ -469,8 +471,8 @@ public abstract class AbstractFileSaver extends AbstractSaver
 					relationName = "_" + relationName;
 				}
 				String concat = (mDir + File.separator + mPrefix + relationName + add);
-				if (!concat.toLowerCase().endsWith(fileExtension)
-						&& !concat.toLowerCase().endsWith(fileExtension + fileExtensionCompressed)) {
+				if (!StringUtils.endsWith(concat.toLowerCase(), fileExtension)
+						&& !StringUtils.endsWith(concat.toLowerCase(), fileExtension + fileExtensionCompressed)) {
 					concat = concat + fileExtension;
 				}
 				setFile(new File(concat));

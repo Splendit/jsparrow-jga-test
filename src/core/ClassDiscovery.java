@@ -34,6 +34,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class is used for discovering classes that implement a certain interface
@@ -200,9 +201,9 @@ public class ClassDiscovery implements RevisionHandler {
 				// is package actually included in jar?
 				jarfile = new JarFile(classpathPart);
 				enm = jarfile.entries();
-				pkgnameTmp = pkgname.substring(1); // remove the leading "/"
+				pkgnameTmp = StringUtils.substring(pkgname, 1); // remove the leading "/"
 				while (enm.hasMoreElements()) {
-					if (enm.nextElement().toString().startsWith(pkgnameTmp)) {
+					if (StringUtils.startsWith(enm.nextElement().toString(), pkgnameTmp)) {
 						urlStr = "jar:file:" + classpathPart + "!" + pkgname;
 						break;
 					}
@@ -392,7 +393,7 @@ public class ClassDiscovery implements RevisionHandler {
 		// add directory to the list
 		if (prefix == null) {
 			newPrefix = "";
-		} else if (prefix.isEmpty()) {
+		} else if (StringUtils.isEmpty(prefix)) {
 			newPrefix = dir.getName();
 		} else {
 			newPrefix = prefix + "." + dir.getName();
@@ -614,8 +615,8 @@ public class ClassDiscovery implements RevisionHandler {
 			result = 0; // they're equal
 
 			// get lower case string
-			s1 = o1.toLowerCase();
-			s2 = o2.toLowerCase();
+			s1 = StringUtils.lowerCase(o1);
+			s2 = StringUtils.lowerCase(o2);
 
 			// same length
 			s1 = fillUp(s1, s2.length());

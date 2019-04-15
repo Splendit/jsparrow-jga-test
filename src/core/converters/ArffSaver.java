@@ -38,6 +38,7 @@ import core.Instances;
 import core.Option;
 import core.RevisionUtils;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Writes to a destination in arff text format.
@@ -278,7 +279,7 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	 */
 	@Override
 	public void setFile(File outputFile) throws IOException {
-		if (outputFile.getAbsolutePath().endsWith(ArffLoader.FILE_EXTENSION_COMPRESSED)) {
+		if (StringUtils.endsWith(outputFile.getAbsolutePath(), ArffLoader.FILE_EXTENSION_COMPRESSED)) {
 			setCompressOutput(true);
 		}
 

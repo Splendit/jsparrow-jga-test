@@ -50,6 +50,7 @@ import core.converters.AbstractLoader;
 import core.converters.AbstractSaver;
 import core.converters.ConverterUtils;
 import core.converters.FileSourcedConverter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A specialized JFileChooser that lists all available file Loaders and Savers.
@@ -551,7 +552,7 @@ public class ConverterFileChooser extends JFileChooser {
 			if (getFileFilter() instanceof ExtensionFileFilter) {
 				String filename = getSelectedFile().getAbsolutePath();
 				String[] extensions = ((ExtensionFileFilter) getFileFilter()).getExtensions();
-				if (!filename.endsWith(extensions[0])) {
+				if (!StringUtils.endsWith(filename, extensions[0])) {
 					filename += extensions[0];
 					setSelectedFile(new File(filename));
 				}
@@ -623,7 +624,7 @@ public class ConverterFileChooser extends JFileChooser {
 			if (getFileFilter() instanceof ExtensionFileFilter) {
 				String filename = getSelectedFile().getAbsolutePath();
 				String[] extensions = ((ExtensionFileFilter) getFileFilter()).getExtensions();
-				if (!filename.endsWith(extensions[0])) {
+				if (!StringUtils.endsWith(filename, extensions[0])) {
 					filename += extensions[0];
 					setSelectedFile(new File(filename));
 				}

@@ -42,6 +42,7 @@ import core.RevisionHandler;
 import core.RevisionUtils;
 import gui.GenericObjectEditor;
 import gui.GenericPropertiesCreator;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Utility routines for the converter package.
@@ -306,12 +307,12 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 
 		index = filename.lastIndexOf('.');
 		if (index > -1) {
-			extension = filename.substring(index).toLowerCase();
+			extension = StringUtils.lowerCase(filename.substring(index));
 			result = getConverterForExtension(extension, ht);
 			// is it a compressed format?
 			if (".gz".equals(extension) && result == null) {
 				index = filename.lastIndexOf('.', index - 1);
-				extension = filename.substring(index).toLowerCase();
+				extension = StringUtils.lowerCase(filename.substring(index));
 				result = getConverterForExtension(extension, ht);
 			}
 		}
@@ -569,8 +570,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 			super();
 
 			// file or URL?
-			if (location.startsWith("http://") || location.startsWith("https://") || location.startsWith("ftp://")
-					|| location.startsWith("file://")) {
+			if (StringUtils.startsWith(location, "http://") || StringUtils.startsWith(location, "https://")
+					|| StringUtils.startsWith(location, "ftp://") || StringUtils.startsWith(location, "file://")) {
 				m_URL = new URL(location);
 			} else {
 				m_File = new File(location);
@@ -676,8 +677,9 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		 * @return true if the location seems to be of ARFF format
 		 */
 		public static boolean isArff(String location) {
-			if (location.toLowerCase().endsWith(ArffLoader.FILE_EXTENSION.toLowerCase())
-					|| location.toLowerCase().endsWith(ArffLoader.FILE_EXTENSION_COMPRESSED.toLowerCase())) {
+			if (StringUtils.endsWith(location.toLowerCase(), StringUtils.lowerCase(ArffLoader.FILE_EXTENSION))
+					|| StringUtils.endsWith(location.toLowerCase(),
+							StringUtils.lowerCase(ArffLoader.FILE_EXTENSION_COMPRESSED))) {
 				return true;
 			} else {
 				return false;

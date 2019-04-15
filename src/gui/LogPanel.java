@@ -88,8 +88,7 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 	/**
 	 * Creates the log panel with a task monitor, where the log is hidden.
 	 *
-	 * @param tm
-	 *            the task monitor, or null for none
+	 * @param tm the task monitor, or null for none
 	 */
 	public LogPanel(WekaTaskMonitor tm) {
 
@@ -100,32 +99,25 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 	 * Creates the log panel, possibly with task monitor, where the log is
 	 * optionally hidden.
 	 *
-	 * @param tm
-	 *            the task monitor, or null for none
-	 * @param logHidden
-	 *            true if the log should be hidden and acessible via a button,
-	 *            or false if the log should always be visible.
+	 * @param tm        the task monitor, or null for none
+	 * @param logHidden true if the log should be hidden and acessible via a button,
+	 *                  or false if the log should always be visible.
 	 */
 	public LogPanel(WekaTaskMonitor tm, boolean logHidden) {
 		this(tm, logHidden, false, true);
 	}
 
 	/**
-	 * Creates the log panel, possibly with task monitor, where the either the
-	 * log is optionally hidden or the status (having both hidden is not
-	 * allowed).
+	 * Creates the log panel, possibly with task monitor, where the either the log
+	 * is optionally hidden or the status (having both hidden is not allowed).
 	 * 
 	 *
-	 * @param tm
-	 *            the task monitor, or null for none
-	 * @param logHidden
-	 *            true if the log should be hidden and acessible via a button,
-	 *            or false if the log should always be visible.
-	 * @param statusHidden
-	 *            true if the status bar should be hidden (i.e.
-	 * @param titledBorder
-	 *            true if the log should have a title you only want the log
-	 *            part).
+	 * @param tm           the task monitor, or null for none
+	 * @param logHidden    true if the log should be hidden and acessible via a
+	 *                     button, or false if the log should always be visible.
+	 * @param statusHidden true if the status bar should be hidden (i.e.
+	 * @param titledBorder true if the log should have a title you only want the log
+	 *                     part).
 	 */
 	public LogPanel(WekaTaskMonitor tm, boolean logHidden, boolean statusHidden, boolean titledBorder) {
 
@@ -169,12 +161,7 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 			jf.setSize(450, 350);
 
 			// display log window on request
-			m_logButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					jf.setVisible(true);
-				}
-			});
+			m_logButton.addActionListener((ActionEvent e) -> jf.setVisible(true));
 
 			// do layout
 			setLayout(new BorderLayout());
@@ -229,8 +216,7 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 	 * Set the size of the font used in the log message area. <= 0 will use the
 	 * default for JTextArea.
 	 *
-	 * @param size
-	 *            the size of the font to use in the log message area
+	 * @param size the size of the font to use in the log message area
 	 */
 	public void setLoggingFontSize(int size) {
 		if (size > 0) {
@@ -244,8 +230,7 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 	/**
 	 * adds thousand's-separators to the number
 	 * 
-	 * @param l
-	 *            the number to print
+	 * @param l the number to print
 	 * @return the number as string with separators
 	 */
 	private String printLong(long l) {
@@ -281,29 +266,23 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 				if (((e.getModifiers() & InputEvent.BUTTON1_MASK) != InputEvent.BUTTON1_MASK) || e.isAltDown()) {
 					JPopupMenu gcMenu = new JPopupMenu();
 					JMenuItem availMem = new JMenuItem("Memory information");
-					availMem.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent ee) {
-							System.gc();
-							Runtime currR = Runtime.getRuntime();
-							long freeM = currR.freeMemory();
-							long totalM = currR.totalMemory();
-							long maxM = currR.maxMemory();
-							logMessage("Memory (free/total/max.) in bytes: " + printLong(freeM) + " / "
-									+ printLong(totalM) + " / " + printLong(maxM));
-							statusMessage("Memory (free/total/max.) in bytes: " + printLong(freeM) + " / "
-									+ printLong(totalM) + " / " + printLong(maxM));
-						}
+					availMem.addActionListener((ActionEvent ee) -> {
+						System.gc();
+						Runtime currR = Runtime.getRuntime();
+						long freeM = currR.freeMemory();
+						long totalM = currR.totalMemory();
+						long maxM = currR.maxMemory();
+						logMessage("Memory (free/total/max.) in bytes: " + printLong(freeM) + " / " + printLong(totalM)
+								+ " / " + printLong(maxM));
+						statusMessage("Memory (free/total/max.) in bytes: " + printLong(freeM) + " / "
+								+ printLong(totalM) + " / " + printLong(maxM));
 					});
 					gcMenu.add(availMem);
 					JMenuItem runGC = new JMenuItem("Run garbage collector");
-					runGC.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent ee) {
-							statusMessage("Running garbage collector");
-							System.gc();
-							statusMessage("OK");
-						}
+					runGC.addActionListener((ActionEvent ee) -> {
+						statusMessage("Running garbage collector");
+						System.gc();
+						statusMessage("OK");
 					});
 					gcMenu.add(runGC);
 					gcMenu.show(LogPanel.this, e.getX(), e.getY());
@@ -346,8 +325,7 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 	 * Sends the supplied message to the log area. The current timestamp will be
 	 * prepended.
 	 *
-	 * @param message
-	 *            a value of type 'String'
+	 * @param message a value of type 'String'
 	 */
 	@Override
 	public synchronized void logMessage(String message) {
@@ -363,8 +341,7 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 	/**
 	 * Sends the supplied message to the status line.
 	 *
-	 * @param message
-	 *            the status message
+	 * @param message the status message
 	 */
 	@Override
 	public synchronized void statusMessage(String message) {
@@ -375,8 +352,7 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 	/**
 	 * Tests out the log panel from the command line.
 	 *
-	 * @param args
-	 *            ignored
+	 * @param args ignored
 	 */
 	public static void main(String[] args) {
 

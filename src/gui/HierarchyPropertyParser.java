@@ -24,6 +24,7 @@ package gui;
 import java.io.Serializable;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class implements a parser to read properties that have a hierarchy(i.e.
@@ -107,7 +108,7 @@ public class HierarchyPropertyParser implements Serializable {
 		StringTokenizer st = new StringTokenizer(p, delim);
 		// System.err.println("delim: "+delim);
 		while (st.hasMoreTokens()) {
-			String property = st.nextToken().trim();
+			String property = StringUtils.trim(st.nextToken());
 			if (!isHierachic(property)) {
 				throw new Exception("The given property is not in" + "hierachy structure with seperators!");
 			}
@@ -243,7 +244,7 @@ public class HierarchyPropertyParser implements Serializable {
 	 * @param string the given string
 	 */
 	public boolean isHierachic(String string) {
-		int index = string.indexOf(mSeperator);
+		int index = StringUtils.indexOf(string, mSeperator);
 		// Seperator not occur or first occurance at the end
 		if ((index == (string.length() - 1)) || (index == -1)) {
 			return false;

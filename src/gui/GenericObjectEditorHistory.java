@@ -32,6 +32,7 @@ import javax.swing.JPopupMenu;
 
 import core.SerializedObject;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A helper class for maintaining a history of objects selected in the GOE.
@@ -151,7 +152,7 @@ public class GenericObjectEditorHistory implements Serializable {
 
 		cmd = Utils.toCommandLine(obj);
 		if (cmd.length() > MAX_HISTORY_LENGTH) {
-			cmd = cmd.substring(0, MAX_HISTORY_LENGTH) + "...";
+			cmd = StringUtils.substring(cmd, 0, MAX_HISTORY_LENGTH) + "...";
 		}
 
 		lines = Utils.breakUp(cmd, MAX_LINE_LENGTH);
@@ -160,7 +161,7 @@ public class GenericObjectEditorHistory implements Serializable {
 			if (i > 0) {
 				result.append("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 			}
-			result.append(lines[i].trim());
+			result.append(StringUtils.trim(lines[i]));
 		}
 		result.append("</html>");
 

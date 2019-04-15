@@ -49,62 +49,63 @@ import chart.fx.ChartCanvas;
 /**
  * Handles the updating of tooltips on a {@link ChartCanvas}.
  * 
- * <p>THE API FOR THIS CLASS IS SUBJECT TO CHANGE IN FUTURE RELEASES.  This is
- * so that we can incorporate feedback on the (new) JavaFX support in 
- * JFreeChart.</p>
+ * <p>
+ * THE API FOR THIS CLASS IS SUBJECT TO CHANGE IN FUTURE RELEASES. This is so
+ * that we can incorporate feedback on the (new) JavaFX support in JFreeChart.
+ * </p>
  * 
  * @since 1.0.18
  */
 @SuppressWarnings("restriction")
-public class TooltipHandlerFX extends AbstractMouseHandlerFX 
-        implements MouseHandlerFX {
-    
-    /**
-     * Creates a new instance with the specified ID.
-     * 
-     * @param id  the handler id (<code>null</code> not permitted).
-     */
-    public TooltipHandlerFX(String id) {
-        super(id, false, false, false, false);
-    }
+public class TooltipHandlerFX extends AbstractMouseHandlerFX {
 
-    /**
-     * Handles a mouse moved event by updating the tooltip.
-     * 
-     * @param canvas  the chart canvas (<code>null</code> not permitted).
-     * @param e  the mouse event.
-     */
-    public void handleMouseMoved(ChartCanvas canvas, MouseEvent e) {
-        if (!canvas.isTooltipEnabled()) {
-            return;
-        }
-        String text = getTooltipText(canvas, e.getX(), e.getY());
-        canvas.setTooltip(text, e.getScreenX(), e.getScreenY());
-    }
-    
-    /**
-     * Returns the tooltip text.
-     * 
-     * @param canvas  the canvas that is displaying the chart.
-     * @param x  the x-coordinate of the mouse pointer.
-     * @param y  the y-coordinate of the mouse pointer.
-     * 
-     * @return String The tooltip text (possibly <code>null</code>).
-      */
-    private String getTooltipText(ChartCanvas canvas, double x, double y) {
-        ChartRenderingInfo info = canvas.getRenderingInfo();
-        if (info == null) {
-            return null;
-        }
-        EntityCollection entities = info.getEntityCollection();
-        if (entities == null) {
-            return null;
-        }
-        ChartEntity entity = entities.getEntity(x, y);
-        if (entity == null) {
-            return null;
-        }
-        return entity.getToolTipText();
-    }
-    
+	/**
+	 * Creates a new instance with the specified ID.
+	 * 
+	 * @param id the handler id (<code>null</code> not permitted).
+	 */
+	public TooltipHandlerFX(String id) {
+		super(id, false, false, false, false);
+	}
+
+	/**
+	 * Handles a mouse moved event by updating the tooltip.
+	 * 
+	 * @param canvas the chart canvas (<code>null</code> not permitted).
+	 * @param e      the mouse event.
+	 */
+	@Override
+	public void handleMouseMoved(ChartCanvas canvas, MouseEvent e) {
+		if (!canvas.isTooltipEnabled()) {
+			return;
+		}
+		String text = getTooltipText(canvas, e.getX(), e.getY());
+		canvas.setTooltip(text, e.getScreenX(), e.getScreenY());
+	}
+
+	/**
+	 * Returns the tooltip text.
+	 * 
+	 * @param canvas the canvas that is displaying the chart.
+	 * @param x      the x-coordinate of the mouse pointer.
+	 * @param y      the y-coordinate of the mouse pointer.
+	 * 
+	 * @return String The tooltip text (possibly <code>null</code>).
+	 */
+	private String getTooltipText(ChartCanvas canvas, double x, double y) {
+		ChartRenderingInfo info = canvas.getRenderingInfo();
+		if (info == null) {
+			return null;
+		}
+		EntityCollection entities = info.getEntityCollection();
+		if (entities == null) {
+			return null;
+		}
+		ChartEntity entity = entities.getEntity(x, y);
+		if (entity == null) {
+			return null;
+		}
+		return entity.getToolTipText();
+	}
+
 }

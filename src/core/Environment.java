@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class encapsulates a map of all environment and java system properties.
@@ -95,7 +96,7 @@ public class Environment implements RevisionHandler {
 	 * @return true if the argument contains one or more environment variables
 	 */
 	public static boolean containsEnvVariables(String source) {
-		return (source.contains("${"));
+		return (StringUtils.contains(source, "${"));
 	}
 
 	/**
@@ -107,13 +108,13 @@ public class Environment implements RevisionHandler {
 	 */
 	public String substitute(String source) throws Exception {
 		// Grab each variable out of the string
-		int index = source.indexOf("${");
+		int index = StringUtils.indexOf(source, "${");
 
 		while (index >= 0) {
 			index += 2;
-			int endIndex = source.indexOf('}');
+			int endIndex = StringUtils.indexOf(source, '}');
 			if (endIndex >= 0 && endIndex > index + 1) {
-				String key = source.substring(index, endIndex);
+				String key = StringUtils.substring(source, index, endIndex);
 
 				// look this sucker up
 				String replace = mEnvVars.get(key);
@@ -126,7 +127,7 @@ public class Environment implements RevisionHandler {
 			} else {
 				break;
 			}
-			index = source.indexOf("${");
+			index = StringUtils.indexOf(source, "${");
 		}
 		return source;
 	}

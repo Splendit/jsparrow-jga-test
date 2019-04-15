@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This is a modified version of the ServerCookie implementation taken from the
@@ -148,7 +149,7 @@ public class ServerCookie {
 
 	public static int maybeQuote2(int version, StringBuffer buf, String value, String literals,
 			boolean allowVersionSwitch) {
-		if (value == null || value.isEmpty()) {
+		if (value == null || StringUtils.isEmpty(value)) {
 			buf.append("\"\"");
 		} else if (containsCTL(value, version)) {
 			throw new IllegalArgumentException(
@@ -194,7 +195,7 @@ public class ServerCookie {
 	}
 
 	public static boolean alreadyQuoted(String value) {
-		if (value == null || value.isEmpty()) {
+		if (value == null || StringUtils.isEmpty(value)) {
 			return false;
 		}
 		return (value.charAt(0) == '\"' && value.charAt(value.length() - 1) == '\"');
@@ -210,7 +211,7 @@ public class ServerCookie {
 	 */
 	private static String escapeDoubleQuotes(String s, int beginIndex, int endIndex) {
 
-		if (s == null || s.isEmpty() || s.indexOf('"') == -1) {
+		if (s == null || StringUtils.isEmpty(s) || StringUtils.indexOf(s, '"') == -1) {
 			return s;
 		}
 
@@ -257,7 +258,7 @@ public class ServerCookie {
 		for (int i = 0; i < len; i++) {
 			char c = value.charAt(i);
 
-			if (tspecials.indexOf(c) != -1) {
+			if (StringUtils.indexOf(tspecials, c) != -1) {
 				return false;
 			}
 		}
@@ -277,7 +278,7 @@ public class ServerCookie {
 
 		for (int i = 0; i < len; i++) {
 			char c = value.charAt(i);
-			if (tspecials2.indexOf(c) != -1) {
+			if (StringUtils.indexOf(tspecials2, c) != -1) {
 				return false;
 			}
 		}

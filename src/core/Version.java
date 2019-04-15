@@ -24,6 +24,7 @@ package core;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class contains the version number of the current WEKA release and some
@@ -102,20 +103,20 @@ public class Version implements Comparable<String>, RevisionHandler {
 
 		try {
 			String tmpStr = version;
-			if (tmpStr.toLowerCase().endsWith("-snapshot")) {
-				tmpStr = tmpStr.substring(0, tmpStr.toLowerCase().indexOf("-snapshot"));
+			if (StringUtils.endsWith(tmpStr.toLowerCase(), "-snapshot")) {
+				tmpStr = StringUtils.substring(tmpStr, 0, StringUtils.indexOf(tmpStr.toLowerCase(), "-snapshot"));
 				isSnapshot = true;
 			}
 			tmpStr = tmpStr.replace('-', '.');
-			if (tmpStr.contains(".")) {
-				major = Integer.parseInt(tmpStr.substring(0, tmpStr.indexOf(".")));
-				tmpStr = tmpStr.substring(tmpStr.indexOf(".") + 1);
-				if (tmpStr.contains(".")) {
-					minor = Integer.parseInt(tmpStr.substring(0, tmpStr.indexOf(".")));
-					tmpStr = tmpStr.substring(tmpStr.indexOf(".") + 1);
-					if (tmpStr.indexOf(".") > 0) {
-						revision = Integer.parseInt(tmpStr.substring(0, tmpStr.indexOf(".")));
-						tmpStr = tmpStr.substring(tmpStr.indexOf(".") + 1);
+			if (StringUtils.contains(tmpStr, ".")) {
+				major = Integer.parseInt(StringUtils.substring(tmpStr, 0, StringUtils.indexOf(tmpStr, ".")));
+				tmpStr = StringUtils.substring(tmpStr, StringUtils.indexOf(tmpStr, ".") + 1);
+				if (StringUtils.contains(tmpStr, ".")) {
+					minor = Integer.parseInt(StringUtils.substring(tmpStr, 0, StringUtils.indexOf(tmpStr, ".")));
+					tmpStr = StringUtils.substring(tmpStr, StringUtils.indexOf(tmpStr, ".") + 1);
+					if (StringUtils.indexOf(tmpStr, ".") > 0) {
+						revision = Integer.parseInt(StringUtils.substring(tmpStr, 0, StringUtils.indexOf(tmpStr, ".")));
+						tmpStr = StringUtils.substring(tmpStr, StringUtils.indexOf(tmpStr, ".") + 1);
 
 						if (!("".equals(tmpStr))) {
 							pnt = Integer.parseInt(tmpStr);

@@ -49,6 +49,7 @@ import core.OptionHandler;
 import core.Utils;
 import gui.GenericObjectEditorHistory.HistorySelectionEvent;
 import gui.GenericObjectEditorHistory.HistorySelectionListener;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Support for drawing a property value in a component.
@@ -143,7 +144,7 @@ public class PropertyPanel extends JPanel {
 										if (v instanceof OptionHandler) {
 											s += " " + Utils.joinOptions(((OptionHandler) v).getOptions());
 										}
-										str += " \"" + Utils.backQuoteChars(s.trim()) + "\"";
+										str += " \"" + Utils.backQuoteChars(StringUtils.trim(s)) + "\"";
 									}
 								} else {
 									str += value.getClass().getName();
@@ -151,7 +152,7 @@ public class PropertyPanel extends JPanel {
 										str += " " + Utils.joinOptions(((OptionHandler) value).getOptions());
 									}
 								}
-								StringSelection selection = new StringSelection(str.trim());
+								StringSelection selection = new StringSelection(StringUtils.trim(str));
 								Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 								clipboard.setContents(selection, selection);
 							});

@@ -33,6 +33,7 @@ import core.Instances;
 import core.Option;
 import core.OptionHandler;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Abstract superclass for all file loaders.
@@ -153,7 +154,7 @@ public abstract class AbstractFileLoader extends AbstractLoader implements FileS
 		file = new File(fName);
 		// set the source only if the file exists
 		if (file.exists() && file.isFile()) {
-			if (file.getName().endsWith(getFileExtension() + FILE_EXTENSION_COMPRESSED)) {
+			if (StringUtils.endsWith(file.getName(), getFileExtension() + FILE_EXTENSION_COMPRESSED)) {
 				setSource(new GZIPInputStream(new FileInputStream(file)));
 			} else {
 				setSource(new FileInputStream(file));

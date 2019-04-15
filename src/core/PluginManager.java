@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class that manages a global map of plugins. Provides static methods for
@@ -294,19 +295,19 @@ public class PluginManager {
 		while (keys.hasMoreElements()) {
 			String baseType = (String) keys.nextElement();
 			String implementations = props.getProperty(baseType);
-			if ("*resources*".equalsIgnoreCase(baseType)) {
+			if (StringUtils.equalsIgnoreCase("*resources*", baseType)) {
 				addPluginResourcesFromProperty(packageName, implementations);
 			} else {
 				if (implementations != null && implementations.length() > 0) {
 					String[] parts = implementations.split(",");
 					for (String impl : parts) {
-						impl = impl.trim();
+						impl = StringUtils.trim(impl);
 						String name = impl;
 						if (impl.charAt(0) == '[') {
-							name = impl.substring(1, impl.indexOf(']'));
-							impl = impl.substring(impl.indexOf(']') + 1);
+							name = StringUtils.substring(impl, 1, StringUtils.indexOf(impl, ']'));
+							impl = StringUtils.substring(impl, StringUtils.indexOf(impl, ']') + 1);
 						}
-						PluginManager.addPlugin(baseType, name.trim(), impl, maintainInsertionOrder);
+						PluginManager.addPlugin(baseType, StringUtils.trim(name), impl, maintainInsertionOrder);
 					}
 				}
 			}
@@ -346,8 +347,8 @@ public class PluginManager {
 		// Format: [groupID|description|path],[...],...
 		String[] resources = resourceList.split(",");
 		for (String r : resources) {
-			r = r.trim();
-			if (!r.startsWith("[") || !r.endsWith("]")) {
+			r = StringUtils.trim(r);
+			if (!StringUtils.startsWith(r, "[") || !StringUtils.endsWith(r, "]")) {
 				System.err.println("[PluginManager] Malformed resource in: " + resourceList);
 				continue;
 			}
@@ -359,10 +360,11 @@ public class PluginManager {
 				continue;
 			}
 
-			String groupID = rParts[0].trim();
-			String resourceDesc = rParts[1].trim();
-			String resourcePath = rParts[2].trim();
-			if (groupID.isEmpty() || resourceDesc.isEmpty() || resourcePath.isEmpty()) {
+			String groupID = StringUtils.trim(rParts[0]);
+			String resourceDesc = StringUtils.trim(rParts[1]);
+			String resourcePath = StringUtils.trim(rParts[2]);
+			if (StringUtils.isEmpty(groupID) || StringUtils.isEmpty(resourceDesc)
+					|| StringUtils.isEmpty(resourcePath)) {
 				System.err.println("[PluginManager] Empty part in resource spec: " + r);
 				continue;
 			}

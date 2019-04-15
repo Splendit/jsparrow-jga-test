@@ -20,6 +20,8 @@
 
 package core;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Contains utility functions for handling revisions.
  * 
@@ -93,7 +95,7 @@ public class RevisionUtils {
 		if (result == Type.UNKNOWN) {
 			try {
 				// must contain at least ONE dot
-				if (revision.indexOf('.') == -1) {
+				if (StringUtils.indexOf(revision, '.') == -1) {
 					throw new Exception("invalid CVS revision - not dots!");
 				}
 

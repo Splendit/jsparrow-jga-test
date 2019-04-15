@@ -84,6 +84,7 @@ import core.SerializationHelper;
 import core.SerializedObject;
 import core.Utils;
 import gui.CheckBoxList.CheckBoxListModel;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A PropertyEditor for objects. It can be used either in a static or a dynamic
@@ -310,7 +311,7 @@ public class GenericObjectEditor implements PropertyEditor, CustomPanelSupplier 
 		// property as a class; and any other non-class properties. Makes
 		// the assumption that anything that should be instantiated is not
 		// in the default package.
-		if (!name.contains(".")) {
+		if (!StringUtils.contains(name, ".")) {
 			return;
 		}
 
@@ -319,7 +320,7 @@ public class GenericObjectEditor implements PropertyEditor, CustomPanelSupplier 
 
 		try {
 			// array class?
-			if (name.endsWith("[]")) {
+			if (StringUtils.endsWith(name, "[]")) {
 				// baseCls = Class.forName(name.substring(0,
 				// name.indexOf("[]")));
 				baseCls = Class.class;
@@ -371,8 +372,8 @@ public class GenericObjectEditor implements PropertyEditor, CustomPanelSupplier 
 	 * @return string the root element
 	 */
 	protected static String getRootFromClass(String clsname, String separator) {
-		if (clsname.contains(separator)) {
-			return clsname.substring(0, clsname.indexOf(separator));
+		if (StringUtils.contains(clsname, separator)) {
+			return StringUtils.substring(clsname, 0, StringUtils.indexOf(clsname, separator));
 		} else {
 			return null;
 		}
@@ -699,7 +700,7 @@ public class GenericObjectEditor implements PropertyEditor, CustomPanelSupplier 
 					rep = m_Object.getClass().getName();
 					int dotPos = rep.lastIndexOf('.');
 					if (dotPos != -1) {
-						rep = rep.substring(dotPos + 1);
+						rep = StringUtils.substring(rep, dotPos + 1);
 					}
 				}
 			} else {

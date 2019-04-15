@@ -251,6 +251,7 @@ import chart.plot.PlotRenderingInfo;
 import chart.plot.Zoomable;
 import chart.util.ParamChecks;
 import chart.util.SerialUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A Swing GUI component for displaying a {@link JFreeChart} object.
@@ -753,8 +754,8 @@ public class ChartPanel extends JPanel implements ChartChangeListener, ChartProg
 		int panMask = InputEvent.CTRL_MASK;
 		// for MacOSX we can't use the CTRL key for mouse drags, see:
 		// http://developer.apple.com/qa/qa2004/qa1362.html
-		String osName = System.getProperty("os.name").toLowerCase();
-		if (osName.startsWith("mac os x")) {
+		String osName = StringUtils.lowerCase(System.getProperty("os.name"));
+		if (StringUtils.startsWith(osName, "mac os x")) {
 			panMask = InputEvent.ALT_MASK;
 		}
 	}
@@ -2349,7 +2350,7 @@ public class ChartPanel extends JPanel implements ChartChangeListener, ChartProg
 		if (option == JFileChooser.APPROVE_OPTION) {
 			String filename = fileChooser.getSelectedFile().getPath();
 			if (isEnforceFileExtensions()) {
-				if (!filename.endsWith(".png")) {
+				if (!StringUtils.endsWith(filename, ".png")) {
 					filename = filename + ".png";
 				}
 			}
@@ -2376,7 +2377,7 @@ public class ChartPanel extends JPanel implements ChartChangeListener, ChartProg
 			if (option == JFileChooser.APPROVE_OPTION) {
 				String filename = fileChooser.getSelectedFile().getPath();
 				if (isEnforceFileExtensions()) {
-					if (!filename.endsWith(".svg")) {
+					if (!StringUtils.endsWith(filename, ".svg")) {
 						filename = filename + ".svg";
 					}
 				}
@@ -2477,7 +2478,7 @@ public class ChartPanel extends JPanel implements ChartChangeListener, ChartProg
 			if (option == JFileChooser.APPROVE_OPTION) {
 				String filename = fileChooser.getSelectedFile().getPath();
 				if (isEnforceFileExtensions()) {
-					if (!filename.endsWith(".pdf")) {
+					if (!StringUtils.endsWith(filename, ".pdf")) {
 						filename = filename + ".pdf";
 					}
 				}

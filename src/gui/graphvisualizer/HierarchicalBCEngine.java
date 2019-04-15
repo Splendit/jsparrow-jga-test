@@ -33,6 +33,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class lays out the vertices of a graph in a hierarchy of vertical
@@ -1742,7 +1743,7 @@ public class HierarchicalBCEngine implements GraphConstants, LayoutEngine {
 			priorities = new int[nodeLevels[i].length];
 			BC = new int[nodeLevels[i].length];
 			for (int j = 0; j < nodeLevels[i].length; j++) {
-				if (m_nodes.get(nodeLevels[i][j]).ID.startsWith("S")) {
+				if (StringUtils.startsWith(m_nodes.get(nodeLevels[i][j]).ID, "S")) {
 					priorities[j] = maxCount + 1;
 				} else {
 					priorities[j] = uConnectivity(i, j);
@@ -1774,7 +1775,7 @@ public class HierarchicalBCEngine implements GraphConstants, LayoutEngine {
 			priorities = new int[nodeLevels[i].length];
 			BC = new int[nodeLevels[i].length];
 			for (int j = 0; j < nodeLevels[i].length; j++) {
-				if (m_nodes.get(nodeLevels[i][j]).ID.startsWith("S")) {
+				if (StringUtils.startsWith(m_nodes.get(nodeLevels[i][j]).ID, "S")) {
 					priorities[j] = maxCount + 1;
 				} else {
 					priorities[j] = lConnectivity(i, j);
@@ -1801,7 +1802,7 @@ public class HierarchicalBCEngine implements GraphConstants, LayoutEngine {
 			priorities = new int[nodeLevels[i].length];
 			BC = new int[nodeLevels[i].length];
 			for (int j = 0; j < nodeLevels[i].length; j++) {
-				if (m_nodes.get(nodeLevels[i][j]).ID.startsWith("S")) {
+				if (StringUtils.startsWith(m_nodes.get(nodeLevels[i][j]).ID, "S")) {
 					priorities[j] = maxCount + 1;
 				} else {
 					priorities[j] = uConnectivity(i, j);

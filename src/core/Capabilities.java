@@ -30,6 +30,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import core.converters.ConverterUtils.DataSource;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A class that describes the capabilites (e.g., handling certain types of
@@ -1693,7 +1694,7 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 
 		// get parameters
 		tmpStr = Utils.getOption("file", args);
-		if (tmpStr.isEmpty()) {
+		if (StringUtils.isEmpty(tmpStr)) {
 			throw new Exception("No file provided with option '-file'!");
 		} else {
 			filename = tmpStr;

@@ -610,25 +610,25 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 			for (int iNode = 0; iNode < m_nNodes.length; iNode++) {
 				order[m_nNodes[iNode]] = iNode;
 			}
-			m_children.stream().map(element -> element).forEach(childNode -> {
-				JunctionTreeSeparator separator = childNode.m_parentSeparator;
-				// Update the values
-				for (int iPos = 0; iPos < m_nCardinality; iPos++) {
-					int iSepCPT = getCPT(separator.m_nNodes, separator.m_nNodes.length, values, order);
-					int iNodeCPT = getCPT(m_nNodes, m_nNodes.length, values, order);
-					m_P[iNodeCPT] = m_P[iNodeCPT] * separator.m_fiChild[iSepCPT];
-					// update values
-					int i = 0;
-					values[i]++;
-					while (i < m_nNodes.length) {
-						values[i] = 0;
-						i++;
-						if (i < m_nNodes.length) {
+			m_children.stream().map(element -> element).map(childNode -> childNode.m_parentSeparator)
+					.forEach(separator -> {
+						// Update the values
+						for (int iPos = 0; iPos < m_nCardinality; iPos++) {
+							int iSepCPT = getCPT(separator.m_nNodes, separator.m_nNodes.length, values, order);
+							int iNodeCPT = getCPT(m_nNodes, m_nNodes.length, values, order);
+							m_P[iNodeCPT] = m_P[iNodeCPT] * separator.m_fiChild[iSepCPT];
+							// update values
+							int i = 0;
 							values[i]++;
+							while (i < m_nNodes.length) {
+								values[i] = 0;
+								i++;
+								if (i < m_nNodes.length) {
+									values[i]++;
+								}
+							}
 						}
-					}
-				}
-			});
+					});
 			// normalize
 			double sum = 0;
 			for (int iPos = 0; iPos < m_nCardinality; iPos++) {
@@ -887,11 +887,8 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				}
 				calcMarginalProbabilities();
 			}
-			m_children.stream().map(element -> (JunctionTreeNode) element).forEach(childNode -> {
-				if (childNode != source) {
-					childNode.initializeDown(true);
-				}
-			});
+			m_children.stream().map(element -> (JunctionTreeNode) element).filter(childNode -> childNode != source)
+					.forEach(childNode -> childNode.initializeDown(true));
 			if (m_parentSeparator != null) {
 				m_parentSeparator.updateFromChild();
 				m_parentSeparator.m_parentNode.updateEvidence(this);

@@ -23,6 +23,7 @@ package core;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a selected value from a finite set of values, where each value is
@@ -92,7 +93,8 @@ public class SelectedTag implements RevisionHandler, Serializable {
 	 */
 	public SelectedTag(String tagText, Tag[] tags) {
 		for (int i = 0; i < tags.length; i++) {
-			if (tags[i].getReadable().equalsIgnoreCase(tagText) || tags[i].getIDStr().equalsIgnoreCase(tagText)) {
+			if (StringUtils.equalsIgnoreCase(tags[i].getReadable(), tagText)
+					|| StringUtils.equalsIgnoreCase(tags[i].getIDStr(), tagText)) {
 				m_Selected = i;
 				m_Tags = tags;
 				return;

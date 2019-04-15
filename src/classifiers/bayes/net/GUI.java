@@ -102,6 +102,7 @@ import gui.graphvisualizer.HierarchicalBCEngine;
 import gui.graphvisualizer.LayoutCompleteEvent;
 import gui.graphvisualizer.LayoutCompleteEventListener;
 import gui.graphvisualizer.LayoutEngine;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * GUI interface to Bayesian Networks. Allows editing Bayesian networks on
@@ -295,11 +296,11 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			JTextField jt = (JTextField) ae.getSource();
 			try {
 				int i = -1;
-				i = jt.getText().indexOf('%');
+				i = StringUtils.indexOf(jt.getText(), '%');
 				if (i == -1) {
 					i = Integer.parseInt(jt.getText());
 				} else {
-					i = Integer.parseInt(jt.getText().substring(0, i));
+					i = Integer.parseInt(StringUtils.substring(jt.getText(), 0, i));
 				}
 
 				if (i <= 999) {
@@ -696,9 +697,9 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		String sResult = (String) JOptionPane.showInputDialog(null, "Select arc to delete", "Arcs", 0, null, options,
 				options[0]);
 		if (sResult != null && !("".equals(sResult))) {
-			int nPos = sResult.indexOf(" -> ");
-			String sParent = sResult.substring(0, nPos);
-			String sChild = sResult.substring(nPos + 4);
+			int nPos = StringUtils.indexOf(sResult, " -> ");
+			String sParent = StringUtils.substring(sResult, 0, nPos);
+			String sChild = StringUtils.substring(sResult, nPos + 4);
 			updateStatus();
 		}
 	} // deleteArc
@@ -1821,7 +1822,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 
 			if (rval == JFileChooser.APPROVE_OPTION) {
 				String sFileName = fc.getSelectedFile() + "";
-				if (sFileName.endsWith(ef1.getExtensions()[0])) {
+				if (StringUtils.endsWith(sFileName, ef1.getExtensions()[0])) {
 					initFromArffFile(sFileName);
 				} else {
 					try {
@@ -1903,7 +1904,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				// System.out.println("Saving to file \""+
 				// f.getAbsoluteFile().toString()+"\"");
 				String sFileName = fc.getSelectedFile() + "";
-				if (!sFileName.endsWith(".xml")) {
+				if (!StringUtils.endsWith(sFileName, ".xml")) {
 					sFileName = sFileName + ".xml";
 				}
 				saveFile(sFileName);
@@ -2298,10 +2299,10 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				for (int iValue = 0; iValue < P.length; iValue++) {
 					String sP = Double.toString(P[iValue]);
 					if (sP.charAt(0) == '0') {
-						sP = sP.substring(1);
+						sP = StringUtils.substring(sP, 1);
 					}
 					if (sP.length() > 5) {
-						sP = sP.substring(1, 5);
+						sP = StringUtils.substring(sP, 1, 5);
 					}
 					g.fillRect(nPosX + mNPaddedNodeWidth, nPosY + iValue * 10 + 2, (int) (P[iValue] * 100), 8);
 

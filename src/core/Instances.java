@@ -36,6 +36,7 @@ import java.util.Random;
 
 import core.converters.ArffLoader.ArffReader;
 import core.converters.ConverterUtils.DataSource;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class for handling an ordered set of weighted instances.
@@ -2424,14 +2425,14 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 				System.out.println(i.toSummaryString());
 			}
 			// read two files, merge them and print result to stdout
-			else if ((args.length == 3) && ("merge".equals(args[0].toLowerCase()))) {
+			else if ((args.length == 3) && ("merge".equals(StringUtils.lowerCase(args[0])))) {
 				DataSource source1 = new DataSource(args[1]);
 				DataSource source2 = new DataSource(args[2]);
 				i = Instances.mergeInstances(source1.getDataSet(), source2.getDataSet());
 				System.out.println(i);
 			}
 			// read two files, append them and print result to stdout
-			else if ((args.length == 3) && ("append".equals(args[0].toLowerCase()))) {
+			else if ((args.length == 3) && ("append".equals(StringUtils.lowerCase(args[0])))) {
 				DataSource source1 = new DataSource(args[1]);
 				DataSource source2 = new DataSource(args[2]);
 				String msg = source1.getStructure().equalHeadersMsg(source2.getStructure());
@@ -2449,7 +2450,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 				}
 			}
 			// read two files and compare their headers
-			else if ((args.length == 3) && ("headers".equals(args[0].toLowerCase()))) {
+			else if ((args.length == 3) && ("headers".equals(StringUtils.lowerCase(args[0])))) {
 				DataSource source1 = new DataSource(args[1]);
 				DataSource source2 = new DataSource(args[2]);
 				String msg = source1.getStructure().equalHeadersMsg(source2.getStructure());
@@ -2461,7 +2462,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 			}
 			// read file and seed value, randomize data and print result to
 			// stdout
-			else if ((args.length == 3) && ("randomize".equals(args[0].toLowerCase()))) {
+			else if ((args.length == 3) && ("randomize".equals(StringUtils.lowerCase(args[0])))) {
 				DataSource source = new DataSource(args[2]);
 				i = source.getDataSet();
 				i.randomize(new Random(Integer.parseInt(args[1])));

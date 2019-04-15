@@ -43,6 +43,7 @@ import core.RevisionUtils;
 import core.SparseInstance;
 import core.Utils;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <!-- globalinfo-start --> Reads a source that is in arff (attribute relation
@@ -1082,7 +1083,7 @@ public class ArffLoader extends AbstractFileLoader implements BatchConverter, In
 			if (m_Tokenizer.ttype == StreamTokenizer.TT_EOF) {
 				errorMessage("premature end of file");
 			}
-			if (Instances.ARFF_RELATION.equalsIgnoreCase(m_Tokenizer.sval)) {
+			if (StringUtils.equalsIgnoreCase(Instances.ARFF_RELATION, m_Tokenizer.sval)) {
 				getNextToken();
 				relationName = m_Tokenizer.sval;
 				getLastToken(false);
@@ -1099,12 +1100,12 @@ public class ArffLoader extends AbstractFileLoader implements BatchConverter, In
 				errorMessage("premature end of file");
 			}
 
-			while (Attribute.ARFF_ATTRIBUTE.equalsIgnoreCase(m_Tokenizer.sval)) {
+			while (StringUtils.equalsIgnoreCase(Attribute.ARFF_ATTRIBUTE, m_Tokenizer.sval)) {
 				attributes = parseAttribute(attributes);
 			}
 
 			// Check if data part follows. We can't easily check for EOL.
-			if (!Instances.ARFF_DATA.equalsIgnoreCase(m_Tokenizer.sval)) {
+			if (!StringUtils.equalsIgnoreCase(Instances.ARFF_DATA, m_Tokenizer.sval)) {
 				errorMessage("keyword " + Instances.ARFF_DATA + " expected");
 			}
 
@@ -1136,15 +1137,15 @@ public class ArffLoader extends AbstractFileLoader implements BatchConverter, In
 			if (m_Tokenizer.ttype == StreamTokenizer.TT_WORD) {
 
 				// Attribute is real, integer, or string.
-				if (m_Tokenizer.sval.equalsIgnoreCase(Attribute.ARFF_ATTRIBUTE_REAL)
-						|| m_Tokenizer.sval.equalsIgnoreCase(Attribute.ARFF_ATTRIBUTE_INTEGER)
-						|| m_Tokenizer.sval.equalsIgnoreCase(Attribute.ARFF_ATTRIBUTE_NUMERIC)) {
+				if (StringUtils.equalsIgnoreCase(m_Tokenizer.sval, Attribute.ARFF_ATTRIBUTE_REAL)
+						|| StringUtils.equalsIgnoreCase(m_Tokenizer.sval, Attribute.ARFF_ATTRIBUTE_INTEGER)
+						|| StringUtils.equalsIgnoreCase(m_Tokenizer.sval, Attribute.ARFF_ATTRIBUTE_NUMERIC)) {
 					attributes.add(new Attribute(attributeName, attributes.size()));
 					readTillEOL();
-				} else if (m_Tokenizer.sval.equalsIgnoreCase(Attribute.ARFF_ATTRIBUTE_STRING)) {
+				} else if (StringUtils.equalsIgnoreCase(m_Tokenizer.sval, Attribute.ARFF_ATTRIBUTE_STRING)) {
 					attributes.add(new Attribute(attributeName, (ArrayList<String>) null, attributes.size()));
 					readTillEOL();
-				} else if (m_Tokenizer.sval.equalsIgnoreCase(Attribute.ARFF_ATTRIBUTE_DATE)) {
+				} else if (StringUtils.equalsIgnoreCase(m_Tokenizer.sval, Attribute.ARFF_ATTRIBUTE_DATE)) {
 					String format = null;
 					if (m_Tokenizer.nextToken() != StreamTokenizer.TT_EOL) {
 						if ((m_Tokenizer.ttype != StreamTokenizer.TT_WORD) && (m_Tokenizer.ttype != '\'')
@@ -1158,7 +1159,7 @@ public class ArffLoader extends AbstractFileLoader implements BatchConverter, In
 					}
 					attributes.add(new Attribute(attributeName, format, attributes.size()));
 
-				} else if (m_Tokenizer.sval.equalsIgnoreCase(Attribute.ARFF_ATTRIBUTE_RELATIONAL)) {
+				} else if (StringUtils.equalsIgnoreCase(m_Tokenizer.sval, Attribute.ARFF_ATTRIBUTE_RELATIONAL)) {
 					readTillEOL();
 
 					// Read attributes for subrelation
@@ -1174,11 +1175,11 @@ public class ArffLoader extends AbstractFileLoader implements BatchConverter, In
 						errorMessage("premature end of file");
 					}
 					do {
-						if (Attribute.ARFF_ATTRIBUTE.equalsIgnoreCase(m_Tokenizer.sval)) {
+						if (StringUtils.equalsIgnoreCase(Attribute.ARFF_ATTRIBUTE, m_Tokenizer.sval)) {
 							attributes = parseAttribute(attributes);
-						} else if (Attribute.ARFF_END_SUBRELATION.equalsIgnoreCase(m_Tokenizer.sval)) {
+						} else if (StringUtils.equalsIgnoreCase(Attribute.ARFF_END_SUBRELATION, m_Tokenizer.sval)) {
 							getNextToken();
-							if (!attributeName.equalsIgnoreCase(m_Tokenizer.sval)) {
+							if (!StringUtils.equalsIgnoreCase(attributeName, m_Tokenizer.sval)) {
 								errorMessage("declaration of subrelation " + attributeName + " must be terminated by "
 										+ "@end " + attributeName);
 							}

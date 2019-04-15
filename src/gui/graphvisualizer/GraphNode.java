@@ -21,6 +21,8 @@
 
 package gui.graphvisualizer;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * This class represents a node in the Graph.
  *
@@ -82,7 +84,7 @@ public class GraphNode extends Object implements GraphConstants {
 	 */
 	@Override
 	public boolean equals(Object n) {
-		if (n instanceof GraphNode && ((GraphNode) n).ID.equalsIgnoreCase(this.ID)) {
+		if (n instanceof GraphNode && StringUtils.equalsIgnoreCase(((GraphNode) n).ID, this.ID)) {
 			// System.out.println("returning true, n.ID >"+((GraphNode)n).ID+
 			// "< this.ID >"+this.ID+"<");
 			return true;

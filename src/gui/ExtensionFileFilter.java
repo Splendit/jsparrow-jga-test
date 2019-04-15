@@ -26,6 +26,7 @@ import java.io.FilenameFilter;
 import java.io.Serializable;
 
 import javax.swing.filechooser.FileFilter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Provides a file filter for FileChoosers that accepts or rejects files based
@@ -100,12 +101,12 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter, S
 	@Override
 	public boolean accept(File file) {
 
-		String name = file.getName().toLowerCase();
+		String name = StringUtils.lowerCase(file.getName());
 		if (file.isDirectory()) {
 			return true;
 		}
 		for (String element : m_Extension) {
-			if (name.endsWith(element)) {
+			if (StringUtils.endsWith(name, element)) {
 				return true;
 			}
 		}

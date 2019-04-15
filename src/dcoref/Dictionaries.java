@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Provides accessors for various grammatical, semantic, and world knowledge
@@ -301,7 +302,7 @@ public class Dictionaries {
 	 * if also a name for a person of that country (such as "Iraqi").
 	 */
 	public boolean isAdjectivalDemonym(String token) {
-		return adjectiveNation.contains(token.toLowerCase(Locale.ENGLISH));
+		return adjectiveNation.contains(StringUtils.lowerCase(token, Locale.ENGLISH));
 	}
 
 	public enum MentionType {

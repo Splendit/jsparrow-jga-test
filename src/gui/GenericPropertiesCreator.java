@@ -35,6 +35,7 @@ import java.util.Vector;
 import core.ClassDiscovery;
 import core.ClassDiscovery.StringCompare;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class can generate the properties object that is normally loaded from
@@ -365,15 +366,15 @@ public class GenericPropertiesCreator {
 					String item = tok.nextToken();
 					// get list
 					Vector<String> list = new Vector<>();
-					if (item.startsWith(EXCLUDE_INTERFACE + ":")) {
+					if (StringUtils.startsWith(item, EXCLUDE_INTERFACE + ":")) {
 						list = t.get(EXCLUDE_INTERFACE);
-					} else if (item.startsWith(EXCLUDE_CLASS + ":")) {
+					} else if (StringUtils.startsWith(item, EXCLUDE_CLASS + ":")) {
 						list = t.get(EXCLUDE_CLASS);
-					} else if (item.startsWith(EXCLUDE_SUPERCLASS)) {
+					} else if (StringUtils.startsWith(item, EXCLUDE_SUPERCLASS)) {
 						list = t.get(EXCLUDE_SUPERCLASS);
 					}
 					// add to list
-					list.add(item.substring(item.indexOf(":") + 1));
+					list.add(StringUtils.substring(item, StringUtils.indexOf(item, ":") + 1));
 				}
 			}
 		} catch (Exception e) {
@@ -415,7 +416,7 @@ public class GenericPropertiesCreator {
 	 * @return whether the classname is a valid one
 	 */
 	protected boolean isValidClassname(String classname) {
-		return (!classname.contains("$"));
+		return (!StringUtils.contains(classname, "$"));
 	}
 
 	/**
@@ -529,7 +530,7 @@ public class GenericPropertiesCreator {
 
 			// get classes for all packages
 			while (tok.hasMoreTokens()) {
-				pkg = tok.nextToken().trim();
+				pkg = StringUtils.trim(tok.nextToken());
 
 				try {
 					classes = ClassDiscovery.find(Class.class, pkg);
