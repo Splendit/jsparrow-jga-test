@@ -102,14 +102,14 @@ REM 2 - the destination directory
 		ECHO copying "%%x"
 		SET full-dir-path=%%x 
 		ECHO copying contents of %%x to %destination-dir%\!full-dir-path:%CD%\=!
-		XCOPY %%x %destination-dir%\!full-dir-path:%CD%\=! /I
+		XCOPY %%x %destination-dir%\!full-dir-path:%CD%\=! /I /Y
 	)
 	
 	FOR /r /d %%y in (*%settings-dir-backup%) DO (
 		SET settings-backup-relative-path=!%%y:%root-dir%\=!
 		SET full-dir-backup-path=%%y
 		ECHO copying contents of %%y to %destination-dir%\!full-dir-backup-path:%CD%\=!
-		XCOPY %%y %destination-dir%\!full-dir-backup-path:%CD%\=! /I 
+		XCOPY %%y %destination-dir%\!full-dir-backup-path:%CD%\=! /I /Y
 	)
     ENDLOCAL
     EXIT /B 0
