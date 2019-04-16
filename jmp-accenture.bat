@@ -65,8 +65,6 @@ REM CALL mvn jsparrow:refactor -X -Db -Du -Dlicense=I2ZGK32V2 > ".."\%debug-dir%
 CALL :Move_eclipse_files %debug-dir%\%debug-update-and-build-workspace%
 
 
-REM CALL JAR cfM ".."\%debug-dir%
-
 EXIT /B %ERRORLEVEL%
 
 	
@@ -101,17 +99,17 @@ REM 2 - the destination directory
     SET destination-dir=".."\%~1
 	REM Create a .settings folder if not available, then copy and overwrite all files from the old to the new .settings directory
 	FOR /r /d %%x in (*%settings-dir%) DO (
-		SET relative-path=!%%x:%root-dir%\=!
-		IF NOT EXIST %destination-dir%\%relative-path%%settings-dir% MD %destination-dir%\%relative-path%%settings-dir%
-		ECHO copying contents of %%x to %destination-dir%\%relative-path%%settings-dir%
-		COPY %%x\*.* %destination-dir%\%relative-path%%settings-dir% /y
+		ECHO copying "%%x"
+		SET full-dir-path=%%x 
+		ECHO copying contents of %%x to %destination-dir%\!full-dir-path:%CD%\=!
+		XCOPY %%x %destination-dir%\!full-dir-path:%CD%\=! /I
 	)
 	
 	FOR /r /d %%y in (*%settings-dir-backup%) DO (
 		SET settings-backup-relative-path=!%%y:%root-dir%\=!
-		IF NOT EXIST %destination-dir%\%settings-backup-relative-path%%settings-dir-backup% MD %destination-dir%\%settings-backup-relative-path%%settings-dir-backup%
-		ECHO copying contents of %%y to %destination-dir%\%settings-backup-relative-path%%settings-dir-backup%
-		COPY %%y\*.* %destination-dir%\%settings-backup-relative-path%%settings-dir-backup% /y
+		SET full-dir-backup-path=%%y
+		ECHO copying contents of %%y to %destination-dir%\!full-dir-backup-path:%CD%\=!
+		XCOPY %%y %destination-dir%\!full-dir-backup-path:%CD%\=! /I 
 	)
     ENDLOCAL
     EXIT /B 0
