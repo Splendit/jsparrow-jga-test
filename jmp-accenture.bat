@@ -39,14 +39,14 @@ REM 1
 REM Execute the JMP normally
 REM ECHO mvn jsparrow:refactor -X -Dlicense=I2ZGK32V2
 IF NOT EXIST ".."\%debug-dir%\%debug-no-d-flags% MD ".."\%debug-dir%\%debug-no-d-flags%
-CALL mvn jsparrow:refactor -X -Dlicense=I2ZGK32V2 > ".."\%debug-dir%\%debug-no-d-flags%\jmp-standard.log 2> ".."\%debug-dir%\%debug-no-d-flags%\jmp-standard-errors.log
+CALL mvn eu.jsparrow:jsparrow-maven-plugin:2.1.0-SNAPSHOT:refactor -X -Dlicense=I2ZGK32V2 > ".."\%debug-dir%\%debug-no-d-flags%\jmp-standard.log 2> ".."\%debug-dir%\%debug-no-d-flags%\jmp-standard-errors.log
 CALL :Move_eclipse_files %debug-dir%\%debug-no-d-flags%
 
 REM 2
 REM Execute the JMP -Db flag 
 ECHO mvn jsparrow:refactor -X -Db -Dlicense=I2ZGK32V2
 IF NOT EXIST ".."\%debug-dir%\%debug-build-workspace% MD ".."\%debug-dir%\%debug-build-workspace%
-CALL mvn jsparrow:refactor -X -Db -Dlicense=I2ZGK32V2 > ".."\%debug-dir%\%debug-build-workspace%\jmp-standard.log 2> ".."\%debug-dir%\%debug-build-workspace%\jmp-standard-errors.log
+CALL mvn eu.jsparrow:jsparrow-maven-plugin:2.1.0-SNAPSHOT:refactor -X -Db -Dlicense=I2ZGK32V2 > ".."\%debug-dir%\%debug-build-workspace%\jmp-standard.log 2> ".."\%debug-dir%\%debug-build-workspace%\jmp-standard-errors.log
 CALL :Move_eclipse_files %debug-dir%\%debug-build-workspace%
 
 
@@ -54,14 +54,14 @@ REM 3
 REM Execute the JMP -Du flag 
 ECHO mvn jsparrow:refactor -X -Du -Dlicense=I2ZGK32V2
 IF NOT EXIST ".."\%debug-dir%\%debug-maven-update% MD ".."\%debug-dir%\%debug-maven-update%
-CALL mvn jsparrow:refactor -X -Du -Dlicense=I2ZGK32V2 > ".."\%debug-dir%\%debug-maven-update%\jmp-standard.log 2> ".."\%debug-dir%\%debug-maven-update%\jmp-standard-errors.log
+CALL mvn eu.jsparrow:jsparrow-maven-plugin:2.1.0-SNAPSHOT:refactor -X -Du -Dlicense=I2ZGK32V2 > ".."\%debug-dir%\%debug-maven-update%\jmp-standard.log 2> ".."\%debug-dir%\%debug-maven-update%\jmp-standard-errors.log
 CALL :Move_eclipse_files %debug-dir%\%debug-maven-update%
 
 REM 4
 REM Execute the JMP -Db and -Du flag 
 ECHO mvn jsparrow:refactor -X -Db -Du -Dlicense=I2ZGK32V2
 IF NOT EXIST ".."\%debug-dir%\%debug-update-and-build-workspace% MD ".."\%debug-dir%\%debug-update-and-build-workspace%
-CALL mvn jsparrow:refactor -X -Db -Du -Dlicense=I2ZGK32V2 > ".."\%debug-dir%\%debug-update-and-build-workspace%\jmp-standard.log 2> ".."\%debug-dir%\%debug-update-and-build-workspace%\jmp-standard-errors.log
+CALL mvn eu.jsparrow:jsparrow-maven-plugin:2.1.0-SNAPSHOT:refactor -X -Db -Du -Dlicense=I2ZGK32V2 > ".."\%debug-dir%\%debug-update-and-build-workspace%\jmp-standard.log 2> ".."\%debug-dir%\%debug-update-and-build-workspace%\jmp-standard-errors.log
 CALL :Move_eclipse_files %debug-dir%\%debug-update-and-build-workspace%
 
 
