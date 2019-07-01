@@ -26,6 +26,7 @@ import java.io.FilenameFilter;
 import java.io.Serializable;
 
 import javax.swing.filechooser.FileFilter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Provides a file filter for FileChoosers that accepts or rejects files based
@@ -49,10 +50,8 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter, S
 	/**
 	 * Creates the ExtensionFileFilter
 	 * 
-	 * @param extension
-	 *            the extension of accepted files.
-	 * @param description
-	 *            a text description of accepted files.
+	 * @param extension   the extension of accepted files.
+	 * @param description a text description of accepted files.
 	 */
 	public ExtensionFileFilter(String extension, String description) {
 		m_Extension = new String[1];
@@ -64,10 +63,8 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter, S
 	 * Creates an ExtensionFileFilter that accepts files that have any of the
 	 * extensions contained in the supplied array.
 	 * 
-	 * @param extensions
-	 *            an array of acceptable file extensions (as Strings).
-	 * @param description
-	 *            a text description of accepted files.
+	 * @param extensions  an array of acceptable file extensions (as Strings).
+	 * @param description a text description of accepted files.
 	 */
 	public ExtensionFileFilter(String[] extensions, String description) {
 		m_Extension = extensions;
@@ -98,19 +95,18 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter, S
 	 * Returns true if the supplied file should be accepted (i.e.: if it has the
 	 * required extension or is a directory).
 	 * 
-	 * @param file
-	 *            the file of interest.
+	 * @param file the file of interest.
 	 * @return true if the file is accepted by the filter.
 	 */
 	@Override
 	public boolean accept(File file) {
 
-		String name = file.getName().toLowerCase();
+		String name = StringUtils.lowerCase(file.getName());
 		if (file.isDirectory()) {
 			return true;
 		}
 		for (String element : m_Extension) {
-			if (name.endsWith(element)) {
+			if (StringUtils.endsWith(name, element)) {
 				return true;
 			}
 		}
@@ -118,13 +114,11 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter, S
 	}
 
 	/**
-	 * Returns true if the file in the given directory with the given name
-	 * should be accepted.
+	 * Returns true if the file in the given directory with the given name should be
+	 * accepted.
 	 * 
-	 * @param dir
-	 *            the directory where the file resides.
-	 * @param name
-	 *            the name of the file.
+	 * @param dir  the directory where the file resides.
+	 * @param name the name of the file.
 	 * @return true if the file is accepted.
 	 */
 	@Override

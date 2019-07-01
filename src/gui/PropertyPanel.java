@@ -49,6 +49,7 @@ import core.OptionHandler;
 import core.Utils;
 import gui.GenericObjectEditorHistory.HistorySelectionEvent;
 import gui.GenericObjectEditorHistory.HistorySelectionListener;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Support for drawing a property value in a component.
@@ -78,8 +79,7 @@ public class PropertyPanel extends JPanel {
 	/**
 	 * Create the panel with the supplied property editor.
 	 * 
-	 * @param pe
-	 *            the PropertyEditor
+	 * @param pe the PropertyEditor
 	 */
 	public PropertyPanel(PropertyEditor pe) {
 
@@ -87,13 +87,11 @@ public class PropertyPanel extends JPanel {
 	}
 
 	/**
-	 * Create the panel with the supplied property editor, optionally ignoring
-	 * any custom panel the editor can provide.
+	 * Create the panel with the supplied property editor, optionally ignoring any
+	 * custom panel the editor can provide.
 	 * 
-	 * @param pe
-	 *            the PropertyEditor
-	 * @param ignoreCustomPanel
-	 *            whether to make use of any available custom panel
+	 * @param pe                the PropertyEditor
+	 * @param ignoreCustomPanel whether to make use of any available custom panel
 	 */
 	public PropertyPanel(PropertyEditor pe, boolean ignoreCustomPanel) {
 
@@ -110,8 +108,7 @@ public class PropertyPanel extends JPanel {
 	}
 
 	/**
-	 * Creates the default style of panel for editors that do not supply their
-	 * own.
+	 * Creates the default style of panel for editors that do not supply their own.
 	 */
 	protected void createDefaultPanel() {
 
@@ -132,73 +129,61 @@ public class PropertyPanel extends JPanel {
 
 						if (mEditor.getValue() != null) {
 							item = new JMenuItem("Show properties...");
-							item.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									showPropertyDialog();
-								}
-							});
+							item.addActionListener((ActionEvent e) -> showPropertyDialog());
 							menu.add(item);
 
 							item = new JMenuItem("Copy configuration to clipboard");
-							item.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									Object value = mEditor.getValue();
-									String str = new String("");
-									if (value.getClass().isArray()) {
-										str += value.getClass().getName();
-										Object[] arr = (Object[]) value;
-										for (Object v : arr) {
-											String s = v.getClass().getName();
-											if (v instanceof OptionHandler) {
-												s += " " + Utils.joinOptions(((OptionHandler) v).getOptions());
-											}
-											str += " \"" + Utils.backQuoteChars(s.trim()) + "\"";
+							item.addActionListener((ActionEvent e) -> {
+								Object value = mEditor.getValue();
+								String str = "";
+								if (value.getClass().isArray()) {
+									str += value.getClass().getName();
+									Object[] arr = (Object[]) value;
+									for (Object v : arr) {
+										String s = v.getClass().getName();
+										if (v instanceof OptionHandler) {
+											s += " " + Utils.joinOptions(((OptionHandler) v).getOptions());
 										}
-									} else {
-										str += value.getClass().getName();
-										if (value instanceof OptionHandler) {
-											str += " " + Utils.joinOptions(((OptionHandler) value).getOptions());
-										}
+										str += " \"" + Utils.backQuoteChars(StringUtils.trim(s)) + "\"";
 									}
-									StringSelection selection = new StringSelection(str.trim());
-									Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-									clipboard.setContents(selection, selection);
+								} else {
+									str += value.getClass().getName();
+									if (value instanceof OptionHandler) {
+										str += " " + Utils.joinOptions(((OptionHandler) value).getOptions());
+									}
 								}
+								StringSelection selection = new StringSelection(StringUtils.trim(str));
+								Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+								clipboard.setContents(selection, selection);
 							});
 							menu.add(item);
 						}
 
 						item = new JMenuItem("Enter configuration...");
-						item.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								String str = JOptionPane.showInputDialog(comp,
-										"Configuration (<classname> [<options>])");
-								if (str != null && str.length() > 0) {
-									try {
-										String[] options = Utils.splitOptions(str);
-										String classname = options[0];
-										options[0] = "";
-										Class c = Utils.forName(Object.class, classname, null).getClass();
-										if (c.isArray()) {
-											Object[] arr = (Object[]) Array.newInstance(c.getComponentType(),
-													options.length - 1);
-											for (int i = 1; i < options.length; i++) {
-												String[] ops = Utils.splitOptions(options[i]);
-												String cname = ops[0];
-												ops[0] = "";
-												arr[i - 1] = Utils.forName(Object.class, cname, ops);
-											}
-											mEditor.setValue(arr);
-										} else {
-											mEditor.setValue(Utils.forName(Object.class, classname, options));
+						item.addActionListener((ActionEvent e) -> {
+							String str = JOptionPane.showInputDialog(comp, "Configuration (<classname> [<options>])");
+							if (str != null && str.length() > 0) {
+								try {
+									String[] options = Utils.splitOptions(str);
+									String classname = options[0];
+									options[0] = "";
+									Class c = Utils.forName(Object.class, classname, null).getClass();
+									if (c.isArray()) {
+										Object[] arr = (Object[]) Array.newInstance(c.getComponentType(),
+												options.length - 1);
+										for (int i = 1; i < options.length; i++) {
+											String[] ops = Utils.splitOptions(options[i]);
+											String cname = ops[0];
+											ops[0] = "";
+											arr[i - 1] = Utils.forName(Object.class, cname, ops);
 										}
-									} catch (Exception ex) {
-										JOptionPane.showMessageDialog(comp, "Error parsing commandline:\n" + ex,
-												"Error...", JOptionPane.ERROR_MESSAGE);
+										mEditor.setValue(arr);
+									} else {
+										mEditor.setValue(Utils.forName(Object.class, classname, options));
 									}
+								} catch (Exception ex) {
+									JOptionPane.showMessageDialog(comp, "Error parsing commandline:\n" + ex, "Error...",
+											JOptionPane.ERROR_MESSAGE);
 								}
 							}
 						});
@@ -206,22 +191,19 @@ public class PropertyPanel extends JPanel {
 
 						if (mEditor.getValue() instanceof OptionHandler) {
 							item = new JMenuItem("Edit configuration...");
-							item.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									String str = mEditor.getValue().getClass().getName();
-									str += " " + Utils.joinOptions(((OptionHandler) mEditor.getValue()).getOptions());
-									str = JOptionPane.showInputDialog(comp, "Configuration", str);
-									if (str != null && str.length() > 0) {
-										try {
-											String[] options = Utils.splitOptions(str);
-											String classname = options[0];
-											options[0] = "";
-											mEditor.setValue(Utils.forName(Object.class, classname, options));
-										} catch (Exception ex) {
-											JOptionPane.showMessageDialog(comp, "Error parsing commandline:\n" + ex,
-													"Error...", JOptionPane.ERROR_MESSAGE);
-										}
+							item.addActionListener((ActionEvent e) -> {
+								String str = mEditor.getValue().getClass().getName();
+								str += " " + Utils.joinOptions(((OptionHandler) mEditor.getValue()).getOptions());
+								str = JOptionPane.showInputDialog(comp, "Configuration", str);
+								if (str != null && str.length() > 0) {
+									try {
+										String[] options = Utils.splitOptions(str);
+										String classname = options[0];
+										options[0] = "";
+										mEditor.setValue(Utils.forName(Object.class, classname, options));
+									} catch (Exception ex) {
+										JOptionPane.showMessageDialog(comp, "Error parsing commandline:\n" + ex,
+												"Error...", JOptionPane.ERROR_MESSAGE);
 									}
 								}
 							});
@@ -230,12 +212,7 @@ public class PropertyPanel extends JPanel {
 
 						if (mEditor instanceof GenericObjectEditor) {
 							((GenericObjectEditor) mEditor).getHistory().customizePopupMenu(menu, mEditor.getValue(),
-									new HistorySelectionListener() {
-										@Override
-										public void historySelected(HistorySelectionEvent e) {
-											mEditor.setValue(e.getHistoryItem());
-										}
-									});
+									(HistorySelectionEvent e) -> mEditor.setValue(e.getHistoryItem()));
 						}
 
 						menu.show(comp, evt.getX(), evt.getY());
@@ -248,12 +225,7 @@ public class PropertyPanel extends JPanel {
 		newPref.width = newPref.height * 5;
 		setPreferredSize(newPref);
 
-		mEditor.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				repaint();
-			}
-		});
+		mEditor.addPropertyChangeListener((PropertyChangeEvent evt) -> repaint());
 	}
 
 	/**
@@ -295,8 +267,7 @@ public class PropertyPanel extends JPanel {
 	/**
 	 * Passes on enabled/disabled status to the custom panel (if one is set).
 	 * 
-	 * @param enabled
-	 *            true if this panel (and the custom panel is enabled)
+	 * @param enabled true if this panel (and the custom panel is enabled)
 	 */
 	@Override
 	public void setEnabled(boolean enabled) {
@@ -310,8 +281,7 @@ public class PropertyPanel extends JPanel {
 	/**
 	 * Paints the component, using the property editor's paint method.
 	 * 
-	 * @param g
-	 *            the current graphics context
+	 * @param g the current graphics context
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -338,8 +308,7 @@ public class PropertyPanel extends JPanel {
 	/**
 	 * Adds the specified value to the history.
 	 * 
-	 * @param obj
-	 *            the object to add to the history
+	 * @param obj the object to add to the history
 	 * @return true if successfully added (i.e., if editor is a GOE)
 	 */
 	public boolean addToHistory(Object obj) {

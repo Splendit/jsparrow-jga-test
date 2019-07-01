@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class to store information about an option.
@@ -70,14 +71,10 @@ public class Option implements RevisionHandler {
 	/**
 	 * Creates new option with the given parameters.
 	 *
-	 * @param description
-	 *            the option's description
-	 * @param name
-	 *            the option's name
-	 * @param numArguments
-	 *            the number of arguments
-	 * @param synopsis
-	 *            the option's synopsis
+	 * @param description  the option's description
+	 * @param name         the option's name
+	 * @param numArguments the number of arguments
+	 * @param synopsis     the option's synopsis
 	 */
 	public Option(String description, String name, int numArguments, String synopsis) {
 
@@ -88,17 +85,15 @@ public class Option implements RevisionHandler {
 	}
 
 	/**
-	 * Get a list of options for a class. Options identified by this method are
-	 * bean properties (with get/set methods) annotated using the OptionMetadata
-	 * annotation. All options from the class up to, but not including, the
-	 * supplied oldest superclass are returned.
+	 * Get a list of options for a class. Options identified by this method are bean
+	 * properties (with get/set methods) annotated using the OptionMetadata
+	 * annotation. All options from the class up to, but not including, the supplied
+	 * oldest superclass are returned.
 	 * 
 	 * 
-	 * @param childClazz
-	 *            the class to get options for
-	 * @param oldestAncestorClazz
-	 *            the oldest superclass (inclusive) at which to stop getting
-	 *            options from
+	 * @param childClazz          the class to get options for
+	 * @param oldestAncestorClazz the oldest superclass (inclusive) at which to stop
+	 *                            getting options from
 	 * @return a list of options
 	 */
 	public static Vector<Option> listOptionsForClassHierarchy(Class<?> childClazz, Class<?> oldestAncestorClazz) {
@@ -119,10 +114,8 @@ public class Option implements RevisionHandler {
 	/**
 	 * Adds all methods from the supplied class to the supplied list of methods.
 	 * 
-	 * @param clazz
-	 *            the class to get methods from
-	 * @param methList
-	 *            the list to add them to
+	 * @param clazz    the class to get methods from
+	 * @param methList the list to add them to
 	 */
 	protected static void addMethodsToList(Class<?> clazz, List<Method> methList) {
 		Method[] methods = clazz.getDeclaredMethods();
@@ -133,12 +126,11 @@ public class Option implements RevisionHandler {
 
 	/**
 	 * Gets a list of options for the supplied class. Only examines immediate
-	 * methods in the class (does not consider superclasses). Options identified
-	 * by this method are bean properties (with get/set methods) annotated using
-	 * the OptionMetadata annotation.
+	 * methods in the class (does not consider superclasses). Options identified by
+	 * this method are bean properties (with get/set methods) annotated using the
+	 * OptionMetadata annotation.
 	 * 
-	 * @param clazz
-	 *            the class to examine for options
+	 * @param clazz the class to examine for options
 	 * @return a list of options
 	 */
 	public static Vector<Option> listOptionsForClass(Class<?> clazz) {
@@ -163,16 +155,16 @@ public class Option implements RevisionHandler {
 				if (o.commandLineParamName().length() > 0) {
 					opOrder[index] = o.displayOrder();
 					String description = o.description();
-					if (!description.startsWith("\t")) {
+					if (!StringUtils.startsWith(description, "\t")) {
 						description = "\t" + description;
 					}
 					description = description.replace("\n", "\n\t");
 					String name = o.commandLineParamName();
-					if (name.startsWith("-")) {
-						name = name.substring(1, name.length());
+					if (StringUtils.startsWith(name, "-")) {
+						name = StringUtils.substring(name, 1, name.length());
 					}
 					String synopsis = o.commandLineParamSynopsis();
-					if (!synopsis.startsWith("-")) {
+					if (!StringUtils.startsWith(synopsis, "-")) {
 						synopsis = "-" + synopsis;
 					}
 					int numParams = o.commandLineParamIsFlag() ? 0 : 1;
@@ -194,15 +186,14 @@ public class Option implements RevisionHandler {
 	}
 
 	/**
-	 * Get the settings of the supplied object. Settings identified by this
-	 * method are bean properties (with get/set methods) annotated using the
-	 * OptionMetadata annotation. All options from the class up to, but not
-	 * including, the supplied oldest superclass are returned.
+	 * Get the settings of the supplied object. Settings identified by this method
+	 * are bean properties (with get/set methods) annotated using the OptionMetadata
+	 * annotation. All options from the class up to, but not including, the supplied
+	 * oldest superclass are returned.
 	 * 
-	 * @param target
-	 *            the target object to get settings for
-	 * @param oldestAncestorClazz
-	 *            the oldest superclass at which to stop getting options from
+	 * @param target              the target object to get settings for
+	 * @param oldestAncestorClazz the oldest superclass at which to stop getting
+	 *                            options from
 	 * @return
 	 */
 	public static String[] getOptionsForHierarchy(Object target, Class<?> oldestAncestorClazz) {
@@ -227,18 +218,16 @@ public class Option implements RevisionHandler {
 	}
 
 	/**
-	 * Get the settings of the supplied object. Settings identified by this
-	 * method are bean properties (with get/set methods) annotated using the
-	 * OptionMetadata annotation. Options belonging to the targetClazz (either
-	 * the class of the target or one of its superclasses) are returned.
+	 * Get the settings of the supplied object. Settings identified by this method
+	 * are bean properties (with get/set methods) annotated using the OptionMetadata
+	 * annotation. Options belonging to the targetClazz (either the class of the
+	 * target or one of its superclasses) are returned.
 	 * 
-	 * @param target
-	 *            the target to extract settings from
-	 * @param targetClazz
-	 *            the class to consider for obtaining settings - i.e. annotated
-	 *            methods from this class will have their values extracted. This
-	 *            class is expected to be either the class of the target or one
-	 *            of its superclasses
+	 * @param target      the target to extract settings from
+	 * @param targetClazz the class to consider for obtaining settings - i.e.
+	 *                    annotated methods from this class will have their values
+	 *                    extracted. This class is expected to be either the class
+	 *                    of the target or one of its superclasses
 	 * @return an array of settings
 	 */
 	public static String[] getOptions(Object target, Class<?> targetClazz) {
@@ -333,8 +322,7 @@ public class Option implements RevisionHandler {
 	 * Construct a String containing the class name of an OptionHandler and its
 	 * option settings
 	 *
-	 * @param handler
-	 *            the OptionHandler to construct an option string for
+	 * @param handler the OptionHandler to construct an option string for
 	 * @return a String containing the name of the handler class and its options
 	 */
 	protected static String getOptionStringForOptionHandler(OptionHandler handler) {
@@ -348,15 +336,13 @@ public class Option implements RevisionHandler {
 	/**
 	 * Sets options on the target object. Settings identified by this method are
 	 * bean properties (with get/set methods) annotated using the OptionMetadata
-	 * annotation. All options from the class up to, but not including, the
-	 * supplied oldest superclass are processed in order.
+	 * annotation. All options from the class up to, but not including, the supplied
+	 * oldest superclass are processed in order.
 	 *
-	 * @param options
-	 *            the options to set
-	 * @param target
-	 *            the target on which to set options
-	 * @param oldestAncestorClazz
-	 *            the oldest superclass at which to stop setting options
+	 * @param options             the options to set
+	 * @param target              the target on which to set options
+	 * @param oldestAncestorClazz the oldest superclass at which to stop setting
+	 *                            options
 	 */
 	public static void setOptionsForHierarchy(String[] options, Object target, Class<?> oldestAncestorClazz) {
 
@@ -377,13 +363,10 @@ public class Option implements RevisionHandler {
 	 * Get property descriptors for a target class. Checks a cache first before
 	 * using introspection.
 	 *
-	 * @param targetClazz
-	 *            the target to get the descriptors for
-	 * @param parent
-	 *            the parent class at which to stop getting descriptors
+	 * @param targetClazz the target to get the descriptors for
+	 * @param parent      the parent class at which to stop getting descriptors
 	 * @return an array of property descriptors
-	 * @throws IntrospectionException
-	 *             if a problem occurs
+	 * @throws IntrospectionException if a problem occurs
 	 */
 	private static PropertyDescriptor[] getPropertyDescriptors(Class<?> targetClazz, Class<?> parent)
 			throws IntrospectionException {
@@ -401,18 +384,15 @@ public class Option implements RevisionHandler {
 	/**
 	 * Sets options on the target object. Settings identified by this method are
 	 * bean properties (with get/set methods) annotated using the OptionMetadata
-	 * annotation. Options from just the supplied targetClazz (which is expected
-	 * to be either the class of the target or one of its superclasses) are set.
+	 * annotation. Options from just the supplied targetClazz (which is expected to
+	 * be either the class of the target or one of its superclasses) are set.
 	 *
-	 * @param options
-	 *            the options to set
-	 * @param target
-	 *            the target on which to set options
-	 * @param targetClazz
-	 *            the class containing options to be be set - i.e. annotated
-	 *            option methods in this class will have their values set. This
-	 *            class is expected to be either the class of the target or one
-	 *            of its superclasses
+	 * @param options     the options to set
+	 * @param target      the target on which to set options
+	 * @param targetClazz the class containing options to be be set - i.e. annotated
+	 *                    option methods in this class will have their values set.
+	 *                    This class is expected to be either the class of the
+	 *                    target or one of its superclasses
 	 */
 	public static void setOptions(String[] options, Object target, Class<?> targetClazz) {
 		if (options != null && options.length > 0) {
@@ -436,7 +416,7 @@ public class Option implements RevisionHandler {
 
 					if (parameterDescription != null && parameterDescription.commandLineParamName().length() > 0) {
 						boolean processOpt = false;
-						String optionValue = new String("");
+						String optionValue = "";
 						Object valueToSet = null;
 						if (parameterDescription.commandLineParamIsFlag()) {
 							processOpt = true;
@@ -462,7 +442,7 @@ public class Option implements RevisionHandler {
 								optionValues.add(optionValue);
 								while (true) {
 									optionValue = Utils.getOption(parameterDescription.commandLineParamName(), options);
-									if (optionValue.length() == 0) {
+									if (StringUtils.isEmpty(optionValue)) {
 										break;
 									}
 									optionValues.add(optionValue);
@@ -493,7 +473,7 @@ public class Option implements RevisionHandler {
 								} catch (NumberFormatException e) {
 									// try to match tag strings
 									for (int z = 0; z < legalTags.length; z++) {
-										if (legalTags[z].getReadable().equals(optionValue.trim())) {
+										if (legalTags[z].getReadable().equals(StringUtils.trim(optionValue))) {
 											tagIndex = z;
 											break;
 										}
@@ -552,15 +532,13 @@ public class Option implements RevisionHandler {
 	}
 
 	/**
-	 * Construct an instance of an option handler from a String specifying its
-	 * class name and option values
+	 * Construct an instance of an option handler from a String specifying its class
+	 * name and option values
 	 *
-	 * @param optionValue
-	 *            a String containing the class of the option handler followed
-	 *            by its options
+	 * @param optionValue a String containing the class of the option handler
+	 *                    followed by its options
 	 * @return an instantiated option handling object
-	 * @throws Exception
-	 *             if a problem occurs
+	 * @throws Exception if a problem occurs
 	 */
 	protected static Object constructOptionHandlerValue(String optionValue) throws Exception {
 		String[] optHandlerSpec = Utils.splitOptions(optionValue);
@@ -577,35 +555,31 @@ public class Option implements RevisionHandler {
 	/**
 	 * Removes an option from a given list of options.
 	 *
-	 * @param list
-	 *            the list to reduce
-	 * @param name
-	 *            the name of the option
+	 * @param list the list to reduce
+	 * @param name the name of the option
 	 */
 	public static void deleteOption(List<Option> list, String name) {
 
 		for (Iterator<Option> iter = list.listIterator(); iter.hasNext();) {
 			Option a = iter.next();
-			if (a.name() == name) {
+			if (a.name().equals(name)) {
 				iter.remove();
 			}
 		}
 	}
 
 	/**
-	 * Removes an option from a given list of strings that specifies options.
-	 * This method is for an option that has a parameter value.
+	 * Removes an option from a given list of strings that specifies options. This
+	 * method is for an option that has a parameter value.
 	 *
-	 * @param list
-	 *            the list to reduce
-	 * @param name
-	 *            the name of the option (including hyphen)
+	 * @param list the list to reduce
+	 * @param name the name of the option (including hyphen)
 	 */
 	public static void deleteOptionString(List<String> list, String name) {
 
 		for (Iterator<String> iter = list.listIterator(); iter.hasNext();) {
 			String a = iter.next();
-			if (a == name) {
+			if (a.equals(name)) {
 				iter.remove();
 				iter.next();
 				iter.remove();
@@ -614,19 +588,17 @@ public class Option implements RevisionHandler {
 	}
 
 	/**
-	 * Removes an option from a given list of strings that specifies options.
-	 * This method is for an option without a parameter value (i.e., a flag).
+	 * Removes an option from a given list of strings that specifies options. This
+	 * method is for an option without a parameter value (i.e., a flag).
 	 *
-	 * @param list
-	 *            the list to reduce
-	 * @param name
-	 *            the name of the option (including hyphen)
+	 * @param list the list to reduce
+	 * @param name the name of the option (including hyphen)
 	 */
 	public static void deleteFlagString(List<String> list, String name) {
 
 		for (Iterator<String> iter = list.listIterator(); iter.hasNext();) {
 			String a = iter.next();
-			if (a == name) {
+			if (a.equals(name)) {
 				iter.remove();
 			}
 		}
@@ -635,16 +607,12 @@ public class Option implements RevisionHandler {
 	/**
 	 * Set an option value on a target object
 	 *
-	 * @param setter
-	 *            the Method object for the setter method of the option to set
-	 * @param target
-	 *            the target object on which to set the option
-	 * @param valueToSet
-	 *            the value of the option to set
-	 * @throws InvocationTargetException
-	 *             if a problem occurs
-	 * @throws IllegalAccessException
-	 *             if a problem occurs
+	 * @param setter     the Method object for the setter method of the option to
+	 *                   set
+	 * @param target     the target object on which to set the option
+	 * @param valueToSet the value of the option to set
+	 * @throws InvocationTargetException if a problem occurs
+	 * @throws IllegalAccessException    if a problem occurs
 	 */
 	protected static void setOption(Method setter, Object target, Object valueToSet)
 			throws InvocationTargetException, IllegalAccessException {

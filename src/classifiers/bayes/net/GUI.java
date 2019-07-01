@@ -102,6 +102,7 @@ import gui.graphvisualizer.HierarchicalBCEngine;
 import gui.graphvisualizer.LayoutCompleteEvent;
 import gui.graphvisualizer.LayoutCompleteEventListener;
 import gui.graphvisualizer.LayoutEngine;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * GUI interface to Bayesian Networks. Allows editing Bayesian networks on
@@ -130,20 +131,19 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	protected GraphPanel m_GraphPanel;
 
 	/** String containing file name storing current network */
-	protected String m_sFileName = new String("");
+	protected String m_sFileName = "";
 
 	/** used for calculating marginals in Bayesian netwowrks */
 	MarginCalculator m_marginCalculator = null;
 
 	/**
-	 * used for calculating marginals in Bayesian netwowrks when evidence is
-	 * present
+	 * used for calculating marginals in Bayesian netwowrks when evidence is present
 	 */
 	MarginCalculator m_marginCalculatorWithEvidence = null;
 
 	/**
-	 * flag indicating whether marginal distributions of each of the nodes
-	 * should be shown in display.
+	 * flag indicating whether marginal distributions of each of the nodes should be
+	 * shown in display.
 	 */
 	boolean m_bViewMargins = false;
 
@@ -292,46 +292,43 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		m_jTfZoom.setHorizontalAlignment(JTextField.CENTER);
 		m_jTfZoom.setToolTipText("Zoom");
 
-		m_jTfZoom.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				JTextField jt = (JTextField) ae.getSource();
-				try {
-					int i = -1;
-					i = jt.getText().indexOf('%');
-					if (i == -1) {
-						i = Integer.parseInt(jt.getText());
-					} else {
-						i = Integer.parseInt(jt.getText().substring(0, i));
-					}
-
-					if (i <= 999) {
-						mFScale = i / 100D;
-					}
-
-					jt.setText((int) (mFScale * 100) + "%");
-					if (mFScale > 0.1) {
-						if (!a_zoomout.isEnabled()) {
-							a_zoomout.setEnabled(true);
-						}
-					} else {
-						a_zoomout.setEnabled(false);
-					}
-					if (mFScale < 9.99) {
-						if (!a_zoomin.isEnabled()) {
-							a_zoomin.setEnabled(true);
-						}
-					} else {
-						a_zoomin.setEnabled(false);
-					}
-					setAppropriateSize();
-					// m_GraphPanel.clearBuffer();
-					m_jScrollPane.revalidate();
-				} catch (NumberFormatException ne) {
-					JOptionPane.showMessageDialog(GUI.this.getParent(), "Invalid integer entered for zoom.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-					jt.setText((mFScale * 100) + "%");
+		m_jTfZoom.addActionListener((ActionEvent ae) -> {
+			JTextField jt = (JTextField) ae.getSource();
+			try {
+				int i = -1;
+				i = StringUtils.indexOf(jt.getText(), '%');
+				if (i == -1) {
+					i = Integer.parseInt(jt.getText());
+				} else {
+					i = Integer.parseInt(StringUtils.substring(jt.getText(), 0, i));
 				}
+
+				if (i <= 999) {
+					mFScale = i / 100D;
+				}
+
+				jt.setText((int) (mFScale * 100) + "%");
+				if (mFScale > 0.1) {
+					if (!a_zoomout.isEnabled()) {
+						a_zoomout.setEnabled(true);
+					}
+				} else {
+					a_zoomout.setEnabled(false);
+				}
+				if (mFScale < 9.99) {
+					if (!a_zoomin.isEnabled()) {
+						a_zoomin.setEnabled(true);
+					}
+				} else {
+					a_zoomin.setEnabled(false);
+				}
+				setAppropriateSize();
+				// m_GraphPanel.clearBuffer();
+				m_jScrollPane.revalidate();
+			} catch (NumberFormatException ne) {
+				JOptionPane.showMessageDialog(GUI.this.getParent(), "Invalid integer entered for zoom.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				jt.setText((mFScale * 100) + "%");
 			}
 		});
 
@@ -466,29 +463,23 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		toolMenu.add(a_layout);
 		toolMenu.addSeparator();
 		final JCheckBoxMenuItem viewMargins = new JCheckBoxMenuItem("Show Margins", false);
-		viewMargins.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				boolean bPrev = m_bViewMargins;
-				m_bViewMargins = viewMargins.getState();
-				if (bPrev == false && viewMargins.getState() == true) {
-					updateStatus();
-				}
-				repaint();
+		viewMargins.addActionListener((ActionEvent ae) -> {
+			boolean bPrev = m_bViewMargins;
+			m_bViewMargins = viewMargins.getState();
+			if (bPrev == false && viewMargins.getState() == true) {
+				updateStatus();
 			}
+			repaint();
 		});
 		toolMenu.add(viewMargins);
 		final JCheckBoxMenuItem viewCliques = new JCheckBoxMenuItem("Show Cliques", false);
-		viewCliques.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				boolean bPrev = m_bViewCliques;
-				m_bViewCliques = viewCliques.getState();
-				if (bPrev == false && viewCliques.getState() == true) {
-					updateStatus();
-				}
-				repaint();
+		viewCliques.addActionListener((ActionEvent ae) -> {
+			boolean bPrev = m_bViewCliques;
+			m_bViewCliques = viewCliques.getState();
+			if (bPrev == false && viewCliques.getState() == true) {
+				updateStatus();
 			}
+			repaint();
 		});
 		toolMenu.add(viewCliques);
 
@@ -510,9 +501,9 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	}
 
 	/**
-	 * This method sets the node size that is appropriate considering the
-	 * maximum label size that is present. It is used internally when custom
-	 * node size checkbox is unchecked.
+	 * This method sets the node size that is appropriate considering the maximum
+	 * label size that is present. It is used internally when custom node size
+	 * checkbox is unchecked.
 	 */
 	protected void setAppropriateNodeSize() {
 		int strWidth;
@@ -520,15 +511,15 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		int nMaxStringWidth = DEFAULT_NODE_WIDTH;
 		mNNodeWidth = nMaxStringWidth + 4;
 		mNPaddedNodeWidth = mNNodeWidth + PADDING;
-		mJTfNodeWidth.setText(new Integer(mNNodeWidth).toString());
+		mJTfNodeWidth.setText(Integer.toString(mNNodeWidth));
 
 		mNNodeHeight = 2 * fm.getHeight();
-		mJTfNodeHeight.setText(new Integer(mNNodeHeight).toString());
+		mJTfNodeHeight.setText(Integer.toString(mNNodeHeight));
 	}
 
 	/**
-	 * Sets the preferred size for m_GraphPanel GraphPanel to the minimum size
-	 * that is neccessary to display the graph.
+	 * Sets the preferred size for m_GraphPanel GraphPanel to the minimum size that
+	 * is neccessary to display the graph.
 	 */
 	public void setAppropriateSize() {
 		int maxX = 0;
@@ -537,11 +528,11 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	} // setAppropriateSize
 
 	/**
-	 * This method is an implementation for LayoutCompleteEventListener class.
-	 * It sets the size appropriate for m_GraphPanel GraphPanel and and
-	 * revalidates it's container JScrollPane once a LayoutCompleteEvent is
-	 * received from the LayoutEngine. Also, it updates positions of the
-	 * Bayesian network stored in m_BayesNet.
+	 * This method is an implementation for LayoutCompleteEventListener class. It
+	 * sets the size appropriate for m_GraphPanel GraphPanel and and revalidates
+	 * it's container JScrollPane once a LayoutCompleteEvent is received from the
+	 * LayoutEngine. Also, it updates positions of the Bayesian network stored in
+	 * m_BayesNet.
 	 */
 	@Override
 	public void layoutCompleted(LayoutCompleteEvent le) {
@@ -575,8 +566,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	} // readBIFFromFile
 
 	/*
-	 * read arff file from file sFileName and start new Bayesian network with
-	 * nodes representing attributes in data set.
+	 * read arff file from file sFileName and start new Bayesian network with nodes
+	 * representing attributes in data set.
 	 */
 	void initFromArffFile(String sFileName) {
 		try {
@@ -674,7 +665,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			}
 			String sParent = (String) JOptionPane.showInputDialog(null, "Select parent node ", "Nodes", 0, null,
 					options, options[0]);
-			if (sParent == null || "" == sParent) {
+			if (sParent == null || "".equals(sParent)) {
 				return;
 			}
 			// update all data structures
@@ -705,21 +696,21 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	void deleteArc(String[] options) {
 		String sResult = (String) JOptionPane.showInputDialog(null, "Select arc to delete", "Arcs", 0, null, options,
 				options[0]);
-		if (sResult != null && !("" == sResult)) {
-			int nPos = sResult.indexOf(" -> ");
-			String sParent = sResult.substring(0, nPos);
-			String sChild = sResult.substring(nPos + 4);
+		if (sResult != null && !("".equals(sResult))) {
+			int nPos = StringUtils.indexOf(sResult, " -> ");
+			String sParent = StringUtils.substring(sResult, 0, nPos);
+			String sChild = StringUtils.substring(sResult, nPos + 4);
 			updateStatus();
 		}
 	} // deleteArc
 
 	/*
-	 * Rename node with index nTargetNode. Pops up window that allwos for
-	 * entering a new name.
+	 * Rename node with index nTargetNode. Pops up window that allwos for entering a
+	 * new name.
 	 */
 	void renameNode(int nTargetNode) {
 		String sName = JOptionPane.showInputDialog(null, null, "New name for node", JOptionPane.OK_CANCEL_OPTION);
-		if (sName == null || "" == sName) {
+		if (sName == null || "".equals(sName)) {
 			return;
 		}
 		repaint();
@@ -732,7 +723,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	void renameValue(int nTargetNode, String sValue) {
 		String sNewValue = JOptionPane.showInputDialog(null, "New name for value " + sValue, "Node " + null,
 				JOptionPane.OK_CANCEL_OPTION);
-		if (sNewValue == null || "" == sNewValue) {
+		if (sNewValue == null || "".equals(sNewValue)) {
 			return;
 		}
 		a_undo.setEnabled(true);
@@ -746,15 +737,15 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	} // deleteNode
 
 	/*
-	 * Add a value to currently selected node. Shows window that allows to enter
-	 * the name of the value.
+	 * Add a value to currently selected node. Shows window that allows to enter the
+	 * name of the value.
 	 */
 	void addValue() {
 		// GraphNode n = (GraphNode) m_nodes.elementAt(m_nCurrentNode);
-		String sValue = new String("Value");
+		String sValue = "Value";
 		String sNewValue = JOptionPane.showInputDialog(null, "New value " + sValue, "Node " + null,
 				JOptionPane.OK_CANCEL_OPTION);
-		if (sNewValue == null || "" == sNewValue) {
+		if (sNewValue == null || "".equals(sNewValue)) {
 			return;
 		}
 		updateStatus();
@@ -876,32 +867,21 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 
 		JButton jBtRandomize = new JButton("Randomize");
 		jBtRandomize.setMnemonic('R');
-		jBtRandomize.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				tm.randomize();
-				dlg.repaint();
-			}
+		jBtRandomize.addActionListener((ActionEvent ae) -> {
+			tm.randomize();
+			dlg.repaint();
 		});
 
 		JButton jBtOk = new JButton("Ok");
 		jBtOk.setMnemonic('O');
-		jBtOk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				tm.setData();
+		jBtOk.addActionListener((ActionEvent ae) -> {
+			tm.setData();
 
-				dlg.setVisible(false);
-			}
+			dlg.setVisible(false);
 		});
 		JButton jBtCancel = new JButton("Cancel");
 		jBtCancel.setMnemonic('C');
-		jBtCancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				dlg.setVisible(false);
-			}
-		});
+		jBtCancel.addActionListener((ActionEvent ae) -> dlg.setVisible(false));
 		Container c = new Container();
 		c.setLayout(new GridBagLayout());
 		c.add(jBtRandomize);
@@ -926,9 +906,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		if (args.length > 0) {
 			try {
 				g.readBIFFromFile(args[0]);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			} catch (BIFFormatException bf) {
+			} catch (BIFFormatException | IOException bf) {
 				bf.printStackTrace();
 			}
 		}
@@ -1008,7 +986,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		} // addToSelection
 
 		public void selectAll() {
-			m_selected.removeAll(m_selected);
+			m_selected.clear();
 			for (int iNode = 0; iNode < 5; iNode++) {
 				m_selected.add(iNode);
 			}
@@ -1016,13 +994,10 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		} // selectAll
 
 		public int getSumOfSelection() {
-			int sum = 0;
-			for(int n : m_selected) {
-				sum += n;
-			}
+			int sum = m_selected.stream().mapToInt(Integer::intValue).sum();
 			return sum;
 		} // getSum
-		
+
 		boolean contains(Rectangle rect, int iNode) {
 			return false;
 		} // contains
@@ -1056,7 +1031,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		} // toggleSelection
 
 		public void clear() {
-			m_selected.removeAll(m_selected);
+			m_selected.clear();
 			updateGUI();
 		}
 
@@ -1065,7 +1040,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				return;
 			}
 
-			for (Integer nNode : m_selected) {
+			m_selected.forEach(nNode -> {
 				int nPosX = 0;
 				int nPosY = 0;
 				g.setColor(Color.BLACK);
@@ -1076,7 +1051,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				g.fillRect(nXRC, nYRC + mNNodeHeight, d, d);
 				g.fillRect(nXRC + mNNodeWidth, nYRC, d, d);
 				g.fillRect(nXRC + mNNodeWidth, nYRC + mNNodeHeight, d, d);
-			}
+			});
 		} // draw
 	} // Selection
 
@@ -1104,8 +1079,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	} // class ClipBoard
 
 	/**
-	 * Base class used for definining actions with a name, tool tip text,
-	 * possibly an icon and accelerator key.
+	 * Base class used for definining actions with a name, tool tip text, possibly
+	 * an icon and accelerator key.
 	 */
 	class MyAction extends AbstractAction {
 		/** for serialization */
@@ -1169,19 +1144,19 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				final JLabel jLbNrOfNodes = new JLabel("Nr of nodes");
 				final JTextField jTfNrOfNodes = new JTextField(3);
 				jTfNrOfNodes.setHorizontalAlignment(JTextField.CENTER);
-				jTfNrOfNodes.setText(new Integer(m_nNrOfNodes).toString());
+				jTfNrOfNodes.setText(Integer.toString(m_nNrOfNodes));
 				final JLabel jLbNrOfArcs = new JLabel("Nr of arcs");
 				final JTextField jTfNrOfArcs = new JTextField(3);
 				jTfNrOfArcs.setHorizontalAlignment(JTextField.CENTER);
-				jTfNrOfArcs.setText(new Integer(m_nNrOfArcs).toString());
+				jTfNrOfArcs.setText(Integer.toString(m_nNrOfArcs));
 				final JLabel jLbCardinality = new JLabel("Cardinality");
 				final JTextField jTfCardinality = new JTextField(3);
 				jTfCardinality.setHorizontalAlignment(JTextField.CENTER);
-				jTfCardinality.setText(new Integer(m_nCardinality).toString());
+				jTfCardinality.setText(Integer.toString(m_nCardinality));
 				final JLabel jLbSeed = new JLabel("Random seed");
 				final JTextField jTfSeed = new JTextField(3);
 				jTfSeed.setHorizontalAlignment(JTextField.CENTER);
-				jTfSeed.setText(new Integer(m_nSeed).toString());
+				jTfSeed.setText(Integer.toString(m_nSeed));
 
 				JButton jBtGo;
 				jBtGo = new JButton("Generate Network");
@@ -1189,12 +1164,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				JButton jBtCancel;
 				jBtCancel = new JButton("Cancel");
 				jBtCancel.setMnemonic('C');
-				jBtCancel.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						dlg.setVisible(false);
-					}
-				});
+				jBtCancel.addActionListener((ActionEvent ae1) -> dlg.setVisible(false));
 				GridBagConstraints gbc = new GridBagConstraints();
 				dlg.setLayout(new GridBagLayout());
 
@@ -1245,7 +1215,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 
 		int m_nSeed = 1234;
 
-		String m_sFile = new String("");
+		String m_sFile = "";
 
 		JDialog dlg = null;
 
@@ -1262,11 +1232,11 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				final JLabel jLbNrOfInstances = new JLabel("Nr of instances");
 				final JTextField jTfNrOfInstances = new JTextField(3);
 				jTfNrOfInstances.setHorizontalAlignment(JTextField.CENTER);
-				jTfNrOfInstances.setText(new Integer(m_nNrOfInstances).toString());
+				jTfNrOfInstances.setText(Integer.toString(m_nNrOfInstances));
 				final JLabel jLbSeed = new JLabel("Random seed");
 				final JTextField jTfSeed = new JTextField(3);
 				jTfSeed.setHorizontalAlignment(JTextField.CENTER);
-				jTfSeed.setText(new Integer(m_nSeed).toString());
+				jTfSeed.setText(Integer.toString(m_nSeed));
 				final JLabel jLbFile = new JLabel("Output file (optional)");
 				final JTextField jTfFile = new JTextField(12);
 				jTfFile.setHorizontalAlignment(JTextField.CENTER);
@@ -1276,29 +1246,21 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				jBtGo = new JButton("Generate Data");
 
 				JButton jBtFile = new JButton("Browse");
-				jBtFile.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						ConverterFileChooser fc = new ConverterFileChooser(System.getProperty("user.dir"));
-						fc.setDialogTitle("Save Instances As");
-						int rval = fc.showSaveDialog(GUI.this);
+				jBtFile.addActionListener((ActionEvent ae1) -> {
+					ConverterFileChooser fc = new ConverterFileChooser(System.getProperty("user.dir"));
+					fc.setDialogTitle("Save Instances As");
+					int rval = fc.showSaveDialog(GUI.this);
 
-						if (rval == JFileChooser.APPROVE_OPTION) {
-							String filename = fc.getSelectedFile() + "";
-							jTfFile.setText(filename);
-						}
-						dlg.setVisible(true);
+					if (rval == JFileChooser.APPROVE_OPTION) {
+						String filename = fc.getSelectedFile() + "";
+						jTfFile.setText(filename);
 					}
+					dlg.setVisible(true);
 				});
 				JButton jBtCancel;
 				jBtCancel = new JButton("Cancel");
 				jBtCancel.setMnemonic('C');
-				jBtCancel.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						dlg.setVisible(false);
-					}
-				});
+				jBtCancel.addActionListener((ActionEvent ae2) -> dlg.setVisible(false));
 				GridBagConstraints gbc = new GridBagConstraints();
 				dlg.setLayout(new GridBagLayout());
 
@@ -1363,30 +1325,22 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				JButton jBtGo;
 				jBtGo = new JButton("Learn");
 
-				jBtGo.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						try {
-							layoutGraph();
-							updateStatus();
+				jBtGo.addActionListener((ActionEvent ae1) -> {
+					try {
+						layoutGraph();
+						updateStatus();
 
-							dlg.setVisible(false);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
 						dlg.setVisible(false);
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
+					dlg.setVisible(false);
 				});
 
 				JButton jBtCancel;
 				jBtCancel = new JButton("Cancel");
 				jBtCancel.setMnemonic('C');
-				jBtCancel.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						dlg.setVisible(false);
-					}
-				});
+				jBtCancel.addActionListener((ActionEvent ae2) -> dlg.setVisible(false));
 				GridBagConstraints gbc = new GridBagConstraints();
 				dlg.setLayout(new GridBagLayout());
 
@@ -1479,7 +1433,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ae) {
-			String sMsg = new String("");
+			String sMsg = "";
 			m_jStatusBar.setText("Undo action performed: " + sMsg);
 			// if (!sMsg.equals("")) {
 			// JOptionPane.showMessageDialog(null, sMsg, "Undo action
@@ -1503,7 +1457,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ae) {
-			String sMsg = new String("");
+			String sMsg = "";
 			m_jStatusBar.setText("Redo action performed: " + sMsg);
 			// if (!sMsg.equals("")) {
 			// JOptionPane.showMessageDialog(null, sMsg, "Redo action
@@ -1553,30 +1507,22 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				JButton jBtCancel;
 				jBtCancel = new JButton("Cancel");
 				jBtCancel.setMnemonic('C');
-				jBtCancel.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						dlg.setVisible(false);
-					}
-				});
+				jBtCancel.addActionListener((ActionEvent ae) -> dlg.setVisible(false));
 				JButton jBtOk = new JButton("Ok");
 				jBtOk.setMnemonic('O');
-				jBtOk.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						String sName = jTfName.getText();
-						if (sName.length() <= 0) {
-							JOptionPane.showMessageDialog(null, "Name should have at least one character");
-							return;
-						}
-						int nCard = Integer.valueOf(jTfCard.getText()).intValue();
-						if (nCard <= 1) {
-							JOptionPane.showMessageDialog(null, "Cardinality should be larger than 1");
-							return;
-						}
-						repaint();
-						dlg.setVisible(false);
+				jBtOk.addActionListener((ActionEvent ae) -> {
+					String sName = jTfName.getText();
+					if (sName.length() <= 0) {
+						JOptionPane.showMessageDialog(null, "Name should have at least one character");
+						return;
 					}
+					int nCard = Integer.valueOf(jTfCard.getText()).intValue();
+					if (nCard <= 1) {
+						JOptionPane.showMessageDialog(null, "Cardinality should be larger than 1");
+						return;
+					}
+					repaint();
+					dlg.setVisible(false);
 				});
 				dlg.setLayout(new GridLayout(3, 2, 10, 10));
 				dlg.add(jLbName);
@@ -1625,7 +1571,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		}
 
 		public void copy() {
-			String sXML = new String("");
+			String sXML = "";
 			m_clipboard.setText(sXML);
 		} // copy
 	} // class ActionCopyNode
@@ -1876,7 +1822,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 
 			if (rval == JFileChooser.APPROVE_OPTION) {
 				String sFileName = fc.getSelectedFile() + "";
-				if (sFileName.endsWith(ef1.getExtensions()[0])) {
+				if (StringUtils.endsWith(sFileName, ef1.getExtensions()[0])) {
 					initFromArffFile(sFileName);
 				} else {
 					try {
@@ -1934,7 +1880,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ae) {
-			if (!("" == m_sFileName)) {
+			if (!("".equals(m_sFileName))) {
 				saveFile(m_sFileName);
 				m_jStatusBar.setText("Saved as " + m_sFileName);
 			} else {
@@ -1948,7 +1894,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
 			fc.addChoosableFileFilter(ef1);
 			fc.setDialogTitle("Save Graph As");
-			if (!("" == m_sFileName)) {
+			if (!("".equals(m_sFileName))) {
 				// can happen on actionQuit
 				fc.setSelectedFile(new File(m_sFileName));
 			}
@@ -1958,7 +1904,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				// System.out.println("Saving to file \""+
 				// f.getAbsoluteFile().toString()+"\"");
 				String sFileName = fc.getSelectedFile() + "";
-				if (!sFileName.endsWith(".xml")) {
+				if (!StringUtils.endsWith(sFileName, ".xml")) {
 					sFileName = sFileName + ".xml";
 				}
 				saveFile(sFileName);
@@ -1968,10 +1914,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		} // saveAs
 
 		protected void saveFile(String sFileName) {
-			try {
-				FileWriter outfile = new FileWriter(sFileName);
+			try (FileWriter outfile = new FileWriter(sFileName)) {
 				outfile.write(m_jStatusBar.getText());
-				outfile.close();
 				m_sFileName = sFileName;
 				m_jStatusBar.setText("Saved as " + m_sFileName);
 			} catch (IOException e) {
@@ -2171,84 +2115,73 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 				final JLabel jLbNodeHeight = new JLabel("Height");
 
 				mJTfNodeWidth.setHorizontalAlignment(JTextField.CENTER);
-				mJTfNodeWidth.setText(new Integer(mNNodeWidth).toString());
+				mJTfNodeWidth.setText(Integer.toString(mNNodeWidth));
 				mJTfNodeHeight.setHorizontalAlignment(JTextField.CENTER);
-				mJTfNodeHeight.setText(new Integer(mNNodeHeight).toString());
+				mJTfNodeHeight.setText(Integer.toString(mNNodeHeight));
 				jLbNodeWidth.setEnabled(false);
 				mJTfNodeWidth.setEnabled(false);
 				jLbNodeHeight.setEnabled(false);
 				mJTfNodeHeight.setEnabled(false);
 
-				jCbCustomNodeSize.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						if (((JCheckBox) ae.getSource()).isSelected()) {
-							jLbNodeWidth.setEnabled(true);
-							mJTfNodeWidth.setEnabled(true);
-							jLbNodeHeight.setEnabled(true);
-							mJTfNodeHeight.setEnabled(true);
-						} else {
-							jLbNodeWidth.setEnabled(false);
-							mJTfNodeWidth.setEnabled(false);
-							jLbNodeHeight.setEnabled(false);
-							mJTfNodeHeight.setEnabled(false);
-							setAppropriateSize();
-							setAppropriateNodeSize();
-						}
+				jCbCustomNodeSize.addActionListener((ActionEvent ae1) -> {
+					if (((JCheckBox) ae1.getSource()).isSelected()) {
+						jLbNodeWidth.setEnabled(true);
+						mJTfNodeWidth.setEnabled(true);
+						jLbNodeHeight.setEnabled(true);
+						mJTfNodeHeight.setEnabled(true);
+					} else {
+						jLbNodeWidth.setEnabled(false);
+						mJTfNodeWidth.setEnabled(false);
+						jLbNodeHeight.setEnabled(false);
+						mJTfNodeHeight.setEnabled(false);
+						setAppropriateSize();
+						setAppropriateNodeSize();
 					}
 				});
 				JButton jBtLayout;
 				jBtLayout = new JButton("Layout Graph");
 				jBtLayout.setMnemonic('L');
 
-				jBtLayout.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						int tmpW;
-						int tmpH;
+				jBtLayout.addActionListener((ActionEvent ae2) -> {
+					int tmpW;
+					int tmpH;
 
-						if (jCbCustomNodeSize.isSelected()) {
-							try {
-								tmpW = Integer.parseInt(mJTfNodeWidth.getText());
-							} catch (NumberFormatException ne) {
-								JOptionPane.showMessageDialog(GUI.this.getParent(),
-										"Invalid integer entered for node width.", "Error", JOptionPane.ERROR_MESSAGE);
-								tmpW = mNNodeWidth;
-								mJTfNodeWidth.setText(new Integer(mNNodeWidth).toString());
+					if (jCbCustomNodeSize.isSelected()) {
+						try {
+							tmpW = Integer.parseInt(mJTfNodeWidth.getText());
+						} catch (NumberFormatException ne) {
+							JOptionPane.showMessageDialog(GUI.this.getParent(),
+									"Invalid integer entered for node width.", "Error", JOptionPane.ERROR_MESSAGE);
+							tmpW = mNNodeWidth;
+							mJTfNodeWidth.setText(Integer.toString(mNNodeWidth));
 
-							}
-							try {
-								tmpH = Integer.parseInt(mJTfNodeHeight.getText());
-							} catch (NumberFormatException ne) {
-								JOptionPane.showMessageDialog(GUI.this.getParent(),
-										"Invalid integer entered for node height.", "Error", JOptionPane.ERROR_MESSAGE);
-								tmpH = mNNodeHeight;
-								mJTfNodeWidth.setText(new Integer(mNNodeHeight).toString());
-							}
-
-							if (tmpW != mNNodeWidth || tmpH != mNNodeHeight) {
-								mNNodeWidth = tmpW;
-								mNPaddedNodeWidth = mNNodeWidth + PADDING;
-								mNNodeHeight = tmpH;
-							}
 						}
-						// JButton bt = (JButton) ae.getSource();
-						// bt.setEnabled(false);
-						dlg.setVisible(false);
-						updateStatus();
-						layoutGraph();
-						m_jStatusBar.setText("Laying out Bayes net");
+						try {
+							tmpH = Integer.parseInt(mJTfNodeHeight.getText());
+						} catch (NumberFormatException ne) {
+							JOptionPane.showMessageDialog(GUI.this.getParent(),
+									"Invalid integer entered for node height.", "Error", JOptionPane.ERROR_MESSAGE);
+							tmpH = mNNodeHeight;
+							mJTfNodeWidth.setText(Integer.toString(mNNodeHeight));
+						}
+
+						if (tmpW != mNNodeWidth || tmpH != mNNodeHeight) {
+							mNNodeWidth = tmpW;
+							mNPaddedNodeWidth = mNNodeWidth + PADDING;
+							mNNodeHeight = tmpH;
+						}
 					}
+					// JButton bt = (JButton) ae.getSource();
+					// bt.setEnabled(false);
+					dlg.setVisible(false);
+					updateStatus();
+					layoutGraph();
+					m_jStatusBar.setText("Laying out Bayes net");
 				});
 				JButton jBtCancel;
 				jBtCancel = new JButton("Cancel");
 				jBtCancel.setMnemonic('C');
-				jBtCancel.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						dlg.setVisible(false);
-					}
-				});
+				jBtCancel.addActionListener((ActionEvent ae3) -> dlg.setVisible(false));
 				GridBagConstraints gbc = new GridBagConstraints();
 				dlg.setLayout(new GridBagLayout());
 				// dlg.add(m_le.getControlPanel());
@@ -2297,8 +2230,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		final static int NORMAL = 0;
 
 		/**
-		 * number of the clique being drawn. Used for selecting the color of the
-		 * clique
+		 * number of the clique being drawn. Used for selecting the color of the clique
 		 */
 		int m_nClique = 1;
 
@@ -2316,9 +2248,9 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			int dY = mNNodeHeight / 2;
 			int nPosX = 0;
 			int nPosY = 0;
-			String sStr = new String("");
-			for (int j = 0; j < nodes.length; j++) {
-				sStr = sStr + " " + nodes[j];
+			String sStr = "";
+			for (int node1 : nodes) {
+				sStr = sStr + " " + node1;
 			}
 			m_nClique++;
 			nPosX /= nodes.length;
@@ -2330,8 +2262,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		} // viewCliques
 
 		/*
-		 * Draw a node with index iNode on Graphics g at position Drawing mode
-		 * can be NORMAL or HIGHLIGHTED.
+		 * Draw a node with index iNode on Graphics g at position Drawing mode can be
+		 * NORMAL or HIGHLIGHTED.
 		 */
 		protected void drawNode(Graphics g, int iNode, int mode) {
 			int nPosX = iNode;
@@ -2352,9 +2284,9 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			// Draw the node's label if it can fit inside the node's
 			// current width otherwise just display its node nr
 			// if it can fit in node's current width
-			if (fm.stringWidth(new Integer(iNode).toString()) <= mNNodeWidth) {
-				g.drawString(new Integer(iNode).toString(),
-						nPosX + mNPaddedNodeWidth / 2 - fm.stringWidth(new Integer(iNode).toString()) / 2,
+			if (fm.stringWidth(Integer.toString(iNode)) <= mNNodeWidth) {
+				g.drawString(Integer.toString(iNode),
+						nPosX + mNPaddedNodeWidth / 2 - fm.stringWidth(Integer.toString(iNode)) / 2,
 						nPosY + mNNodeHeight / 2 + fm.getHeight() / 2 - 2);
 			}
 
@@ -2365,12 +2297,12 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			if (m_bViewMargins) {
 				double[] P = new double[iNode];
 				for (int iValue = 0; iValue < P.length; iValue++) {
-					String sP = new Double(P[iValue]).toString();
+					String sP = Double.toString(P[iValue]);
 					if (sP.charAt(0) == '0') {
-						sP = sP.substring(1);
+						sP = StringUtils.substring(sP, 1);
 					}
 					if (sP.length() > 5) {
-						sP = sP.substring(1, 5);
+						sP = StringUtils.substring(sP, 1, 5);
 					}
 					g.fillRect(nPosX + mNPaddedNodeWidth, nPosY + iValue * 10 + 2, (int) (P[iValue] * 100), 8);
 
@@ -2384,11 +2316,10 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		} // drawNode
 
 		/**
-		 * This method draws an arrow on a line from (x1,y1) to (x2,y2). The
-		 * arrow head is seated on (x2,y2) and is in the direction of the line.
-		 * If the arrow is needed to be drawn in the opposite direction then
-		 * simply swap the order of (x1, y1) and (x2, y2) when calling this
-		 * function.
+		 * This method draws an arrow on a line from (x1,y1) to (x2,y2). The arrow head
+		 * is seated on (x2,y2) and is in the direction of the line. If the arrow is
+		 * needed to be drawn in the opposite direction then simply swap the order of
+		 * (x1, y1) and (x2, y2) when calling this function.
 		 */
 		protected void drawArrow(Graphics g, int nPosX1, int nPosY1, int nPosX2, int nPosY2) {
 			g.drawLine(nPosX1, nPosY1, nPosX2, nPosY2);
@@ -2450,8 +2381,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		} // drawArrow
 
 		/**
-		 * This method highlights a given node and all its incoming and outgoing
-		 * arcs
+		 * This method highlights a given node and all its incoming and outgoing arcs
 		 */
 		public void highLight(int iNode) {
 			RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -2531,8 +2461,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		/**
 		 * return name of specified colum
 		 * 
-		 * @param iCol
-		 *            index of the column
+		 * @param iCol index of the column
 		 */
 		@Override
 		public String getColumnName(int iCol) {
@@ -2542,10 +2471,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		/**
 		 * return data point
 		 * 
-		 * @param iRow
-		 *            index of row in table
-		 * @param iCol
-		 *            index of column in table
+		 * @param iRow index of row in table
+		 * @param iCol index of column in table
 		 */
 		@Override
 		public Object getValueAt(int iRow, int iCol) {
@@ -2553,17 +2480,13 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		}
 
 		/**
-		 * Set data point, assigns value to CPT entry specified by row and
-		 * column. The remainder of the CPT is normalized so that the values add
-		 * up to 1. IF a value below zero of over 1 is given, no changes take
-		 * place.
+		 * Set data point, assigns value to CPT entry specified by row and column. The
+		 * remainder of the CPT is normalized so that the values add up to 1. IF a value
+		 * below zero of over 1 is given, no changes take place.
 		 * 
-		 * @param oProb
-		 *            data point
-		 * @param iRow
-		 *            index of row in table
-		 * @param iCol
-		 *            index of column in table
+		 * @param oProb data point
+		 * @param iRow  index of row in table
+		 * @param iCol  index of column in table
 		 */
 		@Override
 		public void setValueAt(Object oProb, int iRow, int iCol) {
@@ -2575,8 +2498,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		} // setData
 
 		/*
-		 * JTable uses this method to determine the default renderer/ editor for
-		 * each cell.
+		 * JTable uses this method to determine the default renderer/ editor for each
+		 * cell.
 		 */
 		@Override
 		public Class<?> getColumnClass(int c) {
@@ -2605,10 +2528,9 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		int m_nPosY = 0;
 
 		/**
-		 * A left mouseclick on a node adds node to selection (depending on
-		 * shift and ctrl keys). A right mouseclick on a node pops up menu with
-		 * actions to be performed on the node. A right mouseclick outside
-		 * another node pops up menu.
+		 * A left mouseclick on a node adds node to selection (depending on shift and
+		 * ctrl keys). A right mouseclick on a node pops up menu with actions to be
+		 * performed on the node. A right mouseclick outside another node pops up menu.
 		 */
 		@Override
 		public void mouseClicked(MouseEvent me) {
@@ -2627,8 +2549,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		/*
 		 * update selection (non-Javadoc)
 		 * 
-		 * @see
-		 * java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+		 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 		 */
 		@Override
 		public void mouseReleased(MouseEvent me) {
@@ -2647,20 +2568,17 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		} // mouseReleased
 
 		/*
-		 * pop up menu with actions that apply in general or to selection (if
-		 * any exists)
+		 * pop up menu with actions that apply in general or to selection (if any
+		 * exists)
 		 */
 		void handleRightClick(MouseEvent me, int nPosX, int nPosY) {
 
-			ActionListener act = new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent ae) {
-					if ("Add node" == ae.getActionCommand()) {
-						a_addnode.addNode(m_nPosX, m_nPosY);
-						return;
-					}
-					repaint();
+			ActionListener act = (ActionEvent ae) -> {
+				if ("Add node".equals(ae.getActionCommand())) {
+					a_addnode.addNode(m_nPosX, m_nPosY);
+					return;
 				}
+				repaint();
 			};
 			JPopupMenu popupMenu = new JPopupMenu("Choose a value");
 
@@ -2669,10 +2587,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			popupMenu.add(addNodeItem);
 
 			ArrayList<Integer> selected = m_Selection.getSelected();
-			int sum = 0;
-			for(int n : selected) {
-				sum += n;
-			}
+			int sum = selected.stream().mapToInt(Integer::intValue).sum();
 			JMenu addArcMenu = new JMenu("Add parent");
 			popupMenu.add(addArcMenu);
 			if (selected.size() == 0) {
@@ -2680,9 +2595,7 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 			} else {
 				int nNodes = sum;
 				boolean[] isNotAllowedAsParent = new boolean[nNodes];
-				for (Integer iterator : selected) {
-					isNotAllowedAsParent[iterator] = true;
-				}
+				selected.forEach(iterator -> isNotAllowedAsParent[iterator] = true);
 				// prevent a descendant being a parent, since it introduces
 				// cycles
 				for (int i = 0; i < nNodes; i++) {
@@ -2694,19 +2607,16 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 						}
 					}
 				}
-				for (Integer nNode : selected) {
+				selected.forEach(nNode -> {
 					for (int iParent = 0; iParent < nNodes; iParent++) {
 						isNotAllowedAsParent[nNode] = true;
 					}
-				}
-				ActionListener addParentAction = new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						try {
-							updateStatus();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+				});
+				ActionListener addParentAction = (ActionEvent ae) -> {
+					try {
+						updateStatus();
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				};
 				// count nr of remaining candidates
@@ -2734,66 +2644,40 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		void handleRightNodeClick(MouseEvent me) {
 			m_Selection.clear();
 			repaint();
-			ActionListener renameValueAction = new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent ae) {
-					renameValue(m_nCurrentNode, ae.getActionCommand());
+			ActionListener renameValueAction = (ActionEvent ae) -> renameValue(m_nCurrentNode, ae.getActionCommand());
+			ActionListener delValueAction = (ActionEvent ae) -> delValue(m_nCurrentNode, ae.getActionCommand());
+			ActionListener addParentAction = (ActionEvent ae) -> {
+				try {
+					updateStatus();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			};
-			ActionListener delValueAction = new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent ae) {
-					delValue(m_nCurrentNode, ae.getActionCommand());
-				}
-			};
-			ActionListener addParentAction = new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent ae) {
-					try {
-						updateStatus();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			};
-			ActionListener delParentAction = new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent ae) {
-					deleteArc(m_nCurrentNode, ae.getActionCommand());
-				}
-			};
-			ActionListener delChildAction = new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent ae) {
-					deleteArc(ae.getActionCommand(), m_nCurrentNode);
-				}
-			};
+			ActionListener delParentAction = (ActionEvent ae) -> deleteArc(m_nCurrentNode, ae.getActionCommand());
+			ActionListener delChildAction = (ActionEvent ae) -> deleteArc(ae.getActionCommand(), m_nCurrentNode);
 
-			ActionListener act = new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent ae) {
-					if ("Rename" == ae.getActionCommand()) {
-						renameNode(m_nCurrentNode);
-						return;
-					}
-					if ("Add parent" == ae.getActionCommand()) {
-						addArcInto(m_nCurrentNode);
-						return;
-					}
-					if ("Add value" == ae.getActionCommand()) {
-						addValue();
-						return;
-					}
-					if ("Delete node" == ae.getActionCommand()) {
-						deleteNode(m_nCurrentNode);
-						return;
-					}
-					if ("Edit CPT" == ae.getActionCommand()) {
-						editCPT(m_nCurrentNode);
-						return;
-					}
-					repaint();
+			ActionListener act = (ActionEvent ae) -> {
+				if ("Rename".equals(ae.getActionCommand())) {
+					renameNode(m_nCurrentNode);
+					return;
 				}
+				if ("Add parent".equals(ae.getActionCommand())) {
+					addArcInto(m_nCurrentNode);
+					return;
+				}
+				if ("Add value".equals(ae.getActionCommand())) {
+					addValue();
+					return;
+				}
+				if ("Delete node".equals(ae.getActionCommand())) {
+					deleteNode(m_nCurrentNode);
+					return;
+				}
+				if ("Edit CPT".equals(ae.getActionCommand())) {
+					editCPT(m_nCurrentNode);
+					return;
+				}
+				repaint();
 			};
 			try {
 				JPopupMenu popupMenu = new JPopupMenu("Choose a value");
@@ -2873,8 +2757,8 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 	} // class GraphVisualizerMouseListener
 
 	/**
-	 * private class for handling mouseMoved events to highlight nodes if the
-	 * the mouse is moved on one, move it around or move selection around
+	 * private class for handling mouseMoved events to highlight nodes if the the
+	 * mouse is moved on one, move it around or move selection around
 	 */
 	private class GraphVisualizerMouseMotionListener extends MouseMotionAdapter {
 
@@ -2887,15 +2771,14 @@ public class GUI extends JPanel implements LayoutCompleteEventListener {
 		/*
 		 * identify the node under the mouse
 		 * 
-		 * @returns node index of node under mouse, or -1 if there is no such
-		 * node
+		 * @returns node index of node under mouse, or -1 if there is no such node
 		 */
 		int getGraphNode(MouseEvent me) {
 			m_nPosX = m_nPosY = 0;
 
 			Rectangle r = new Rectangle(0, 0, (int) (mNPaddedNodeWidth * mFScale), (int) (mNNodeHeight * mFScale));
-			m_nPosX = m_nPosX + me.getX();
-			m_nPosY = m_nPosY + me.getY();
+			m_nPosX += me.getX();
+			m_nPosY += me.getY();
 
 			return -1;
 		} // getGraphNode

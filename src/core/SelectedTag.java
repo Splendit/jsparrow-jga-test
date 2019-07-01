@@ -23,6 +23,7 @@ package core;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a selected value from a finite set of values, where each value is
@@ -46,13 +47,11 @@ public class SelectedTag implements RevisionHandler, Serializable {
 	/**
 	 * Creates a new <code>SelectedTag</code> instance.
 	 *
-	 * @param tagID
-	 *            the id of the selected tag.
-	 * @param tags
-	 *            an array containing the possible valid Tags.
-	 * @throws IllegalArgumentException
-	 *             if the selected tag isn't in the array of valid values or the
-	 *             IDs/IDStrs are not unique.
+	 * @param tagID the id of the selected tag.
+	 * @param tags  an array containing the possible valid Tags.
+	 * @throws IllegalArgumentException if the selected tag isn't in the array of
+	 *                                  valid values or the IDs/IDStrs are not
+	 *                                  unique.
 	 */
 	public SelectedTag(int tagID, Tag[] tags) {
 		// are IDs unique?
@@ -87,16 +86,15 @@ public class SelectedTag implements RevisionHandler, Serializable {
 	/**
 	 * Creates a new <code>SelectedTag</code> instance.
 	 *
-	 * @param tagText
-	 *            the text of the selected tag (case-insensitive).
-	 * @param tags
-	 *            an array containing the possible valid Tags.
-	 * @throws IllegalArgumentException
-	 *             if the selected tag isn't in the array of valid values.
+	 * @param tagText the text of the selected tag (case-insensitive).
+	 * @param tags    an array containing the possible valid Tags.
+	 * @throws IllegalArgumentException if the selected tag isn't in the array of
+	 *                                  valid values.
 	 */
 	public SelectedTag(String tagText, Tag[] tags) {
 		for (int i = 0; i < tags.length; i++) {
-			if (tags[i].getReadable().equalsIgnoreCase(tagText) || tags[i].getIDStr().equalsIgnoreCase(tagText)) {
+			if (StringUtils.equalsIgnoreCase(tags[i].getReadable(), tagText)
+					|| StringUtils.equalsIgnoreCase(tags[i].getIDStr(), tagText)) {
 				m_Selected = i;
 				m_Tags = tags;
 				return;
@@ -108,8 +106,7 @@ public class SelectedTag implements RevisionHandler, Serializable {
 	/**
 	 * Returns true if this SelectedTag equals another object
 	 * 
-	 * @param o
-	 *            the object to compare with
+	 * @param o the object to compare with
 	 * @return true if the tags and the selected tag are the same
 	 */
 	@Override

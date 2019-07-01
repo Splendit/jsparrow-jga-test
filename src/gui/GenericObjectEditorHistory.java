@@ -32,6 +32,7 @@ import javax.swing.JPopupMenu;
 
 import core.SerializedObject;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A helper class for maintaining a history of objects selected in the GOE.
@@ -76,14 +77,13 @@ public class GenericObjectEditorHistory implements Serializable {
 	 * Clears the history.
 	 */
 	public synchronized void clear() {
-		m_History.removeAll(m_History);
+		m_History.clear();
 	}
 
 	/**
 	 * Adds the object to the history.
 	 * 
-	 * @param obj
-	 *            the object to add
+	 * @param obj the object to add
 	 */
 	public synchronized void add(Object obj) {
 		obj = copy(obj);
@@ -119,8 +119,7 @@ public class GenericObjectEditorHistory implements Serializable {
 	/**
 	 * Creates a copy of the object.
 	 * 
-	 * @param obj
-	 *            the object to copy
+	 * @param obj the object to copy
 	 */
 	protected Object copy(Object obj) {
 		SerializedObject so;
@@ -140,21 +139,20 @@ public class GenericObjectEditorHistory implements Serializable {
 	/**
 	 * Generates an HTML caption for the an entry in the history menu.
 	 * 
-	 * @param obj
-	 *            the object to create the caption for
+	 * @param obj the object to create the caption for
 	 * @return the generated HTML captiopn
 	 */
 	protected String generateMenuItemCaption(Object obj) {
-		StringBuffer result;
+		StringBuilder result;
 		String cmd;
 		String[] lines;
 		int i;
 
-		result = new StringBuffer();
+		result = new StringBuilder();
 
 		cmd = Utils.toCommandLine(obj);
 		if (cmd.length() > MAX_HISTORY_LENGTH) {
-			cmd = cmd.substring(0, MAX_HISTORY_LENGTH) + "...";
+			cmd = StringUtils.substring(cmd, 0, MAX_HISTORY_LENGTH) + "...";
 		}
 
 		lines = Utils.breakUp(cmd, MAX_LINE_LENGTH);
@@ -163,7 +161,7 @@ public class GenericObjectEditorHistory implements Serializable {
 			if (i > 0) {
 				result.append("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 			}
-			result.append(lines[i].trim());
+			result.append(StringUtils.trim(lines[i]));
 		}
 		result.append("</html>");
 
@@ -173,12 +171,9 @@ public class GenericObjectEditorHistory implements Serializable {
 	/**
 	 * Adds a menu item with the history to the popup menu.
 	 * 
-	 * @param menu
-	 *            the menu to add the history to
-	 * @param current
-	 *            the current object
-	 * @param listener
-	 *            the listener to attach to the menu items' ActionListener
+	 * @param menu     the menu to add the history to
+	 * @param current  the current object
+	 * @param listener the listener to attach to the menu items' ActionListener
 	 */
 	public void customizePopupMenu(JPopupMenu menu, Object current, HistorySelectionListener listener) {
 		JMenu submenu;
@@ -195,12 +190,7 @@ public class GenericObjectEditorHistory implements Serializable {
 
 		// clear history
 		item = new JMenuItem("Clear history");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				m_History.removeAll(m_History);
-			}
-		});
+		item.addActionListener((ActionEvent e) -> m_History.clear());
 		submenu.add(item);
 
 		// current history
@@ -211,12 +201,8 @@ public class GenericObjectEditorHistory implements Serializable {
 			}
 			final Object history = m_History.get(i);
 			item = new JMenuItem(generateMenuItemCaption(history));
-			item.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					fListener.historySelected(new HistorySelectionEvent(fListener, history));
-				}
-			});
+			item.addActionListener(
+					(ActionEvent e) -> fListener.historySelected(new HistorySelectionEvent(fListener, history)));
 			submenu.add(item);
 		}
 	}
@@ -238,10 +224,8 @@ public class GenericObjectEditorHistory implements Serializable {
 		/**
 		 * Initializes the event.
 		 * 
-		 * @param source
-		 *            the object that triggered the event
-		 * @param historyItem
-		 *            the selected history item
+		 * @param source      the object that triggered the event
+		 * @param historyItem the selected history item
 		 */
 		public HistorySelectionEvent(Object source, Object historyItem) {
 			super(source);
@@ -270,8 +254,7 @@ public class GenericObjectEditorHistory implements Serializable {
 		/**
 		 * Gets called when a history item gets selected.
 		 * 
-		 * @param e
-		 *            the event
+		 * @param e the event
 		 */
 		public void historySelected(HistorySelectionEvent e);
 	}

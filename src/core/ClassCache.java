@@ -36,6 +36,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A singleton that stores all classes on the classpath.
@@ -74,8 +75,7 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * Fixes the classname, turns "/" and "\" into "." and removes ".class".
 	 * 
-	 * @param classname
-	 *            the classname to process
+	 * @param classname the classname to process
 	 * @return the processed classname
 	 */
 	public static String cleanUp(String classname) {
@@ -83,14 +83,14 @@ public class ClassCache implements RevisionHandler {
 
 		result = classname;
 
-		if (result.indexOf("/") > -1) {
+		if (StringUtils.contains(result, "/")) {
 			result = result.replace("/", ".");
 		}
-		if (result.indexOf("\\") > -1) {
+		if (StringUtils.contains(result, "\\")) {
 			result = result.replace("\\", ".");
 		}
-		if (result.endsWith(".class")) {
-			result = result.substring(0, result.length() - 6);
+		if (StringUtils.endsWith(result, ".class")) {
+			result = StringUtils.substring(result, 0, result.length() - 6);
 		}
 
 		return result;
@@ -99,13 +99,12 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * Extracts the package name from the (clean) classname.
 	 * 
-	 * @param classname
-	 *            the classname to extract the package from
+	 * @param classname the classname to extract the package from
 	 * @return the package name
 	 */
 	public static String extractPackage(String classname) {
-		if (classname.indexOf(".") > -1) {
-			return classname.substring(0, classname.lastIndexOf("."));
+		if (StringUtils.contains(classname, ".")) {
+			return StringUtils.substring(classname, 0, classname.lastIndexOf("."));
 		} else {
 			return DEFAULT_PACKAGE;
 		}
@@ -114,9 +113,8 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * Adds the classname to the cache.
 	 * 
-	 * @param classname
-	 *            the classname, automatically removes ".class" and turns "/" or
-	 *            "\" into "."
+	 * @param classname the classname, automatically removes ".class" and turns "/"
+	 *                  or "\" into "."
 	 * @return true if adding changed the cache
 	 */
 	public boolean add(String classname) {
@@ -138,8 +136,7 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * Removes the classname from the cache.
 	 * 
-	 * @param classname
-	 *            the classname to remove
+	 * @param classname the classname to remove
 	 * @return true if the removal changed the cache
 	 */
 	public boolean remove(String classname) {
@@ -159,10 +156,8 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * Fills the class cache with classes in the specified directory.
 	 * 
-	 * @param prefix
-	 *            the package prefix so far, null for default package
-	 * @param dir
-	 *            the directory to search
+	 * @param prefix the package prefix so far, null for default package
+	 * @param dir    the directory to search
 	 */
 	protected void initFromDir(String prefix, File dir) {
 		File[] files;
@@ -191,8 +186,7 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * Fills the class cache with classes in the specified directory.
 	 * 
-	 * @param dir
-	 *            the directory to search
+	 * @param dir the directory to search
 	 */
 	protected void initFromDir(File dir) {
 		if (VERBOSE) {
@@ -202,11 +196,10 @@ public class ClassCache implements RevisionHandler {
 	}
 
 	/**
-	 * Analyzes the MANIFEST.MF file of a jar whether additional jars are listed
-	 * in the "Class-Path" key.
+	 * Analyzes the MANIFEST.MF file of a jar whether additional jars are listed in
+	 * the "Class-Path" key.
 	 * 
-	 * @param manifest
-	 *            the manifest to analyze
+	 * @param manifest the manifest to analyze
 	 */
 	protected void initFromManifest(Manifest manifest) {
 		if (manifest == null) {
@@ -225,10 +218,10 @@ public class ClassCache implements RevisionHandler {
 
 		parts = cp.split(" ");
 		for (String part : parts) {
-			if (part.trim().length() == 0) {
+			if (StringUtils.isEmpty(part.trim())) {
 				return;
 			}
-			if (part.toLowerCase().endsWith(".jar")) {
+			if (StringUtils.endsWith(part.toLowerCase(), ".jar")) {
 				initFromClasspathPart(part);
 			}
 		}
@@ -237,8 +230,7 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * Fills the class cache with classes from the specified jar.
 	 * 
-	 * @param file
-	 *            the jar to inspect
+	 * @param file the jar to inspect
 	 */
 	protected void initFromJar(File file) {
 		JarFile jar;
@@ -259,7 +251,7 @@ public class ClassCache implements RevisionHandler {
 			enm = jar.entries();
 			while (enm.hasMoreElements()) {
 				entry = enm.nextElement();
-				if (entry.getName().endsWith(".class")) {
+				if (StringUtils.endsWith(entry.getName(), ".class")) {
 					add(entry.getName());
 				}
 			}
@@ -281,8 +273,7 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * Returns all the classes for the given package.
 	 * 
-	 * @param pkgname
-	 *            the package to get the classes for
+	 * @param pkgname the package to get the classes for
 	 * @return the classes (sorted by name)
 	 */
 	public HashSet<String> getClassnames(String pkgname) {
@@ -296,14 +287,13 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * Analyzes a part of the classpath.
 	 * 
-	 * @param part
-	 *            the part to analyze
+	 * @param part the part to analyze
 	 */
 	protected void initFromClasspathPart(String part) {
 		File file;
 
 		file = null;
-		if (part.startsWith("file:")) {
+		if (StringUtils.startsWith(part, "file:")) {
 			part = part.replace(" ", "%20");
 			try {
 				file = new File(new java.net.URI(part));
@@ -351,8 +341,7 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * Find all classes that have the supplied matchText String in their suffix.
 	 * 
-	 * @param matchText
-	 *            the text to match
+	 * @param matchText the text to match
 	 * @return an array list of matching fully qualified class names.
 	 */
 	public ArrayList<String> find(String matchText) {
@@ -368,7 +357,7 @@ public class ClassCache implements RevisionHandler {
 			names = m_Cache.get(packages.nextElement()).iterator();
 			while (names.hasNext()) {
 				name = names.next();
-				if (name.contains(matchText)) {
+				if (StringUtils.contains(name, matchText)) {
 					result.add(name);
 				}
 			}
@@ -394,8 +383,7 @@ public class ClassCache implements RevisionHandler {
 	/**
 	 * For testing only.
 	 * 
-	 * @param args
-	 *            ignored
+	 * @param args ignored
 	 */
 	public static void main(String[] args) {
 		ClassCache cache = new ClassCache();
@@ -417,13 +405,12 @@ public class ClassCache implements RevisionHandler {
 		/**
 		 * Checks whether the file is a class.
 		 * 
-		 * @param pathname
-		 *            the file to check
+		 * @param pathname the file to check
 		 * @return true if a class file
 		 */
 		@Override
 		public boolean accept(File pathname) {
-			return pathname.getName().endsWith(".class");
+			return StringUtils.endsWith(pathname.getName(), ".class");
 		}
 	}
 
@@ -438,8 +425,7 @@ public class ClassCache implements RevisionHandler {
 		/**
 		 * Checks whether the file is a directory.
 		 * 
-		 * @param pathname
-		 *            the file to check
+		 * @param pathname the file to check
 		 * @return true if a directory
 		 */
 		@Override

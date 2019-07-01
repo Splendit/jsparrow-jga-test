@@ -38,6 +38,7 @@ import core.Instances;
 import core.Option;
 import core.RevisionUtils;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Writes to a destination in arff text format.
@@ -127,7 +128,7 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 		}
 
 		result.add("-decimal");
-		result.add(new Integer(getMaxDecimalPlaces()).toString());
+		result.add(Integer.toString(getMaxDecimalPlaces()));
 
 		Collections.addAll(result, super.getOptions());
 
@@ -165,10 +166,8 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	 * 
 	 * <!-- options-end -->
 	 * 
-	 * @param options
-	 *            the options to use
-	 * @throws Exception
-	 *             if setting of options fails
+	 * @param options the options to use
+	 * @throws Exception if setting of options fails
 	 */
 	@Override
 	public void setOptions(String[] options) throws Exception {
@@ -188,8 +187,7 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	/**
 	 * Set the maximum number of decimal places to print
 	 * 
-	 * @param maxDecimal
-	 *            the maximum number of decimal places to print
+	 * @param maxDecimal the maximum number of decimal places to print
 	 */
 	public void setMaxDecimalPlaces(int maxDecimal) {
 		m_MaxDecimalPlaces = maxDecimal;
@@ -236,8 +234,7 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	/**
 	 * Sets whether to compress the output.
 	 * 
-	 * @param value
-	 *            if truee the output will be compressed
+	 * @param value if truee the output will be compressed
 	 */
 	public void setCompressOutput(boolean value) {
 		m_CompressOutput = value;
@@ -277,14 +274,12 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	/**
 	 * Sets the destination file.
 	 * 
-	 * @param outputFile
-	 *            the destination file.
-	 * @throws IOException
-	 *             throws an IOException if file cannot be set
+	 * @param outputFile the destination file.
+	 * @throws IOException throws an IOException if file cannot be set
 	 */
 	@Override
 	public void setFile(File outputFile) throws IOException {
-		if (outputFile.getAbsolutePath().endsWith(ArffLoader.FILE_EXTENSION_COMPRESSED)) {
+		if (StringUtils.endsWith(outputFile.getAbsolutePath(), ArffLoader.FILE_EXTENSION_COMPRESSED)) {
 			setCompressOutput(true);
 		}
 
@@ -294,10 +289,8 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	/**
 	 * Sets the destination output stream.
 	 * 
-	 * @param output
-	 *            the output stream.
-	 * @throws IOException
-	 *             throws an IOException if destination cannot be set
+	 * @param output the output stream.
+	 * @throws IOException throws an IOException if destination cannot be set
 	 */
 	@Override
 	public void setDestination(OutputStream output) throws IOException {
@@ -344,11 +337,9 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	 * Saves an instances incrementally. Structure has to be set by using the
 	 * setStructure() method or setInstances() method.
 	 * 
-	 * @param inst
-	 *            the instance to save
-	 * @throws IOException
-	 *             throws IOEXception if an instance cannot be saved
-	 *             incrementally.
+	 * @param inst the instance to save
+	 * @throws IOException throws IOEXception if an instance cannot be saved
+	 *                     incrementally.
 	 */
 	@Override
 	public void writeIncremental(Instance inst) throws IOException {
@@ -429,8 +420,8 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	/**
 	 * Writes a Batch of instances
 	 * 
-	 * @throws IOException
-	 *             throws IOException if saving in batch mode is not possible
+	 * @throws IOException throws IOException if saving in batch mode is not
+	 *                     possible
 	 */
 	@Override
 	public void writeBatch() throws IOException {
@@ -488,8 +479,7 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	/**
 	 * Main method.
 	 * 
-	 * @param args
-	 *            should contain the options of a Saver.
+	 * @param args should contain the options of a Saver.
 	 */
 	public static void main(String[] args) {
 		runFileSaver(new ArffSaver(), args);

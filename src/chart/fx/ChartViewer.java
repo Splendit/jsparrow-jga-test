@@ -60,313 +60,295 @@ import chart.util.ExportUtils;
 import chart.util.ParamChecks;
 
 /**
- * A control for displaying a {@link JFreeChart} in JavaFX (embeds a 
+ * A control for displaying a {@link JFreeChart} in JavaFX (embeds a
  * {@link ChartCanvas}, adds drag zooming and provides a popup menu for export
- * to PNG/JPG/SVG and PDF formats).  Many behaviours (tooltips, zooming etc) are 
+ * to PNG/JPG/SVG and PDF formats). Many behaviours (tooltips, zooming etc) are
  * provided directly by the canvas.
  * 
- * <p>THE API FOR THIS CLASS IS SUBJECT TO CHANGE IN FUTURE RELEASES.  This is
- * so that we can incorporate feedback on the (new) JavaFX support in 
- * JFreeChart.</p>
+ * <p>
+ * THE API FOR THIS CLASS IS SUBJECT TO CHANGE IN FUTURE RELEASES. This is so
+ * that we can incorporate feedback on the (new) JavaFX support in JFreeChart.
+ * </p>
  * 
  * @since 1.0.18
  */
 @SuppressWarnings("restriction")
-public class ChartViewer extends Control implements Skinnable, 
-        ChartMouseListenerFX {
-    
-    /** The chart to display. */
-    private JFreeChart chart;
-    
-    /** 
-     * A reference (for convenience) to the canvas used to display the chart. 
-     */
-    private ChartCanvas canvas;
+public class ChartViewer extends Control implements ChartMouseListenerFX {
 
-    /** Does the viewer show tooltips from the chart? */
-    private boolean tooltipEnabled;
-    
-    /** Storage for registered chart mouse listeners. */
-    private transient List<ChartMouseListenerFX> chartMouseListeners;
+	/** The chart to display. */
+	private JFreeChart chart;
 
-    /**
-     * Creates a new instance, initially with no chart to display.  This 
-     * constructor is required so that this control can be used within
-     * FXML.
-     * 
-     * @since 1.0.20
-     */
-    public ChartViewer() {
-        this(null);
-    }
+	/**
+	 * A reference (for convenience) to the canvas used to display the chart.
+	 */
+	private ChartCanvas canvas;
 
-    /**
-     * Creates a new viewer to display the supplied chart in JavaFX.
-     * 
-     * @param chart  the chart ({@code null} permitted). 
-     */
-    public ChartViewer(JFreeChart chart) {
-        this(chart, true);
-    }
-    
-    /**
-     * Creates a new viewer instance.
-     * 
-     * @param chart  the chart ({@code null} permitted).
-     * @param contextMenuEnabled  enable the context menu?
-     */
-    public ChartViewer(JFreeChart chart, boolean contextMenuEnabled) {
-        this.chart = chart;
-        getStyleClass().add("chart-control");
-        setContextMenu(createContextMenu());
-        getContextMenu().setOnShowing(
-                e -> ChartViewer.this.setTooltipEnabled(false));
-        getContextMenu().setOnHiding(
-                e -> ChartViewer.this.setTooltipEnabled(true));
-        this.tooltipEnabled = true;
-        this.chartMouseListeners = new ArrayList<>();
-    }
-    
-    @Override
-    public String getUserAgentStylesheet() {
-        return ChartViewer.class.getResource("chart-viewer.css")
-                .toExternalForm();
-    }
+	/** Does the viewer show tooltips from the chart? */
+	private boolean tooltipEnabled;
 
-    /**
-     * Returns the chart that is being displayed by this node.
-     * 
-     * @return The chart (possibly {@code null}). 
-     */
-    public JFreeChart getChart() {
-        return this.chart;
-    }
-    
-    /**
-     * Sets the chart to be displayed by this node.
-     * 
-     * @param chart  the chart ({@code null} not permitted). 
-     */
-    public void setChart(JFreeChart chart) {
-        ParamChecks.nullNotPermitted(chart, "chart");
-        this.chart = chart;
-        ChartViewerSkin skin = (ChartViewerSkin) getSkin();
-        skin.setChart(chart);
-    }
-    
-    /**
-     * Returns the canvas used within this control to display the chart.
-     * 
-     * @return The canvas (never {@code null}).
-     * 
-     * @since 1.0.20
-     */
-    public ChartCanvas getCanvas() {
-        ChartViewerSkin skin = (ChartViewerSkin) getSkin();
-        return skin.getCanvas();
-    }
+	/** Storage for registered chart mouse listeners. */
+	private transient List<ChartMouseListenerFX> chartMouseListeners;
 
-    /**
-     * Returns the flag that controls whether or not tooltips are displayed
-     * for the chart.
-     * 
-     * @return A boolean.
-     */
-    public boolean isTooltipEnabled() {
-        return this.tooltipEnabled;    
-    }
-    
-    /**
-     * Sets the flag that controls whether or not the chart tooltips are shown
-     * by this viewer.
-     * 
-     * @param enabled  the new flag value. 
-     */
-    public void setTooltipEnabled(boolean enabled) {
-        this.tooltipEnabled = enabled;
-        ChartViewerSkin skin = (ChartViewerSkin) getSkin();
-        if (skin != null) {
-            skin.setTooltipEnabled(enabled);        
-        }
-    }
+	/**
+	 * Creates a new instance, initially with no chart to display. This constructor
+	 * is required so that this control can be used within FXML.
+	 * 
+	 * @since 1.0.20
+	 */
+	public ChartViewer() {
+		this(null);
+	}
 
-    /**
-     * Returns the rendering info from the most recent drawing of the chart.
-     * 
-     * @return The rendering info (possibly {@code null}). 
-     */
-    public ChartRenderingInfo getRenderingInfo() {
-        ChartViewerSkin skin = (ChartViewerSkin) getSkin();
-        if (skin != null) {
-            return skin.getRenderingInfo();
-        }
-        return null;
-    }
+	/**
+	 * Creates a new viewer to display the supplied chart in JavaFX.
+	 * 
+	 * @param chart the chart ({@code null} permitted).
+	 */
+	public ChartViewer(JFreeChart chart) {
+		this(chart, true);
+	}
 
-    /**
-     * Hides the zoom rectangle.  The work is delegated to the control's 
-     * current skin.
-     */
-    public void hideZoomRectangle() {
-        ChartViewerSkin skin = (ChartViewerSkin) getSkin();
-        skin.setZoomRectangleVisible(false);
-    }
-    
-    /**
-     * Sets the size and location of the zoom rectangle and makes it visible
-     * if it wasn't already visible.  The work is delegated to the control's 
-     * current skin.
-     * 
-     * @param x  the x-location.
-     * @param y  the y-location.
-     * @param w  the width.
-     * @param h  the height.
-     */
-    public void showZoomRectangle(double x, double y, double w, double h) {
-        ChartViewerSkin skin = (ChartViewerSkin) getSkin();
-        skin.showZoomRectangle(x, y, w, h);
-    }
-    
-    /**
-     * Registers a listener to receive {@link ChartMouseEvent} notifications
-     * from this viewer.
-     *
-     * @param listener  the listener ({@code null} not permitted).
-     */
-    public void addChartMouseListener(ChartMouseListenerFX listener) {
-        ParamChecks.nullNotPermitted(listener, "listener");
-        this.chartMouseListeners.add(listener);
-    }
+	/**
+	 * Creates a new viewer instance.
+	 * 
+	 * @param chart              the chart ({@code null} permitted).
+	 * @param contextMenuEnabled enable the context menu?
+	 */
+	public ChartViewer(JFreeChart chart, boolean contextMenuEnabled) {
+		this.chart = chart;
+		getStyleClass().add("chart-control");
+		setContextMenu(createContextMenu());
+		getContextMenu().setOnShowing(e -> ChartViewer.this.setTooltipEnabled(false));
+		getContextMenu().setOnHiding(e -> ChartViewer.this.setTooltipEnabled(true));
+		this.tooltipEnabled = true;
+		this.chartMouseListeners = new ArrayList<>();
+	}
 
-    /**
-     * Removes a listener from the list of objects listening for chart mouse
-     * events.
-     *
-     * @param listener  the listener.
-     */
-    public void removeChartMouseListener(ChartMouseListenerFX listener) {
-        ParamChecks.nullNotPermitted(listener, "listener");
-        this.chartMouseListeners.remove(listener);
-    }
+	@Override
+	public String getUserAgentStylesheet() {
+		return ChartViewer.class.getResource("chart-viewer.css").toExternalForm();
+	}
 
-    /**
-     * Creates the context menu.
-     * 
-     * @return The context menu.
-     */
-    private ContextMenu createContextMenu() {
-        final ContextMenu menu = new ContextMenu();
-       
-        Menu export = new Menu("Export As");
-        
-        MenuItem pngItem = new MenuItem("PNG...");
-        pngItem.setOnAction(e -> handleExportToPNG());        
-        export.getItems().add(pngItem);
-        
-        MenuItem jpegItem = new MenuItem("JPEG...");
-        jpegItem.setOnAction(e -> handleExportToJPEG());        
-        export.getItems().add(jpegItem);
-        
-        if (ExportUtils.isOrsonPDFAvailable()) {
-            MenuItem pdfItem = new MenuItem("PDF...");
-            pdfItem.setOnAction(e -> handleExportToPDF());
-            export.getItems().add(pdfItem);
-        }
-        if (ExportUtils.isJFreeSVGAvailable()) {
-            MenuItem svgItem = new MenuItem("SVG...");
-            svgItem.setOnAction(e -> handleExportToSVG());
-            export.getItems().add(svgItem);        
-        }
-        menu.getItems().add(export);
-        return menu;
-    }
-    
-    /**
-     * A handler for the export to PDF option in the context menu.
-     */
-    private void handleExportToPDF() {
-        FileChooser chooser = new FileChooser();
-        chooser.setTitle("Export to PDF");
-        ExtensionFilter filter = new FileChooser.ExtensionFilter(
-                "Portable Document Format (PDF)", "pdf");
-        chooser.getExtensionFilters().add(filter);
-        File file = chooser.showSaveDialog(getScene().getWindow());
-        if (file != null) {
-            ExportUtils.writeAsPDF(this.chart, (int) getWidth(), 
-                    (int) getHeight(), file);
-        } 
-    }
-    
-    /**
-     * A handler for the export to SVG option in the context menu.
-     */
-    private void handleExportToSVG() {
-        FileChooser chooser = new FileChooser();
-        chooser.setTitle("Export to SVG");
-        ExtensionFilter filter = new FileChooser.ExtensionFilter(
-                "Scalable Vector Graphics (SVG)", "svg");
-        chooser.getExtensionFilters().add(filter);
-        File file = chooser.showSaveDialog(getScene().getWindow());
-        if (file != null) {
-            ExportUtils.writeAsSVG(this.chart, (int) getWidth(), 
-                    (int) getHeight(), file);
-        }
-    }
-    
-    /**
-     * A handler for the export to PNG option in the context menu.
-     */
-    private void handleExportToPNG() {
-        FileChooser chooser = new FileChooser();
-        chooser.setTitle("Export to PNG");
-        ExtensionFilter filter = new FileChooser.ExtensionFilter(
-                "Portable Network Graphics (PNG)", "png");
-        chooser.getExtensionFilters().add(filter);
-        File file = chooser.showSaveDialog(getScene().getWindow());
-        if (file != null) {
-            try {
-                ExportUtils.writeAsPNG(this.chart, (int) getWidth(),
-                        (int) getHeight(), file);
-            } catch (IOException ex) {
-                // FIXME: show a dialog with the error
-            }
-        }        
-    }
+	/**
+	 * Returns the chart that is being displayed by this node.
+	 * 
+	 * @return The chart (possibly {@code null}).
+	 */
+	public JFreeChart getChart() {
+		return this.chart;
+	}
 
-    /**
-     * A handler for the export to JPEG option in the context menu.
-     */
-    private void handleExportToJPEG() {
-        FileChooser chooser = new FileChooser();
-        chooser.setTitle("Export to JPEG");
-        ExtensionFilter filter = new FileChooser.ExtensionFilter("JPEG", "jpg");
-        chooser.getExtensionFilters().add(filter);
-        File file = chooser.showSaveDialog(getScene().getWindow());
-        if (file != null) {
-            try {
-                ExportUtils.writeAsJPEG(this.chart, (int) getWidth(),
-                        (int) getHeight(), file);
-            } catch (IOException ex) {
-                // FIXME: show a dialog with the error
-            }
-        }        
-    }
+	/**
+	 * Sets the chart to be displayed by this node.
+	 * 
+	 * @param chart the chart ({@code null} not permitted).
+	 */
+	public void setChart(JFreeChart chart) {
+		ParamChecks.nullNotPermitted(chart, "chart");
+		this.chart = chart;
+		ChartViewerSkin skin = (ChartViewerSkin) getSkin();
+		skin.setChart(chart);
+	}
 
-    @Override
-    public void chartMouseClicked(ChartMouseEventFX event) {
-        // relay the event from the canvas to our registered listeners
-        for (ChartMouseListenerFX listener: this.chartMouseListeners) {
-            listener.chartMouseClicked(event);
-        }
-    }
+	/**
+	 * Returns the canvas used within this control to display the chart.
+	 * 
+	 * @return The canvas (never {@code null}).
+	 * 
+	 * @since 1.0.20
+	 */
+	public ChartCanvas getCanvas() {
+		ChartViewerSkin skin = (ChartViewerSkin) getSkin();
+		return skin.getCanvas();
+	}
 
-    @Override
-    public void chartMouseMoved(ChartMouseEventFX event) {
-        // relay the event from the canvas to our registered listeners
-        for (ChartMouseListenerFX listener: this.chartMouseListeners) {
-            listener.chartMouseMoved(event);
-        }
-    }
- 
+	/**
+	 * Returns the flag that controls whether or not tooltips are displayed for the
+	 * chart.
+	 * 
+	 * @return A boolean.
+	 */
+	public boolean isTooltipEnabled() {
+		return this.tooltipEnabled;
+	}
+
+	/**
+	 * Sets the flag that controls whether or not the chart tooltips are shown by
+	 * this viewer.
+	 * 
+	 * @param enabled the new flag value.
+	 */
+	public void setTooltipEnabled(boolean enabled) {
+		this.tooltipEnabled = enabled;
+		ChartViewerSkin skin = (ChartViewerSkin) getSkin();
+		if (skin != null) {
+			skin.setTooltipEnabled(enabled);
+		}
+	}
+
+	/**
+	 * Returns the rendering info from the most recent drawing of the chart.
+	 * 
+	 * @return The rendering info (possibly {@code null}).
+	 */
+	public ChartRenderingInfo getRenderingInfo() {
+		ChartViewerSkin skin = (ChartViewerSkin) getSkin();
+		if (skin != null) {
+			return skin.getRenderingInfo();
+		}
+		return null;
+	}
+
+	/**
+	 * Hides the zoom rectangle. The work is delegated to the control's current
+	 * skin.
+	 */
+	public void hideZoomRectangle() {
+		ChartViewerSkin skin = (ChartViewerSkin) getSkin();
+		skin.setZoomRectangleVisible(false);
+	}
+
+	/**
+	 * Sets the size and location of the zoom rectangle and makes it visible if it
+	 * wasn't already visible. The work is delegated to the control's current skin.
+	 * 
+	 * @param x the x-location.
+	 * @param y the y-location.
+	 * @param w the width.
+	 * @param h the height.
+	 */
+	public void showZoomRectangle(double x, double y, double w, double h) {
+		ChartViewerSkin skin = (ChartViewerSkin) getSkin();
+		skin.showZoomRectangle(x, y, w, h);
+	}
+
+	/**
+	 * Registers a listener to receive {@link ChartMouseEvent} notifications from
+	 * this viewer.
+	 *
+	 * @param listener the listener ({@code null} not permitted).
+	 */
+	public void addChartMouseListener(ChartMouseListenerFX listener) {
+		ParamChecks.nullNotPermitted(listener, "listener");
+		this.chartMouseListeners.add(listener);
+	}
+
+	/**
+	 * Removes a listener from the list of objects listening for chart mouse events.
+	 *
+	 * @param listener the listener.
+	 */
+	public void removeChartMouseListener(ChartMouseListenerFX listener) {
+		ParamChecks.nullNotPermitted(listener, "listener");
+		this.chartMouseListeners.remove(listener);
+	}
+
+	/**
+	 * Creates the context menu.
+	 * 
+	 * @return The context menu.
+	 */
+	private ContextMenu createContextMenu() {
+		final ContextMenu menu = new ContextMenu();
+
+		Menu export = new Menu("Export As");
+
+		MenuItem pngItem = new MenuItem("PNG...");
+		pngItem.setOnAction(e -> handleExportToPNG());
+		export.getItems().add(pngItem);
+
+		MenuItem jpegItem = new MenuItem("JPEG...");
+		jpegItem.setOnAction(e -> handleExportToJPEG());
+		export.getItems().add(jpegItem);
+
+		if (ExportUtils.isOrsonPDFAvailable()) {
+			MenuItem pdfItem = new MenuItem("PDF...");
+			pdfItem.setOnAction(e -> handleExportToPDF());
+			export.getItems().add(pdfItem);
+		}
+		if (ExportUtils.isJFreeSVGAvailable()) {
+			MenuItem svgItem = new MenuItem("SVG...");
+			svgItem.setOnAction(e -> handleExportToSVG());
+			export.getItems().add(svgItem);
+		}
+		menu.getItems().add(export);
+		return menu;
+	}
+
+	/**
+	 * A handler for the export to PDF option in the context menu.
+	 */
+	private void handleExportToPDF() {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Export to PDF");
+		ExtensionFilter filter = new FileChooser.ExtensionFilter("Portable Document Format (PDF)", "pdf");
+		chooser.getExtensionFilters().add(filter);
+		File file = chooser.showSaveDialog(getScene().getWindow());
+		if (file != null) {
+			ExportUtils.writeAsPDF(this.chart, (int) getWidth(), (int) getHeight(), file);
+		}
+	}
+
+	/**
+	 * A handler for the export to SVG option in the context menu.
+	 */
+	private void handleExportToSVG() {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Export to SVG");
+		ExtensionFilter filter = new FileChooser.ExtensionFilter("Scalable Vector Graphics (SVG)", "svg");
+		chooser.getExtensionFilters().add(filter);
+		File file = chooser.showSaveDialog(getScene().getWindow());
+		if (file != null) {
+			ExportUtils.writeAsSVG(this.chart, (int) getWidth(), (int) getHeight(), file);
+		}
+	}
+
+	/**
+	 * A handler for the export to PNG option in the context menu.
+	 */
+	private void handleExportToPNG() {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Export to PNG");
+		ExtensionFilter filter = new FileChooser.ExtensionFilter("Portable Network Graphics (PNG)", "png");
+		chooser.getExtensionFilters().add(filter);
+		File file = chooser.showSaveDialog(getScene().getWindow());
+		if (file != null) {
+			try {
+				ExportUtils.writeAsPNG(this.chart, (int) getWidth(), (int) getHeight(), file);
+			} catch (IOException ex) {
+				// FIXME: show a dialog with the error
+			}
+		}
+	}
+
+	/**
+	 * A handler for the export to JPEG option in the context menu.
+	 */
+	private void handleExportToJPEG() {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Export to JPEG");
+		ExtensionFilter filter = new FileChooser.ExtensionFilter("JPEG", "jpg");
+		chooser.getExtensionFilters().add(filter);
+		File file = chooser.showSaveDialog(getScene().getWindow());
+		if (file != null) {
+			try {
+				ExportUtils.writeAsJPEG(this.chart, (int) getWidth(), (int) getHeight(), file);
+			} catch (IOException ex) {
+				// FIXME: show a dialog with the error
+			}
+		}
+	}
+
+	@Override
+	public void chartMouseClicked(ChartMouseEventFX event) {
+		// relay the event from the canvas to our registered listeners
+		this.chartMouseListeners.forEach(listener -> listener.chartMouseClicked(event));
+	}
+
+	@Override
+	public void chartMouseMoved(ChartMouseEventFX event) {
+		// relay the event from the canvas to our registered listeners
+		this.chartMouseListeners.forEach(listener -> listener.chartMouseMoved(event));
+	}
+
 }
-
